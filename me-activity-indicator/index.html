@@ -3,227 +3,751 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ME Activity Indicator - Marcos Esperón</title>
+<title>meActivityIndicator — Dynamic Island Notifications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
+/* ── Reset & Base ─────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #f1f1f4;
-  overflow: hidden;
-  height: 100vh;
-  transition: background 0.3s ease;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #0a0a0f;
+  color: #e4e4e7;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* DEMO CONTROLES */
-.controls {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  width: 95%;
-  max-width: 900px;
-  max-height: 45vh;
-  overflow-y: auto;
-  background: white;
-  padding: 16px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+body.light-mode {
+  background: #f4f4f5;
+  color: #18181b;
 }
 
-.controls button {
-  padding: 10px 6px;
-  background: #1f1f25;
-  border: none;
-  color: white;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 11px;
-}
+::selection { background: rgba(59, 130, 246, 0.3); }
 
-.controls button:hover { background: #2a2a32; }
-.controls button.finish { background: #ef4444; grid-column: span 4; margin-top: 4px; }
-.controls .section-title { grid-column: span 4; color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; margin-bottom: 2px;}
+a { color: inherit; text-decoration: none; }
 
-.config-row {
-  grid-column: span 4;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+/* ── Header ───────────────────────────────────── */
 
-.select-group {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.select-group button {
-  background: #e2e8f0;
-  color: #475569;
-  font-size: 9px;
-  padding: 6px 10px;
-}
-.select-group button.active {
-  background: #3b82f6;
-  color: white;
-}
-
-.bmc-link {
+.page-header {
   position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 100;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 50;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+body.light-mode .page-header {
+  background: rgba(244, 244, 245, 0.85);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: #a1a1aa;
+  transition: color 0.2s;
+}
+.header-links a:hover { color: #e4e4e7; }
+body.light-mode .header-links a { color: #71717a; }
+body.light-mode .header-links a:hover { color: #18181b; }
+
+.bmc-btn {
   display: flex;
   align-items: center;
   gap: 6px;
   background: #ffdd00;
-  color: #000;
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 12px;
-  font-family: system-ui, -apple-system, sans-serif;
+  color: #000 !important;
+  padding: 6px 12px;
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 221, 0, 0.2);
 }
-.bmc-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+.bmc-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 221, 0, 0.3); }
+.bmc-btn:active { transform: scale(0.96); }
+.bmc-btn svg { width: 14px; height: 14px; }
+
+/* ── Hero ─────────────────────────────────────── */
+
+.hero {
+  padding: 112px 24px 40px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
 }
-.bmc-link:active { transform: scale(0.96); }
-.bmc-link svg { width: 16px; height: 16px; }
+
+.hero h1 {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body.light-mode .hero h1 {
+  background: linear-gradient(135deg, #18181b 0%, #71717a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 17px;
+  color: #71717a;
+  margin-top: 16px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #a1a1aa;
+}
+
+body.light-mode .badge {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #71717a;
+}
+
+/* ── Config Bar ───────────────────────────────── */
+
+.config-bar {
+  position: sticky;
+  top: 56px;
+  z-index: 40;
+  background: rgba(10, 10, 15, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+body.light-mode .config-bar {
+  background: rgba(244, 244, 245, 0.9);
+  border-top-color: rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+.config-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.config-group label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #52525b;
+  font-weight: 600;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+.config-pill {
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #a1a1aa;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.config-pill:hover { background: rgba(255, 255, 255, 0.1); color: #e4e4e7; }
+.config-pill.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+
+body.light-mode .config-pill {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #71717a;
+}
+body.light-mode .config-pill:hover { background: rgba(0, 0, 0, 0.08); color: #18181b; }
+body.light-mode .config-pill.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+
+.close-btn {
+  padding: 5px 14px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+.close-btn:hover { background: rgba(239, 68, 68, 0.25); }
+
+/* ── Demo Stage ───────────────────────────────── */
+
+.demo-stage {
+  min-height: 280px;
+  margin: 32px auto;
+  max-width: 960px;
+  border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 40%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+body.light-mode .demo-stage {
+  background: radial-gradient(ellipse at 50% 40%, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+.demo-stage-hint {
+  color: #27272a;
+  font-size: 14px;
+  font-weight: 500;
+  pointer-events: none;
+  user-select: none;
+}
+
+body.light-mode .demo-stage-hint { color: #d4d4d8; }
+
+/* ── Demo Categories ──────────────────────────── */
+
+.demos-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.demo-category {
+  margin-bottom: 48px;
+}
+
+.demo-category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.demo-category-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e4e4e7;
+}
+
+body.light-mode .demo-category-header h2 { color: #18181b; }
+
+.demo-category-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.demo-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.demo-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+.demo-card:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+body.light-mode .demo-card {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+body.light-mode .demo-card:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.demo-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.demo-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e4e4e7;
+}
+
+body.light-mode .demo-card-title { color: #18181b; }
+
+.demo-card-desc {
+  font-size: 12px;
+  color: #52525b;
+  line-height: 1.5;
+}
+
+body.light-mode .demo-card-desc { color: #71717a; }
+
+/* ── Category Color Themes ────────────────────── */
+
+.cat-basic .demo-category-badge { background: rgba(34, 197, 94, 0.12); color: #4ade80; }
+body.light-mode .cat-basic .demo-category-badge { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+
+.cat-animations .demo-category-badge { background: rgba(168, 85, 247, 0.12); color: #c084fc; }
+body.light-mode .cat-animations .demo-category-badge { background: rgba(168, 85, 247, 0.1); color: #9333ea; }
+
+.cat-ai .demo-category-badge { background: rgba(6, 182, 212, 0.12); color: #22d3ee; }
+body.light-mode .cat-ai .demo-category-badge { background: rgba(6, 182, 212, 0.1); color: #0891b2; }
+
+.cat-progress .demo-category-badge { background: rgba(59, 130, 246, 0.12); color: #60a5fa; }
+body.light-mode .cat-progress .demo-category-badge { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+
+.cat-actions .demo-category-badge { background: rgba(249, 115, 22, 0.12); color: #fb923c; }
+body.light-mode .cat-actions .demo-category-badge { background: rgba(249, 115, 22, 0.1); color: #ea580c; }
+
+.cat-queue .demo-category-badge { background: rgba(236, 72, 153, 0.12); color: #f472b6; }
+body.light-mode .cat-queue .demo-category-badge { background: rgba(236, 72, 153, 0.1); color: #db2777; }
+
+/* ── Footer ───────────────────────────────────── */
+
+.page-footer {
+  text-align: center;
+  padding: 32px 24px 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  color: #3f3f46;
+  font-size: 13px;
+}
+
+body.light-mode .page-footer {
+  border-top-color: rgba(0, 0, 0, 0.06);
+  color: #a1a1aa;
+}
+
+.page-footer a {
+  color: #71717a;
+  transition: color 0.2s;
+}
+.page-footer a:hover { color: #e4e4e7; }
+body.light-mode .page-footer a:hover { color: #18181b; }
+
+/* ── Responsive ───────────────────────────────── */
+
+@media (max-width: 768px) {
+  .hero { padding: 100px 20px 32px; }
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 15px; }
+  .config-bar { gap: 12px; padding: 12px 16px; }
+  .config-group { flex-wrap: wrap; justify-content: center; }
+  .demo-grid { grid-template-columns: repeat(2, 1fr); }
+  .demo-stage { min-height: 200px; margin: 20px 16px; }
+  .demos-container { padding: 0 16px 60px; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 28px; }
+  .demo-grid { grid-template-columns: 1fr; }
+  .config-bar { position: relative; top: auto; }
+  .header-links .github-link { display: none; }
+}
+
 </style>
 </head>
 
-<body>
+<body class="light-mode">
 
-<a class="bmc-link" href="https://buymeacoffee.com/marcosesperon" target="_blank" rel="noopener">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-  Buy me a coffee
-</a>
-
-<div class="controls">
-  <div class="config-row">
-    <div class="section-title">Ubicación</div>
-    <div class="select-group position-select">
-      <button onclick="changePosition('top-left', this)">Arr. Izquierda</button>
-      <button onclick="changePosition('top-center', this)" class="active">Arr. Centro</button>
-      <button onclick="changePosition('top-right', this)">Arr. Derecha</button>
-      <button onclick="changePosition('center', this)">Centro</button>
-      <button onclick="changePosition('bottom-left', this)">Ab. Izquierda</button>
-      <button onclick="changePosition('bottom-center', this)">Ab. Centro</button>
-      <button onclick="changePosition('bottom-right', this)">Ab. Derecha</button>
-    </div>
-
-    <div class="section-title">Tema Visual</div>
-    <div class="select-group theme-select">
-      <button onclick="changeTheme('dark', this)" class="active">Oscuro</button>
-      <button onclick="changeTheme('light', this)">Claro</button>
-      <button onclick="changeTheme('system', this)">Sistema (Auto)</button>
-    </div>
-
-    <div class="section-title">Estilo de Apilamiento</div>
-    <div class="select-group stack-select">
-      <button onclick="changeStackStyle('3d', this)" class="active">3D Clásico</button>
-      <button onclick="changeStackStyle('fan', this)">Abanico</button>
-      <button onclick="changeStackStyle('counter', this)">Contador</button>
-    </div>
+<!-- ── Header ──────────────────────────────────── -->
+<header class="page-header">
+  <div class="header-brand">
+    <span class="brand-dot"></span>
+    meActivityIndicator
   </div>
+  <div class="header-links">
+    <a href="https://github.com/nicojo77/meActivityIndicator" target="_blank" rel="noopener" class="github-link">GitHub</a>
+    <a class="bmc-btn" href="https://buymeacoffee.com/marcosesperon" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      Buy me a coffee
+    </a>
+  </div>
+</header>
 
-  <div class="section-title">Fase 3: Smart UI</div>
-  <button onclick="demoHighPriority()">Alta Prioridad</button>
-  <button onclick="demoSmartGroup()">Smart Group (Promedio)</button>
-  <button onclick="demoNormalQueue()">Cola Normal</button>
+<!-- ── Hero ─────────────────────────────────────── -->
+<section class="hero">
+  <h1>meActivityIndicator</h1>
+  <p>Notificaciones tipo Dynamic Island para la web. Zero dependencias. Spring physics. Accesible.</p>
+  <div class="hero-badges">
+    <span class="badge">v1.0</span>
+    <span class="badge">MIT</span>
+    <span class="badge">Zero deps</span>
+  </div>
+</section>
 
-  <div class="section-title">Fase 2: Micro-interacciones</div>
-  <button onclick="demoSuccessPulse()">Éxito con Pulso</button>
-  <button onclick="demoErrorShake()">Error con Shake</button>
-
-  <div class="section-title">Fase 1: Multimedia</div>
-  <button onclick="demoAvatar()">Notificación con Avatar</button>
-
-  <div class="section-title">IA & Multimedia</div>
-  <button onclick="demoThinking()">Thinking (IA)</button>
-  <button onclick="demoSpeaking()">Speaking</button>
-  <button onclick="demoListening()">Listening</button>
-  <button onclick="demoLoading()">Loading</button>
-  
-  <div class="section-title">Procesos & Acciones</div>
-  <button onclick="demoActionsSuccess()">Success + Acciones</button>
-  <button onclick="demoActionsError()">Error + Reintentar</button>
-  <button onclick="demoDownload()">Download Assets</button>
-  <button onclick="demoUpload()">Upload Progress</button>
-  
-  <button class="finish" onclick="indicator.remove(indicator.activeId)">Cerrar Actual</button>
+<!-- ── Config Bar ───────────────────────────────── -->
+<div class="config-bar">
+  <div class="config-group">
+    <label>Ubicaci&oacute;n</label>
+    <button class="config-pill" onclick="changePosition('top-left', this)">Arr. Izq</button>
+    <button class="config-pill active" onclick="changePosition('top-center', this)">Arr. Centro</button>
+    <button class="config-pill" onclick="changePosition('top-right', this)">Arr. Der</button>
+    <button class="config-pill" onclick="changePosition('center', this)">Centro</button>
+    <button class="config-pill" onclick="changePosition('bottom-left', this)">Ab. Izq</button>
+    <button class="config-pill" onclick="changePosition('bottom-center', this)">Ab. Centro</button>
+    <button class="config-pill" onclick="changePosition('bottom-right', this)">Ab. Der</button>
+  </div>
+  <div class="config-group">
+    <label>Tema</label>
+    <button class="config-pill active" onclick="changeTheme('dark', this)">Oscuro</button>
+    <button class="config-pill" onclick="changeTheme('light', this)">Claro</button>
+    <button class="config-pill" onclick="changeTheme('system', this)">Auto</button>
+  </div>
+  <div class="config-group">
+    <label>Apilamiento</label>
+    <button class="config-pill active" onclick="changeStackStyle('3d', this)">3D</button>
+    <button class="config-pill" onclick="changeStackStyle('fan', this)">Abanico</button>
+    <button class="config-pill" onclick="changeStackStyle('counter', this)">Contador</button>
+  </div>
+  <button class="close-btn" onclick="indicator.remove(indicator.activeId)">Cerrar Actual</button>
 </div>
 
+<!-- ── Demo Stage ──────────────────────────────── -->
+<div class="demo-stage">
+  <span class="demo-stage-hint">Pulsa cualquier demo para verlo en acci&oacute;n</span>
+</div>
+
+<!-- ── Demo Categories ─────────────────────────── -->
+<div class="demos-container">
+
+  <!-- 1. Básico -->
+  <section class="demo-category cat-basic">
+    <div class="demo-category-header">
+      <h2>B&aacute;sico</h2>
+      <span class="demo-category-badge">4 demos</span>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card" onclick="demoSuccess()">
+        <div class="demo-card-icon" style="background: rgba(34,197,94,0.12); color: #22c55e;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="demo-card-title">&Eacute;xito</div>
+        <div class="demo-card-desc">Notificaci&oacute;n de &eacute;xito simple que se cierra en 3 segundos</div>
+      </div>
+      <div class="demo-card" onclick="demoError()">
+        <div class="demo-card-icon" style="background: rgba(239,68,68,0.12); color: #ef4444;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div class="demo-card-title">Error</div>
+        <div class="demo-card-desc">Notificaci&oacute;n de error b&aacute;sica, 3 segundos</div>
+      </div>
+      <div class="demo-card" onclick="demoInfo()">
+        <div class="demo-card-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <div class="demo-card-title">Informaci&oacute;n</div>
+        <div class="demo-card-desc">Aviso informativo con duraci&oacute;n de 4 segundos</div>
+      </div>
+      <div class="demo-card" onclick="demoWarning()">
+        <div class="demo-card-icon" style="background: rgba(245,158,11,0.12); color: #f59e0b;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="demo-card-title">Aviso</div>
+        <div class="demo-card-desc">Alerta de seguridad con sonido, 5 segundos</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Animaciones -->
+  <section class="demo-category cat-animations">
+    <div class="demo-category-header">
+      <h2>Animaciones</h2>
+      <span class="demo-category-badge">2 demos</span>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card" onclick="demoSuccessPulse()">
+        <div class="demo-card-icon" style="background: rgba(168,85,247,0.12); color: #a855f7;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="demo-card-title">&Eacute;xito con Pulso</div>
+        <div class="demo-card-desc">Animaci&oacute;n de escala suave al aparecer la notificaci&oacute;n</div>
+      </div>
+      <div class="demo-card" onclick="demoErrorShake()">
+        <div class="demo-card-icon" style="background: rgba(168,85,247,0.12); color: #a855f7;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <div class="demo-card-title">Error con Shake</div>
+        <div class="demo-card-desc">Vibraci&oacute;n lateral al mostrar un error</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. IA & Estado -->
+  <section class="demo-category cat-ai">
+    <div class="demo-category-header">
+      <h2>IA &amp; Estado</h2>
+      <span class="demo-category-badge">4 demos</span>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card" onclick="demoLoading()">
+        <div class="demo-card-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+        </div>
+        <div class="demo-card-title">Cargando</div>
+        <div class="demo-card-desc">Spinner animado durante 4 segundos</div>
+      </div>
+      <div class="demo-card" onclick="demoThinking()">
+        <div class="demo-card-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3.4 2.1 6.3 5 7.5V20h6v-2.5c2.9-1.2 5-4.1 5-7.5a8 8 0 0 0-8-8z"/><line x1="10" y1="22" x2="14" y2="22"/></svg>
+        </div>
+        <div class="demo-card-title">Pensando (IA)</div>
+        <div class="demo-card-desc">Animaci&oacute;n de IA procesando durante 5 segundos</div>
+      </div>
+      <div class="demo-card" onclick="demoSpeaking()">
+        <div class="demo-card-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </div>
+        <div class="demo-card-title">Hablando</div>
+        <div class="demo-card-desc">Icono de altavoz con onda durante 3 segundos</div>
+      </div>
+      <div class="demo-card" onclick="demoListening()">
+        <div class="demo-card-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <div class="demo-card-title">Escuchando</div>
+        <div class="demo-card-desc">Micr&oacute;fono activo esperando entrada de voz</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Progreso -->
+  <section class="demo-category cat-progress">
+    <div class="demo-category-header">
+      <h2>Progreso</h2>
+      <span class="demo-category-badge">2 demos</span>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card" onclick="demoDownload()">
+        <div class="demo-card-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="demo-card-title">Descarga</div>
+        <div class="demo-card-desc">Barra de progreso al 75%, cierre autom&aacute;tico en 4s</div>
+      </div>
+      <div class="demo-card" onclick="demoUpload()">
+        <div class="demo-card-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="demo-card-title">Subida en Vivo</div>
+        <div class="demo-card-desc">Progreso interactivo de 0% a 100% en tiempo real</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Acciones -->
+  <section class="demo-category cat-actions">
+    <div class="demo-category-header">
+      <h2>Acciones</h2>
+      <span class="demo-category-badge">3 demos</span>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card" onclick="demoAvatar()">
+        <div class="demo-card-icon" style="background: rgba(249,115,22,0.12); color: #f97316;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="demo-card-title">Con Avatar</div>
+        <div class="demo-card-desc">Imagen circular de perfil con botones de acci&oacute;n</div>
+      </div>
+      <div class="demo-card" onclick="demoActionsSuccess()">
+        <div class="demo-card-icon" style="background: rgba(249,115,22,0.12); color: #f97316;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="demo-card-title">&Eacute;xito + Acciones</div>
+        <div class="demo-card-desc">Botones para actuar tras una operaci&oacute;n exitosa</div>
+      </div>
+      <div class="demo-card" onclick="demoActionsError()">
+        <div class="demo-card-icon" style="background: rgba(249,115,22,0.12); color: #f97316;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </div>
+        <div class="demo-card-title">Error + Reintentar</div>
+        <div class="demo-card-desc">Overlay bloqueante con opciones de reintentar o cancelar</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Cola & Grupos -->
+  <section class="demo-category cat-queue">
+    <div class="demo-category-header">
+      <h2>Cola &amp; Grupos</h2>
+      <span class="demo-category-badge">3 demos</span>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card" onclick="demoNormalQueue()">
+        <div class="demo-card-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </div>
+        <div class="demo-card-title">Cola Normal</div>
+        <div class="demo-card-desc">3 notificaciones secuenciales en orden FIFO</div>
+      </div>
+      <div class="demo-card" onclick="demoHighPriority()">
+        <div class="demo-card-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="demo-card-title">Alta Prioridad</div>
+        <div class="demo-card-desc">Salta la cola autom&aacute;ticamente con sonido</div>
+      </div>
+      <div class="demo-card" onclick="demoSmartGroup()">
+        <div class="demo-card-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+        </div>
+        <div class="demo-card-title">Smart Group</div>
+        <div class="demo-card-desc">4 items agrupados inteligentemente con progreso promedio</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── Footer ──────────────────────────────────── -->
+<footer class="page-footer">
+  <p>Creado por <a href="https://buymeacoffee.com/marcosesperon" target="_blank" rel="noopener">Marcos Esper&oacute;n</a> &middot; MIT License</p>
+</footer>
+
+<!-- ── Scripts ─────────────────────────────────── -->
 <script src="./meActivityIndicator.js"></script>
 <script>
 
-  /* INSTANCIA ÚNICA */
+  /* ── Instancia ──────────────────────────────── */
   const indicator = new meActivityIndicator({ position: 'top-center', theme: 'dark' });
 
-  /* FUNCIONES DE PRUEBA (DEMOS) */
+  /* ── Config helpers ─────────────────────────── */
+
+  function updateActive(btn) {
+    btn.closest('.config-group').querySelectorAll('.config-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
 
   function changePosition(pos, btn) {
     indicator.setPosition(pos);
-    document.querySelectorAll('.position-select button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    updateActive(btn);
   }
 
   function changeTheme(theme, btn) {
     indicator.setTheme(theme);
-    document.querySelectorAll('.theme-select button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    updateActive(btn);
+    const resolved = theme === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : theme;
+    document.body.classList.toggle('light-mode', resolved === 'dark');
   }
 
-  function changeStackStyle(s, b) {
-    indicator.setStackStyle(s);
-    updateActive(b, '.stack-select');
-  }
-  function updateActive(b, s) { document.querySelectorAll(`${s} button`).forEach(btn => btn.classList.remove('active')); b.classList.add('active'); }
-
-  // --- FASE 3 DEMOS ---
-
-  function demoHighPriority() {
-    indicator.add({ type: 'info', title: 'Tarea en curso...', duration: 5000 });
-    setTimeout(() => {
-      indicator.add({ type: 'error', priority: 'high', title: '⚠️ PRIORIDAD ALTA', subtitle: 'He saltado la cola automáticamente', duration: 4000, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
-    }, 1000);
+  function changeStackStyle(style, btn) {
+    indicator.setStackStyle(style);
+    updateActive(btn);
   }
 
-  function demoSmartGroup() {
-    // Testeamos el promedio: añadimos progresos 0.2, 0.4, 0.6, 0.8
-    for(let i=1; i<=4; i++) {
-      setTimeout(() => {
-        indicator.add({ 
-            groupId: 'upload-batch', 
-            groupTitle: 'Subiendo {n} archivos', 
-            type: 'loading', 
-            title: 'Subiendo archivo...', 
-            subtitle: `Fichero_${i}.pdf`, 
-            progress: i * 0.2, // Al final debería marcar 0.5 (promedio de 0.2, 0.4, 0.6, 0.8)
-            duration: 3000 
-        });
-      }, i * 400);
-    }
+  /* ── 1. Básico ──────────────────────────────── */
+
+  function demoSuccess() {
+    indicator.add({ type: 'success', title: 'Tarea Completada', subtitle: 'Todo se procesó correctamente', duration: 3000 });
   }
 
-  function demoNormalQueue() {
-    indicator.add({ type: 'info', title: 'Cola 1', duration: 1500 });
-    indicator.add({ type: 'info', title: 'Cola 2', duration: 1500, waitToDisplay: true });
-    indicator.add({ type: 'info', title: 'Cola 3', duration: 1500, waitToDisplay: true });
+  function demoError() {
+    indicator.add({ type: 'error', title: 'Error Simple', subtitle: 'Ha ocurrido un problema', duration: 3000 });
   }
 
-  // --- FASE 2 DEMOS ---
+  function demoInfo() {
+    indicator.add({ type: 'info', title: 'Información', subtitle: 'Sistema actualizado a v2.0', duration: 4000 });
+  }
+
+  function demoWarning() {
+    indicator.add({ type: 'warning', title: 'Aviso de Seguridad', subtitle: 'Inicio de sesión extraño', duration: 5000, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
+  }
+
+  /* ── 2. Animaciones ─────────────────────────── */
 
   function demoSuccessPulse() {
     indicator.add({ type: 'success', title: 'Operación Exitosa', subtitle: 'Con animación de pulso', duration: 3000 });
@@ -233,56 +757,15 @@ body {
     indicator.add({ type: 'error', title: 'Error de Red', subtitle: 'Con vibración lateral', duration: 3000 });
   }
 
-  // --- RESTO DE DEMOS ---
+  /* ── 3. IA & Estado ─────────────────────────── */
 
-  function demoAvatar() {
-    indicator.add({
-      type: 'generic', title: 'Nueva mención', subtitle: '@juan_perez te ha etiquetado', avatarUrl: 'https://i.pravatar.cc/100?u=juan', duration: 5000,
-      actions: [{ label: 'Responder', type: 'primary', onClick: () => console.log('Abriendo chat...') }, { label: 'Visto', onClick: (ctx) => indicator.remove(ctx.activityId) }]
-    });
+  function demoLoading() {
+    indicator.add({ type: 'loading', title: 'Cargando Entorno', subtitle: 'Preparando componentes...', duration: 4000 });
   }
 
-  function demoActionsSuccess() {
-    indicator.add({ type: 'success', title: 'Archivo exportado', subtitle: '¿Deseas abrir la carpeta?', duration: 5000, actions: [{ label: 'Ver Carpeta', type: 'primary', onClick: () => console.log('Abriendo carpeta...') }, { label: 'Descartar', onClick: (ctx) => indicator.remove(ctx.activityId) }] });
+  function demoThinking() {
+    indicator.add({ type: 'thinking', title: 'IA pensando', subtitle: 'Analizando requerimientos...', duration: 5000 });
   }
-
-  function demoActionsError() {
-    indicator.add({ type: 'error', title: 'Error de conexión', subtitle: 'No se pudo sincronizar', isBlocking: true, actions: [{ label: 'Reintentar', type: 'primary', onClick: () => demoSuccess() }, { label: 'Cancelar', onClick: (ctx) => indicator.remove(ctx.activityId) }] });
-  }
-
-  function demoUpload() {
-    const id = "up-progress";
-    indicator.add({ id, type: 'generic', icon: indicator.icons.upload, title: 'Subiendo Video', subtitle: '0%', progress: 0 });
-    let p = 0;
-    const itv = setInterval(() => {
-      p += 0.2;
-      if (p >= 1) { clearInterval(itv); indicator.update(id, { progress: 1, subtitle: 'Completado', type: 'success', icon: null, duration: 2000 }); }
-      else indicator.update(id, { progress: p, subtitle: `${Math.round(p*100)}%` });
-    }, 700);
-  }
-
-  function demoDownload() {
-    indicator.add({ type: 'info', icon: indicator.icons.download, title: 'Descargando Assets', subtitle: 'package_final.zip', progress: 0.75, duration: 4000 });
-  }
-
-  async function demoSuccess() {
-    await indicator.add({ type: 'success', title: 'Tarea Completada', subtitle: 'Todo se procesó correctamente', duration: 3000 });
-  }
-
-  function demoError() {
-    indicator.add({ type: 'error', title: 'Error Simple', subtitle: 'Ha ocurrido un problema', duration: 3000 });
-  }
-
-  function demoWarning() {
-    indicator.add({ type: 'warning', title: 'Aviso de Seguridad', subtitle: 'Inicio de sesión extraño', duration: 5000, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
-  }
-
-  function demoInfo() {
-    indicator.add({ type: 'info', title: 'Información', subtitle: 'Sistema actualizado a v2.0', duration: 4000 });
-  }
-
-  function demoThinking() { indicator.add({ type: 'thinking', title: 'Me AI pensando', subtitle: 'Analizando requerimientos...', duration: 5000 }); }
-  function demoLoading() { indicator.add({ type: 'loading', title: 'Cargando Entorno', subtitle: 'Preparando componentes...', duration: 4000 }); }
 
   function demoSpeaking() {
     indicator.add({ type: 'generic', icon: indicator.icons.speaking, title: 'Asistente', subtitle: 'Hablando ahora...', duration: 3000 });
@@ -290,6 +773,87 @@ body {
 
   function demoListening() {
     indicator.add({ type: 'warning', icon: indicator.icons.listening, title: 'Escuchando', subtitle: 'Dime qué necesitas', duration: 4000 });
+  }
+
+  /* ── 4. Progreso ────────────────────────────── */
+
+  function demoDownload() {
+    indicator.add({ type: 'info', icon: indicator.icons.download, title: 'Descargando Assets', subtitle: 'package_final.zip', progress: 0.75, duration: 4000 });
+  }
+
+  function demoUpload() {
+    const id = 'up-progress';
+    indicator.add({ id, type: 'generic', icon: indicator.icons.upload, title: 'Subiendo Video', subtitle: '0%', progress: 0 });
+    let p = 0;
+    const itv = setInterval(() => {
+      p += 0.2;
+      if (p >= 1) { clearInterval(itv); indicator.update(id, { progress: 1, subtitle: 'Completado', type: 'success', icon: null, duration: 2000 }); }
+      else indicator.update(id, { progress: p, subtitle: `${Math.round(p * 100)}%` });
+    }, 700);
+  }
+
+  /* ── 5. Acciones ────────────────────────────── */
+
+  function demoAvatar() {
+    indicator.add({
+      type: 'generic', title: 'Nueva mención', subtitle: '@juan_perez te ha etiquetado',
+      avatarUrl: 'https://i.pravatar.cc/100?u=juan', duration: 5000,
+      actions: [
+        { label: 'Responder', type: 'primary', onClick: () => console.log('Abriendo chat...') },
+        { label: 'Visto', onClick: (ctx) => indicator.remove(ctx.activityId) }
+      ]
+    });
+  }
+
+  function demoActionsSuccess() {
+    indicator.add({
+      type: 'success', title: 'Archivo exportado', subtitle: '¿Deseas abrir la carpeta?', duration: 5000,
+      actions: [
+        { label: 'Ver Carpeta', type: 'primary', onClick: () => console.log('Abriendo carpeta...') },
+        { label: 'Descartar', onClick: (ctx) => indicator.remove(ctx.activityId) }
+      ]
+    });
+  }
+
+  function demoActionsError() {
+    indicator.add({
+      type: 'error', title: 'Error de conexión', subtitle: 'No se pudo sincronizar', isBlocking: true,
+      actions: [
+        { label: 'Reintentar', type: 'primary', onClick: () => demoSuccess() },
+        { label: 'Cancelar', onClick: (ctx) => indicator.remove(ctx.activityId) }
+      ]
+    });
+  }
+
+  /* ── 6. Cola & Grupos ───────────────────────── */
+
+  function demoNormalQueue() {
+    indicator.add({ type: 'info', title: 'Cola 1', duration: 1500 });
+    indicator.add({ type: 'info', title: 'Cola 2', duration: 1500, waitToDisplay: true });
+    indicator.add({ type: 'info', title: 'Cola 3', duration: 1500, waitToDisplay: true });
+  }
+
+  function demoHighPriority() {
+    indicator.add({ type: 'info', title: 'Tarea en curso...', duration: 5000 });
+    setTimeout(() => {
+      indicator.add({
+        type: 'error', priority: 'high', title: 'PRIORIDAD ALTA',
+        subtitle: 'He saltado la cola automáticamente', duration: 4000,
+        soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'
+      });
+    }, 1000);
+  }
+
+  function demoSmartGroup() {
+    for (let i = 1; i <= 4; i++) {
+      setTimeout(() => {
+        indicator.add({
+          groupId: 'upload-batch', groupTitle: 'Subiendo {n} archivos',
+          type: 'loading', title: 'Subiendo archivo...',
+          subtitle: `Fichero_${i}.pdf`, progress: i * 0.2, duration: 3000
+        });
+      }, i * 400);
+    }
   }
 
 </script>
