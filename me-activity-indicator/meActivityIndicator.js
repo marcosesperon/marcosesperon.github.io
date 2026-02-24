@@ -45,6 +45,19 @@ class meActivityIndicator {
     // Mapa de prioridades: las actividades de mayor valor se muestran primero
     this.priorityMap = { 'low': 0, 'normal': 1, 'high': 2 };
 
+    // Animacion por defecto segun tipo de actividad
+    this.defaultAnimations = {
+      success: 'pulse', error: 'shake', info: 'glow',
+      warning: 'bounce', thinking: 'breathe',
+      loading: null, generic: null
+    };
+
+    // Lista de todas las clases de animacion (para limpieza en batch)
+    this.allAnimClasses = [
+      'anim-shake', 'anim-pulse', 'anim-bounce', 'anim-glow', 'anim-breathe',
+      'anim-heartbeat', 'anim-wobble', 'anim-ripple', 'anim-swing'
+    ];
+
     // Iconos SVG integrados para los distintos tipos de actividad
     this.icons = {
       success: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
@@ -56,7 +69,9 @@ class meActivityIndicator {
       loading: `<svg aria-hidden="true" class="is-spinning" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.21-8.56"></path></svg>`,
       thinking: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-4.16Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-4.16Z"></path></svg>`,
       speaking: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`,
-      listening: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>`
+      listening: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>`,
+      typingDots: `<svg aria-hidden="true" viewBox="0 0 24 24"><circle class="me-ai-dot" cx="6" cy="12" r="2.5" fill="currentColor" stroke="none"></circle><circle class="me-ai-dot" cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"></circle><circle class="me-ai-dot" cx="18" cy="12" r="2.5" fill="currentColor" stroke="none"></circle></svg>`,
+      progressOrbit: `<svg aria-hidden="true" viewBox="0 0 24 24"><g class="me-ai-orbit-group"><circle cx="12" cy="3" r="2" fill="currentColor" stroke="none" opacity="1"></circle><circle cx="12" cy="3" r="1.5" fill="currentColor" stroke="none" opacity="0.6" transform="rotate(120 12 12)"></circle><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none" opacity="0.3" transform="rotate(240 12 12)"></circle></g></svg>`
     };
 
     // Cola de actividades y estado
@@ -210,20 +225,129 @@ class meActivityIndicator {
       .me-ai-island.is-clickable { cursor: pointer; }
       .me-ai-island.is-clickable:active { transform: scale(0.95); }
 
-      /* ANIMACIONES - Shake (error) y Pulse (exito) */
+      /* ANIMACIONES DE ISLA ─────────────────────────── */
+
+      /* Shake: vibracion lateral agresiva (error) */
       @keyframes me-ai-shake {
         0%, 100% { transform: scale(1) translateX(0); }
-        25% { transform: scale(1.02) translateX(-4px); }
-        75% { transform: scale(1.02) translateX(4px); }
+        10% { transform: scale(1.04) translateX(-8px); }
+        30% { transform: scale(1.04) translateX(8px); }
+        50% { transform: scale(1.02) translateX(-6px); }
+        70% { transform: scale(1.02) translateX(6px); }
+        90% { transform: scale(1.01) translateX(-2px); }
       }
+      .anim-shake { animation: me-ai-shake 0.2s ease-in-out 3; }
 
+      /* Pulse: escala suave (exito) */
       @keyframes me-ai-pulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.05); }
       }
-
-      .anim-shake { animation: me-ai-shake 0.3s ease-in-out 2; }
       .anim-pulse { animation: me-ai-pulse 0.4s ease-in-out; }
+
+      /* Bounce: rebote vertical (warning) */
+      @keyframes me-ai-bounce {
+        0%, 100% { transform: scale(1) translateY(0); }
+        30% { transform: scale(1) translateY(-8px); }
+        50% { transform: scale(1) translateY(0); }
+        70% { transform: scale(1) translateY(-3px); }
+      }
+      .anim-bounce { animation: me-ai-bounce 0.5s ease-in-out; }
+
+      /* Glow: resplandor pulsante del borde (info) */
+      @keyframes me-ai-glow {
+        0%, 100% { box-shadow: 0 0 0 0 var(--me-ai-accent); }
+        50% { box-shadow: 0 0 16px 4px var(--me-ai-accent); }
+      }
+      .anim-glow { animation: me-ai-glow 0.8s ease-in-out 2; }
+
+      /* Breathe: respiracion lenta con opacidad (thinking) */
+      @keyframes me-ai-breathe {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.03); opacity: 0.85; }
+      }
+      .anim-breathe { animation: me-ai-breathe 2s ease-in-out infinite; }
+
+      /* Heartbeat: doble pulso agresivo (urgente) */
+      @keyframes me-ai-heartbeat {
+        0%, 100% { transform: scale(1); }
+        12% { transform: scale(1.18); }
+        24% { transform: scale(0.95); }
+        36% { transform: scale(1.14); }
+        48% { transform: scale(1); }
+      }
+      .anim-heartbeat { animation: me-ai-heartbeat 0.6s ease-in-out 2; }
+
+      /* Wobble: deformacion elastica pronunciada tipo gelatina */
+      @keyframes me-ai-wobble {
+        0%, 100% { transform: scaleX(1) scaleY(1); }
+        15% { transform: scaleX(1.12) scaleY(0.88); }
+        30% { transform: scaleX(0.88) scaleY(1.12); }
+        50% { transform: scaleX(1.08) scaleY(0.92); }
+        70% { transform: scaleX(0.95) scaleY(1.05); }
+        85% { transform: scaleX(1.02) scaleY(0.98); }
+      }
+      .anim-wobble { animation: me-ai-wobble 0.6s ease-in-out; }
+
+      /* Ripple: onda expansiva desde el borde */
+      @keyframes me-ai-ripple {
+        0% { box-shadow: 0 0 0 0 var(--me-ai-accent); opacity: 0.6; }
+        100% { box-shadow: 0 0 0 16px var(--me-ai-accent); opacity: 0; }
+      }
+      .anim-ripple { animation: me-ai-ripple 0.8s ease-out 2; }
+
+      /* Swing: oscilacion tipo pendulo */
+      @keyframes me-ai-swing {
+        0%, 100% { transform: rotate(0deg); }
+        20% { transform: rotate(6deg); }
+        40% { transform: rotate(-5deg); }
+        60% { transform: rotate(3deg); }
+        80% { transform: rotate(-2deg); }
+      }
+      .anim-swing { animation: me-ai-swing 0.6s ease-in-out; transform-origin: top center; }
+
+      /* ICONOS ANIMADOS ──────────────────────────────── */
+
+      /* Typing dots: tres puntos rebotando secuencialmente */
+      @keyframes me-ai-dot-bounce {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+        30% { transform: translateY(-5px); opacity: 1; }
+      }
+      .me-ai-icon .me-ai-dot { animation: me-ai-dot-bounce 1.2s ease-in-out infinite; }
+      .me-ai-icon .me-ai-dot:nth-child(2) { animation-delay: 0.15s; }
+      .me-ai-icon .me-ai-dot:nth-child(3) { animation-delay: 0.3s; }
+
+      /* Progress orbit: puntos orbitando */
+      @keyframes me-ai-orbit {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .me-ai-icon .me-ai-orbit-group { animation: me-ai-orbit 1.5s linear infinite; transform-origin: 12px 12px; }
+
+      /* ENTRADA ALTERNATIVA ───────────────────────────── */
+
+      /* Slide-spring: entrada deslizante con rebote elastico */
+      @keyframes me-ai-slide-spring-left {
+        0% { transform: translateX(-120%) scale(0.8); opacity: 0; }
+        60% { transform: translateX(8%) scale(1.02); opacity: 1; }
+        80% { transform: translateX(-3%) scale(1); }
+        100% { transform: translateX(0) scale(1); opacity: 1; }
+      }
+      @keyframes me-ai-slide-spring-right {
+        0% { transform: translateX(120%) scale(0.8); opacity: 0; }
+        60% { transform: translateX(-8%) scale(1.02); opacity: 1; }
+        80% { transform: translateX(3%) scale(1); }
+        100% { transform: translateX(0) scale(1); opacity: 1; }
+      }
+      @keyframes me-ai-slide-spring-down {
+        0% { transform: translateY(-120%) scale(0.8); opacity: 0; }
+        60% { transform: translateY(8%) scale(1.02); opacity: 1; }
+        80% { transform: translateY(-3%) scale(1); }
+        100% { transform: translateY(0) scale(1); opacity: 1; }
+      }
+      .me-ai-island.entry-slide-spring-left { animation: me-ai-slide-spring-left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+      .me-ai-island.entry-slide-spring-right { animation: me-ai-slide-spring-right 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+      .me-ai-island.entry-slide-spring-down { animation: me-ai-slide-spring-down 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
       /* SVG DE FORMA - Fondo con bordes redondeados dinamicos */
       .me-ai-island-shape-svg {
@@ -561,7 +685,11 @@ class meActivityIndicator {
    * @param {boolean} [config.closeOnClick] - Si true, la isla se cierra al hacer click.
    * @param {boolean} [config.isBlocking] - Si true, muestra el overlay bloqueante.
    * @param {boolean} [config.waitToDisplay] - Si true, el temporizador no arranca hasta que la actividad se muestre.
-   * @param {boolean} [config.enableAnimations=true] - Si false, desactiva las animaciones de shake/pulse.
+   * @param {boolean} [config.enableAnimations=true] - Si false, desactiva las animaciones de la isla.
+   * @param {string} [config.animation] - Override de animacion de la isla
+   *   ('pulse'|'shake'|'bounce'|'glow'|'breathe'|'heartbeat'|'wobble'|'ripple'|'swing'|'none').
+   *   Si no se indica, se usa la animacion por defecto del tipo.
+   * @param {string} [config.entryAnimation] - Animacion de entrada alternativa ('slide-spring').
    * @param {string} [config.soundUrl] - URL de un sonido a reproducir cuando la actividad se muestre.
    * @param {string} [config.groupId] - ID de grupo para agrupar actividades similares.
    * @param {string} [config.groupTitle] - Plantilla de titulo para el grupo. Usa {n} como placeholder del contador.
@@ -784,25 +912,40 @@ class meActivityIndicator {
         this.root.style.setProperty('--me-ai-accent-contrast', contrastColor);
     }
 
-    // Animaciones segun tipo: shake para errores, pulse para exitos
-    this.island.classList.remove('anim-shake', 'anim-pulse');
+    // Animaciones: sistema de lookup con soporte para override via propiedad 'animation'
+    this.island.classList.remove(...this.allAnimClasses);
     if (data.enableAnimations) {
-      if (data.type === 'error') {
+      const anim = data.animation === 'none' ? null : (data.animation || this.defaultAnimations[data.type] || null);
+      if (anim) {
         void this.island.offsetWidth; // Forzar reflow para reiniciar animacion
-        this.island.classList.add('anim-shake');
-      } else if (data.type === 'success') {
-        void this.island.offsetWidth;
-        this.island.classList.add('anim-pulse');
+        this.island.classList.add(`anim-${anim}`);
       }
     }
 
     // Si la isla no es visible, mostrarla primero y luego aplicar contenido
     if (!this.isVisible) {
       this.isVisible = true;
-      this.island.classList.add('is-visible');
       this.island.setAttribute('tabindex', '0');
       this.width = this.minWidth; this.height = this.minHeight;
       this.targetWidth = this.minWidth; this.targetHeight = this.minHeight;
+
+      // Limpiar clases de entrada previas
+      this.island.classList.remove('entry-slide-spring-left', 'entry-slide-spring-right', 'entry-slide-spring-down');
+
+      if (data.entryAnimation === 'slide-spring') {
+        // Determinar direccion segun posicion de la isla
+        let dir = 'down';
+        if (this.position.includes('left')) dir = 'left';
+        else if (this.position.includes('right')) dir = 'right';
+        this.island.style.transform = 'none';
+        this.island.style.opacity = '0';
+        this.island.classList.add('is-visible');
+        void this.island.offsetWidth;
+        this.island.classList.add(`entry-slide-spring-${dir}`);
+      } else {
+        this.island.classList.add('is-visible');
+      }
+
       setTimeout(() => this._applyContent(data), 400);
     } else {
       this._applyContent(data);
@@ -930,7 +1073,13 @@ class meActivityIndicator {
   _closeIsland() {
     this.isClosing = true;
     if (this.content) this.content.classList.remove('is-active');
-    if (this.island) this.island.setAttribute('tabindex', '-1');
+    if (this.island) {
+      this.island.setAttribute('tabindex', '-1');
+      // Detener animaciones infinitas y limpiar clases de entrada
+      this.island.classList.remove('anim-breathe', 'entry-slide-spring-left', 'entry-slide-spring-right', 'entry-slide-spring-down');
+      this.island.style.transform = '';
+      this.island.style.opacity = '';
+    }
     this.stackCount = 0;
     setTimeout(() => { if (this.isClosing) { this.targetWidth = this.minWidth; this.targetHeight = this.minHeight; } }, 200);
   }

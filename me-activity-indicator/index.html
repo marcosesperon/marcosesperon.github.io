@@ -545,7 +545,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   <section class="demo-category cat-animations">
     <div class="demo-category-header">
       <h2>Animaciones</h2>
-      <span class="demo-category-badge">2 demos</span>
+      <span class="demo-category-badge">12 demos</span>
     </div>
     <div class="demo-grid">
       <div class="demo-card" onclick="demoSuccessPulse()">
@@ -561,6 +561,76 @@ body.light-mode .page-footer a:hover { color: #18181b; }
         </div>
         <div class="demo-card-title">Error con Shake</div>
         <div class="demo-card-desc">Vibraci&oacute;n lateral al mostrar un error</div>
+      </div>
+      <div class="demo-card" onclick="demoBounce()">
+        <div class="demo-card-icon" style="background: rgba(245,158,11,0.12); color: #f59e0b;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </div>
+        <div class="demo-card-title">Bounce</div>
+        <div class="demo-card-desc">Rebote vertical suave, ahora default para warnings</div>
+      </div>
+      <div class="demo-card" onclick="demoGlow()">
+        <div class="demo-card-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </div>
+        <div class="demo-card-title">Glow</div>
+        <div class="demo-card-desc">Resplandor pulsante del borde, ahora default para info</div>
+      </div>
+      <div class="demo-card" onclick="demoBreathe()">
+        <div class="demo-card-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+        </div>
+        <div class="demo-card-title">Breathe</div>
+        <div class="demo-card-desc">Respiraci&oacute;n lenta infinita, ahora default para thinking</div>
+      </div>
+      <div class="demo-card" onclick="demoHeartbeat()">
+        <div class="demo-card-icon" style="background: rgba(239,68,68,0.12); color: #ef4444;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="demo-card-title">Heartbeat</div>
+        <div class="demo-card-desc">Doble pulso r&aacute;pido como latido de coraz&oacute;n</div>
+      </div>
+      <div class="demo-card" onclick="demoWobble()">
+        <div class="demo-card-icon" style="background: rgba(168,85,247,0.12); color: #a855f7;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="demo-card-title">Wobble</div>
+        <div class="demo-card-desc">Deformaci&oacute;n el&aacute;stica tipo gelatina</div>
+      </div>
+      <div class="demo-card" onclick="demoRipple()">
+        <div class="demo-card-icon" style="background: rgba(34,197,94,0.12); color: #22c55e;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" opacity="0.5"/><circle cx="12" cy="12" r="10" opacity="0.25"/></svg>
+        </div>
+        <div class="demo-card-title">Ripple</div>
+        <div class="demo-card-desc">Onda expansiva desde el borde de la isla</div>
+      </div>
+      <div class="demo-card" onclick="demoSwing()">
+        <div class="demo-card-icon" style="background: rgba(249,115,22,0.12); color: #f97316;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="demo-card-title">Swing</div>
+        <div class="demo-card-desc">Oscilaci&oacute;n tipo p&eacute;ndulo, ideal para recordatorios</div>
+      </div>
+      <div class="demo-card" onclick="demoTypingDots()">
+        <div class="demo-card-icon" style="background: rgba(6,182,212,0.12); color: #06b6d4;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="demo-card-title">Typing Dots</div>
+        <div class="demo-card-desc">Tres puntos secuenciales estilo &ldquo;escribiendo&rdquo;</div>
+      </div>
+      <div class="demo-card" onclick="demoProgressOrbit()">
+        <div class="demo-card-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+        </div>
+        <div class="demo-card-title">Progress Orbit</div>
+        <div class="demo-card-desc">Puntos orbitando como alternativa al spinner cl&aacute;sico</div>
+      </div>
+      <div class="demo-card" onclick="demoSlideSpring()">
+        <div class="demo-card-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <div class="demo-card-title">Slide Spring</div>
+        <div class="demo-card-desc">Entrada deslizante con rebote el&aacute;stico</div>
       </div>
     </div>
   </section>
@@ -755,6 +825,46 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 
   function demoErrorShake() {
     indicator.add({ type: 'error', title: 'Error de Red', subtitle: 'Con vibración lateral', duration: 3000 });
+  }
+
+  function demoBounce() {
+    indicator.add({ type: 'warning', title: 'Bounce', subtitle: 'Rebote vertical para warnings', duration: 3000 });
+  }
+
+  function demoGlow() {
+    indicator.add({ type: 'info', title: 'Glow', subtitle: 'Resplandor pulsante del borde', duration: 3000 });
+  }
+
+  function demoBreathe() {
+    indicator.add({ type: 'thinking', title: 'Breathe', subtitle: 'Respiración lenta infinita...', duration: 5000 });
+  }
+
+  function demoHeartbeat() {
+    indicator.add({ type: 'generic', animation: 'heartbeat', title: 'Heartbeat', subtitle: 'Doble pulso rápido', duration: 3000 });
+  }
+
+  function demoWobble() {
+    indicator.add({ type: 'generic', animation: 'wobble', title: 'Wobble', subtitle: 'Deformación tipo gelatina', duration: 3000 });
+  }
+
+  function demoRipple() {
+    indicator.add({ type: 'success', animation: 'ripple', title: 'Ripple', subtitle: 'Onda expansiva desde el borde', duration: 3000 });
+  }
+
+  function demoSwing() {
+    indicator.add({ type: 'generic', animation: 'swing', title: 'Swing', subtitle: 'Oscilación tipo péndulo', duration: 3000 });
+  }
+
+  function demoTypingDots() {
+    indicator.add({ type: 'generic', icon: indicator.icons.typingDots, title: 'Escribiendo', subtitle: 'El asistente está escribiendo...', duration: 4000 });
+  }
+
+  function demoProgressOrbit() {
+    indicator.add({ type: 'loading', icon: indicator.icons.progressOrbit, title: 'Procesando', subtitle: 'Órbita de puntos alternativa', duration: 4000 });
+  }
+
+  function demoSlideSpring() {
+    indicator.add({ type: 'info', entryAnimation: 'slide-spring', title: 'Slide Spring', subtitle: 'Entrada deslizante con rebote', duration: 3000 });
   }
 
   /* ── 3. IA & Estado ─────────────────────────── */
