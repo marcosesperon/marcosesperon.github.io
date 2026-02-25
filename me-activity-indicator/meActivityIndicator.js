@@ -10,7 +10,7 @@
  * @url     https://github.com/marcosesperon
  * @donate  https://buymeacoffee.com/marcosesperon
  * @license MIT
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 class meActivityIndicator {
@@ -41,6 +41,8 @@ class meActivityIndicator {
     this.theme = options.theme || 'dark';
     this.activeThemeName = 'dark';
     this.stackStyle = options.stackStyle || '3d'; // '3d', 'fan', 'counter'
+    this.islandWidth = options.islandWidth || 'normal'; // 'compact', 'normal', 'wide' o valor CSS
+    this.autoConfetti = options.autoConfetti || false;
 
     // Mapa de prioridades: las actividades de mayor valor se muestran primero
     this.priorityMap = { 'low': 0, 'normal': 1, 'high': 2 };
@@ -52,11 +54,17 @@ class meActivityIndicator {
       loading: null, generic: null
     };
 
+    // Colores resueltos por tipo (para morphing suave con transiciones CSS)
+    this.typeColors = {
+      success: '#22c55e', error: '#ef4444', info: '#3b82f6', warning: '#f59e0b'
+    };
+
     // Lista de todas las clases de animacion (para limpieza en batch)
     this.allAnimClasses = [
       'anim-shake', 'anim-pulse', 'anim-bounce', 'anim-glow', 'anim-breathe',
       'anim-heartbeat', 'anim-wobble', 'anim-ripple', 'anim-swing'
     ];
+    this.allExitClasses = ['exit-fade', 'exit-slide-down', 'exit-slide-up', 'exit-shrink-bounce'];
 
     // Iconos SVG integrados para los distintos tipos de actividad
     this.icons = {
@@ -78,7 +86,9 @@ class meActivityIndicator {
     this.activities = [];
     this.activeId = null;
     this.timers = new Map();
+    this.timerMeta = new Map();
     this.resolvers = new Map();
+    this.isPaused = false;
 
     // Estado de animacion: dimensiones actuales, objetivo y velocidades
     this.width = this.minWidth; this.height = this.minHeight;
@@ -349,6 +359,16 @@ class meActivityIndicator {
       .me-ai-island.entry-slide-spring-right { animation: me-ai-slide-spring-right 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
       .me-ai-island.entry-slide-spring-down { animation: me-ai-slide-spring-down 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
+      /* ANIMACIONES DE SALIDA ───────────────────────── */
+      @keyframes me-ai-exit-fade { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+      @keyframes me-ai-exit-slide-down { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(20px); } }
+      @keyframes me-ai-exit-slide-up { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+      @keyframes me-ai-exit-shrink-bounce { 0% { transform: scale(1); opacity: 1; } 30% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(0); opacity: 0; } }
+      .exit-fade { animation: me-ai-exit-fade 0.3s ease-out forwards; }
+      .exit-slide-down { animation: me-ai-exit-slide-down 0.3s ease-out forwards; }
+      .exit-slide-up { animation: me-ai-exit-slide-up 0.3s ease-out forwards; }
+      .exit-shrink-bounce { animation: me-ai-exit-shrink-bounce 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
       /* SVG DE FORMA - Fondo con bordes redondeados dinamicos */
       .me-ai-island-shape-svg {
         position: absolute;
@@ -369,7 +389,7 @@ class meActivityIndicator {
       .me-ai-content {
         position: relative;
         padding: 12px 16px;
-        max-width: 420px;
+        max-width: none;
         opacity: 0;
         color: var(--me-ai-text-main);
         transform: translateY(8px);
@@ -443,6 +463,9 @@ class meActivityIndicator {
       }
 
       .me-ai-action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
         background: var(--me-ai-btn-bg);
         border: none;
         color: var(--me-ai-text-main);
@@ -453,6 +476,9 @@ class meActivityIndicator {
         cursor: pointer;
         transition: background 0.2s ease, transform 0.1s ease;
       }
+
+      .me-ai-btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; flex-shrink: 0; }
+      .me-ai-btn-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
       .me-ai-action-btn:hover { background: var(--me-ai-btn-hover); }
       .me-ai-action-btn:active { transform: scale(0.92); }
@@ -480,6 +506,10 @@ class meActivityIndicator {
         white-space: nowrap;
       }
 
+      .me-ai-subtitle a { color: var(--me-ai-accent); text-decoration: underline; text-underline-offset: 2px; }
+      .me-ai-subtitle strong, .me-ai-subtitle b { font-weight: 700; color: var(--me-ai-text-main); }
+      .me-ai-subtitle code { font-family: monospace; font-size: 11px; background: var(--me-ai-btn-bg); padding: 1px 4px; border-radius: 4px; }
+
       /* BARRA DE PROGRESO */
       .me-ai-progress {
         margin-top: 10px;
@@ -494,6 +524,21 @@ class meActivityIndicator {
         background: var(--me-ai-accent);
         transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
       }
+
+      /* COUNTDOWN VISUAL - Barra inferior que se consume durante el duration */
+      .me-ai-countdown {
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 2px;
+        background: var(--me-ai-accent);
+        border-radius: 0 0 18px 18px;
+        z-index: 12;
+        opacity: 0.6;
+        width: 100%;
+      }
+      .me-ai-countdown.is-running { animation: me-ai-countdown-shrink linear forwards; }
+      @keyframes me-ai-countdown-shrink { from { width: 100%; } to { width: 0%; } }
+      .me-ai-island.is-paused .me-ai-countdown { animation-play-state: paused; }
 
     `;
     document.head.appendChild(style);
@@ -565,6 +610,34 @@ class meActivityIndicator {
         e.preventDefault();
         this._handleIslandClick(e);
       }
+    });
+
+    // Escape cierra la notificacion activa
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isVisible && !this.isClosing && this.activeId) {
+        this.remove(this.activeId);
+      }
+    });
+
+    // Pause on hover: pausar timer y countdown al pasar el raton
+    this.island.addEventListener('mouseenter', () => {
+      if (this.activeId && this.timers.has(this.activeId)) {
+        this.isPaused = true;
+        this._pauseTimer(this.activeId);
+        this.island.classList.add('is-paused');
+      }
+    });
+    this.island.addEventListener('mouseleave', () => {
+      if (this.isPaused && this.activeId) {
+        this.isPaused = false;
+        this._resumeTimer(this.activeId);
+        this.island.classList.remove('is-paused');
+      }
+    });
+
+    // Resize: recalcular ancho en modos relativos (wide, %, vw, etc.)
+    window.addEventListener('resize', () => {
+      if (this.isVisible && this.activeId) this._measure();
     });
 
     // SVG de forma: genera el fondo con bordes redondeados que se adaptan al tamano
@@ -661,6 +734,15 @@ class meActivityIndicator {
     this._refresh();
   }
 
+  /**
+   * Cambia el ancho por defecto de la isla en runtime.
+   * @param {string} width - 'compact', 'normal', 'wide' o valor CSS arbitrario.
+   */
+  setIslandWidth(width) {
+    this.islandWidth = width;
+    if (this.isVisible && this.activeId) this._measure();
+  }
+
   // ──────────────────────────────────────────────
   //  API PUBLICA: COLA DE ACTIVIDADES
   // ──────────────────────────────────────────────
@@ -694,7 +776,7 @@ class meActivityIndicator {
    * @param {string} [config.groupId] - ID de grupo para agrupar actividades similares.
    * @param {string} [config.groupTitle] - Plantilla de titulo para el grupo. Usa {n} como placeholder del contador.
    * @param {Array<Object>} [config.actions] - Botones de accion [{label, type, onClick}].
-   * @returns {Promise} Promesa que se resuelve cuando la actividad se cierra, con {id, status: 'closed'}.
+   * @returns {Promise} Promesa que se resuelve cuando la actividad se cierra, con {id, status: 'closed'}. La promesa tiene una propiedad `id` con el identificador asignado.
    */
   add(config) {
     // Logica de agrupacion: si ya existe una actividad con el mismo groupId,
@@ -746,6 +828,7 @@ class meActivityIndicator {
 
     // Devolver promesa que se resolvera cuando la actividad se cierre
     const promise = new Promise(resolve => this.resolvers.set(id, resolve));
+    promise.id = id;
     if (activity.duration && !activity.waitToDisplay) this._setTimer(id, activity.duration);
     this._refresh();
     return promise;
@@ -776,7 +859,12 @@ class meActivityIndicator {
    * @param {string} id - ID de la actividad a eliminar.
    */
   remove(id) {
+    const activity = this.activities.find(a => a.id === id);
+    // Callback onHide: se dispara antes de resolver la promesa
+    if (activity && activity.onHide) activity.onHide({ id, type: activity.type });
+    this._lastExitAnimation = activity?.exitAnimation || null;
     if (this.timers.has(id)) { clearTimeout(this.timers.get(id)); this.timers.delete(id); }
+    this.timerMeta.delete(id);
     if (this.resolvers.has(id)) {
       this.resolvers.get(id)({ id, status: 'closed' });
       this.resolvers.delete(id);
@@ -784,6 +872,117 @@ class meActivityIndicator {
     this.activities = this.activities.filter(a => a.id !== id);
     this.activeId = this.activities.length ? this.activities[0].id : null;
     this._refresh();
+  }
+
+  /**
+   * Patron Undo: muestra una notificacion con boton Deshacer y countdown.
+   * Si el usuario pulsa Deshacer, llama onUndo(). Si el timer expira, llama onConfirm().
+   *
+   * @param {Object} config - Mismas propiedades que add(), mas:
+   * @param {string} [config.undoLabel='Deshacer'] - Texto del boton de deshacer.
+   * @param {number} [config.undoDuration=5000] - Duracion del countdown en ms.
+   * @param {Function} [config.onUndo] - Callback si el usuario deshace.
+   * @param {Function} [config.onConfirm] - Callback si el timer expira (accion confirmada).
+   * @returns {Promise<{id, status: 'undone'|'confirmed'}>}
+   */
+  addUndo(config) {
+    const undoLabel = config.undoLabel || 'Deshacer';
+    const undoDuration = config.undoDuration || 5000;
+    let undone = false;
+
+    return new Promise((resolve) => {
+      const actConfig = {
+        ...config,
+        duration: undoDuration,
+        showCountdown: true,
+        actions: [
+          {
+            label: undoLabel,
+            type: 'primary',
+            icon: config.undoIcon || null,
+            onClick: (ctx) => {
+              undone = true;
+              if (config.onUndo) config.onUndo();
+              this.remove(ctx.activityId);
+            }
+          },
+          ...(config.actions || [])
+        ]
+      };
+
+      delete actConfig.undoLabel;
+      delete actConfig.undoDuration;
+      delete actConfig.onUndo;
+      delete actConfig.onConfirm;
+      delete actConfig.undoIcon;
+
+      const task = this.add(actConfig);
+
+      // Interceptar el resolver para distinguir undo vs confirmacion
+      this.resolvers.set(task.id, () => {
+        if (undone) {
+          resolve({ id: task.id, status: 'undone' });
+        } else {
+          if (config.onConfirm) config.onConfirm();
+          resolve({ id: task.id, status: 'confirmed' });
+        }
+      });
+    });
+  }
+
+  /**
+   * Ejecuta una secuencia de pasos de notificacion en orden.
+   * Cada paso se muestra tras completar el anterior (morphing suave via update).
+   *
+   * @param {Array<Object>} steps - Pasos de la cadena. Cada paso acepta las mismas propiedades que add(), mas:
+   * @param {Promise} [step.until] - Esperar a esta promesa antes de avanzar al siguiente paso.
+   * @returns {Promise<{id, status: 'chain-complete'|'chain-interrupted'}>}
+   */
+  async chain(steps) {
+    if (!steps || steps.length === 0) return { status: 'chain-complete' };
+
+    // Primer paso: crear la actividad (sin auto-remove si hay mas pasos)
+    const firstStep = { ...steps[0] };
+    if (steps.length > 1) delete firstStep.duration;
+    delete firstStep.until;
+    const task = this.add(firstStep);
+    const chainId = task.id;
+
+    // Pasos intermedios: usar update() para morphing suave
+    for (let i = 1; i < steps.length; i++) {
+      const prevStep = steps[i - 1];
+
+      if (prevStep.until) {
+        await prevStep.until;
+      } else if (prevStep.duration) {
+        await new Promise(r => setTimeout(r, prevStep.duration));
+      }
+
+      // Si la actividad fue eliminada externamente, interrumpir
+      if (!this.activities.find(a => a.id === chainId)) {
+        return { id: chainId, status: 'chain-interrupted' };
+      }
+
+      const patch = { ...steps[i] };
+      const isLast = i === steps.length - 1;
+      if (!isLast) delete patch.duration;
+      delete patch.until;
+      this.update(chainId, patch);
+    }
+
+    // Esperar a que la actividad se cierre (por timer del ultimo paso o manualmente)
+    return new Promise((resolve) => {
+      this.resolvers.set(chainId, () => {
+        resolve({ id: chainId, status: 'chain-complete' });
+      });
+    });
+  }
+
+  /**
+   * Lanza manualmente el efecto de confetti sobre la isla.
+   */
+  confetti() {
+    this._spawnConfetti();
   }
 
   // ──────────────────────────────────────────────
@@ -815,8 +1014,11 @@ class meActivityIndicator {
    */
   _refresh() {
     const active = this.activities.find(a => a.id === this.activeId);
-    if (!active) { this._closeIsland(); return; }
-    if (active.duration && active.waitToDisplay && !this.timers.has(active.id)) this._setTimer(active.id, active.duration);
+    if (!active) { this._closeIsland(this._lastExitAnimation); this._lastExitAnimation = null; return; }
+    if (active.duration && active.waitToDisplay && !this.timers.has(active.id)) {
+      this._setTimer(active.id, active.duration);
+      if (this.isPaused) this._pauseTimer(active.id);
+    }
     if (active.soundUrl && !active.soundPlayed) { new Audio(active.soundUrl).play().catch(() => {}); active.soundPlayed = true; }
     this._updateIslandState(active, this.activities.length - 1);
   }
@@ -831,6 +1033,32 @@ class meActivityIndicator {
   _setTimer(id, ms) {
     if (this.timers.has(id)) clearTimeout(this.timers.get(id));
     this.timers.set(id, setTimeout(() => this.remove(id), ms));
+    this.timerMeta.set(id, { startTime: Date.now(), remainingTime: ms, originalDuration: ms });
+  }
+
+  /**
+   * Pausa el temporizador de una actividad, guardando el tiempo restante.
+   * @param {string} id
+   * @private
+   */
+  _pauseTimer(id) {
+    if (!this.timers.has(id) || !this.timerMeta.has(id)) return;
+    clearTimeout(this.timers.get(id));
+    this.timers.delete(id);
+    const meta = this.timerMeta.get(id);
+    meta.remainingTime = Math.max(0, meta.remainingTime - (Date.now() - meta.startTime));
+  }
+
+  /**
+   * Reanuda el temporizador de una actividad con el tiempo restante.
+   * @param {string} id
+   * @private
+   */
+  _resumeTimer(id) {
+    const meta = this.timerMeta.get(id);
+    if (!meta || meta.remainingTime <= 0) return;
+    this.timers.set(id, setTimeout(() => this.remove(id), meta.remainingTime));
+    meta.startTime = Date.now();
   }
 
   /**
@@ -899,16 +1127,14 @@ class meActivityIndicator {
       this.island.setAttribute('aria-label', `Notificación: ${data.title}`);
     }
 
-    // Color de acento segun el tipo de actividad (success, error, info, warning, generic)
-    const themes = { success: 'success', error: 'error', info: 'info', warning: 'warning' };
-    const themeKey = themes[data.type] || 'generic';
+    // Color de acento segun el tipo de actividad (colores hex resueltos para morphing suave)
+    const accentColor = this.typeColors[data.type] || (this.activeThemeName === 'dark' ? '#ffffff' : '#1d1d1f');
+    const isGeneric = !this.typeColors[data.type];
 
     if (this.root) {
-        this.root.style.setProperty('--me-ai-accent', `var(--me-ai-color-${themeKey})`);
+        this.root.style.setProperty('--me-ai-accent', accentColor);
         let contrastColor = "#ffffff";
-        if (themeKey === 'generic' && this.activeThemeName === 'dark') {
-            contrastColor = "#000000";
-        }
+        if (isGeneric && this.activeThemeName === 'dark') contrastColor = "#000000";
         this.root.style.setProperty('--me-ai-accent-contrast', contrastColor);
     }
 
@@ -946,9 +1172,17 @@ class meActivityIndicator {
         this.island.classList.add('is-visible');
       }
 
-      setTimeout(() => this._applyContent(data), 400);
+      setTimeout(() => {
+        this._applyContent(data);
+        if (data.confetti || (this.autoConfetti && data.type === 'success')) {
+          setTimeout(() => this._spawnConfetti(), 200);
+        }
+      }, 400);
     } else {
       this._applyContent(data);
+      if (data.confetti || (this.autoConfetti && data.type === 'success')) {
+        setTimeout(() => this._spawnConfetti(), 200);
+      }
     }
   }
 
@@ -983,7 +1217,7 @@ class meActivityIndicator {
     let actionsHTML = '';
     if (data.actions && data.actions.length > 0) {
       actionsHTML = `<div class="me-ai-actions" role="group" aria-label="Acciones de la notificación">
-        ${data.actions.map((act, i) => `<button class="me-ai-action-btn ${act.type || ''}" data-index="${i}">${act.label}</button>`).join('')}
+        ${data.actions.map((act, i) => `<button class="me-ai-action-btn ${act.type || ''}" data-index="${i}">${act.icon ? `<span class="me-ai-btn-icon">${act.icon}</span>` : ''}${act.label}</button>`).join('')}
       </div>`;
     }
 
@@ -995,14 +1229,22 @@ class meActivityIndicator {
         bar.setAttribute('aria-valuenow', Math.round((data.progress || 0) * 100));
       }
       const sub = this.content.querySelector('.me-ai-subtitle');
-      if (sub) sub.innerText = data.subtitle || '';
+      if (sub) sub.innerHTML = data.subtitle || '';
 
       const mediaContainer = this.content.querySelector('.me-ai-header-media');
-      if (mediaContainer) mediaContainer.innerHTML = mediaHTML;
+      if (mediaContainer && mediaContainer.innerHTML !== mediaHTML) {
+        // Crossfade del icono para morphing suave entre tipos
+        mediaContainer.style.transition = 'opacity 0.2s ease';
+        mediaContainer.style.opacity = '0';
+        setTimeout(() => {
+          mediaContainer.innerHTML = mediaHTML;
+          mediaContainer.style.opacity = '1';
+        }, 200);
+      }
 
       const actionsDiv = this.content.querySelector('.me-ai-actions');
       if (actionsDiv) {
-        actionsDiv.innerHTML = data.actions ? data.actions.map((act, i) => `<button class="me-ai-action-btn ${act.type || ''}" data-index="${i}">${act.label}</button>`).join('') : '';
+        actionsDiv.innerHTML = data.actions ? data.actions.map((act, i) => `<button class="me-ai-action-btn ${act.type || ''}" data-index="${i}">${act.icon ? `<span class="me-ai-btn-icon">${act.icon}</span>` : ''}${act.label}</button>`).join('') : '';
       } else if (actionsHTML) {
         this.content.insertAdjacentHTML('beforeend', actionsHTML);
       }
@@ -1033,8 +1275,35 @@ class meActivityIndicator {
         this.content.classList.add('is-active');
         const bar = this.content.querySelector('.me-ai-progress-bar');
         if (bar) bar.style.width = `${(data.progress || 0) * 100}%`;
+        // Callback onShow: se dispara una sola vez cuando la actividad se muestra por primera vez
+        if (data.onShow && !data._onShowFired) {
+          data._onShowFired = true;
+          data.onShow({ id: data.id, type: data.type });
+        }
+        // Countdown visual: barra que se consume durante el duration
+        this._updateCountdown(data);
       }, 50);
     }, 150);
+  }
+
+  /**
+   * Crea o actualiza la barra de countdown visual en la isla.
+   * @param {Object} data - Datos de la actividad.
+   * @private
+   */
+  _updateCountdown(data) {
+    const existing = this.island?.querySelector('.me-ai-countdown');
+    if (existing) existing.remove();
+    if (data.duration && data.showCountdown === true && this.island) {
+      const el = document.createElement('div');
+      el.className = 'me-ai-countdown';
+      this.island.appendChild(el);
+      requestAnimationFrame(() => {
+        el.style.animationDuration = `${data.duration}ms`;
+        el.classList.add('is-running');
+        if (this.isPaused) this.island.classList.add('is-paused');
+      });
+    }
   }
 
   /**
@@ -1046,14 +1315,43 @@ class meActivityIndicator {
    */
   _measure() {
     if (!this.content) return;
+    const active = this.activities.find(a => a.id === this.activeId);
+    const widthMode = active?.islandWidth || this.islandWidth;
+    const resolved = this._resolveWidth(widthMode);
     const ghost = this.content.cloneNode(true);
-    ghost.style.cssText = "position:absolute;visibility:hidden;display:inline-block;width:max-content;";
     ghost.classList.add('is-active');
-    document.body.appendChild(ghost);
-    const rect = ghost.getBoundingClientRect();
-    this.targetWidth = Math.max(this.minWidth, Math.min(Math.ceil(rect.width) + 2, this.maxWidth));
-    this.targetHeight = Math.max(this.minHeight, Math.ceil(rect.height));
+    if (resolved !== null) {
+      ghost.style.cssText = `position:absolute;visibility:hidden;display:block;width:${resolved}px;`;
+      document.body.appendChild(ghost);
+      const rect = ghost.getBoundingClientRect();
+      this.targetWidth = resolved;
+      this.targetHeight = Math.max(this.minHeight, Math.ceil(rect.height));
+    } else {
+      ghost.style.cssText = "position:absolute;visibility:hidden;display:inline-block;width:max-content;";
+      document.body.appendChild(ghost);
+      const rect = ghost.getBoundingClientRect();
+      this.targetWidth = Math.max(this.minWidth, Math.min(Math.ceil(rect.width) + 2, this.maxWidth));
+      this.targetHeight = Math.max(this.minHeight, Math.ceil(rect.height));
+    }
     ghost.remove();
+  }
+
+  /**
+   * Resuelve un valor de islandWidth a pixeles.
+   * @param {string} val - 'compact', 'normal', 'wide' o valor CSS.
+   * @returns {number|null} Pixeles resueltos, o null para modo compact.
+   * @private
+   */
+  _resolveWidth(val) {
+    if (val === 'compact') return null;
+    if (val === 'normal') return 400;
+    if (val === 'wide') return window.innerWidth - 32;
+    const tmp = document.createElement('div');
+    tmp.style.cssText = `position:absolute;visibility:hidden;width:${val};`;
+    document.body.appendChild(tmp);
+    const w = tmp.getBoundingClientRect().width;
+    tmp.remove();
+    return Math.max(this.minWidth, w);
   }
 
   /**
@@ -1070,18 +1368,92 @@ class meActivityIndicator {
    *
    * @private
    */
-  _closeIsland() {
+  _closeIsland(exitAnimation) {
     this.isClosing = true;
     if (this.content) this.content.classList.remove('is-active');
+    const countdown = this.island?.querySelector('.me-ai-countdown');
+    if (countdown) countdown.remove();
     if (this.island) {
       this.island.setAttribute('tabindex', '-1');
-      // Detener animaciones infinitas y limpiar clases de entrada
-      this.island.classList.remove('anim-breathe', 'entry-slide-spring-left', 'entry-slide-spring-right', 'entry-slide-spring-down');
+      // Detener animaciones infinitas y limpiar clases de entrada/salida
+      this.island.classList.remove('anim-breathe', 'entry-slide-spring-left', 'entry-slide-spring-right', 'entry-slide-spring-down', ...this.allExitClasses);
       this.island.style.transform = '';
       this.island.style.opacity = '';
+
+      if (exitAnimation && exitAnimation !== 'none') {
+        void this.island.offsetWidth;
+        this.island.classList.add(`exit-${exitAnimation}`);
+        const dur = exitAnimation === 'shrink-bounce' ? 400 : 300;
+        setTimeout(() => {
+          if (this.isClosing && this.island) {
+            this.island.classList.remove(...this.allExitClasses);
+            this.targetWidth = this.minWidth; this.targetHeight = this.minHeight;
+          }
+        }, dur);
+      } else {
+        setTimeout(() => { if (this.isClosing) { this.targetWidth = this.minWidth; this.targetHeight = this.minHeight; } }, 200);
+      }
     }
     this.stackCount = 0;
-    setTimeout(() => { if (this.isClosing) { this.targetWidth = this.minWidth; this.targetHeight = this.minHeight; } }, 200);
+  }
+
+  /**
+   * Genera una explosion de particulas tipo confetti sobre la isla.
+   * Canvas temporal con fisica simple (gravedad, friccion, fade).
+   * @private
+   */
+  _spawnConfetti() {
+    if (!this.island) return;
+    const rect = this.island.getBoundingClientRect();
+    const canvas = document.createElement('canvas');
+    canvas.width = rect.width + 100;
+    canvas.height = rect.height + 140;
+    canvas.style.cssText = `position:fixed;left:${rect.left - 50}px;top:${rect.top - 30}px;pointer-events:none;z-index:10000;`;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const colors = ['#22c55e','#3b82f6','#f59e0b','#ef4444','#a855f7','#ec4899','#06b6d4','#facc15'];
+    const particles = [];
+    for (let i = 0; i < 45; i++) {
+      particles.push({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 40,
+        y: canvas.height * 0.35,
+        vx: (Math.random() - 0.5) * 9,
+        vy: -Math.random() * 7 - 2,
+        size: Math.random() * 4 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        opacity: 1,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.2,
+        shape: Math.random() > 0.5 ? 'rect' : 'circle'
+      });
+    }
+    let frame;
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      for (const p of particles) {
+        if (p.opacity <= 0) continue;
+        alive = true;
+        p.vy += 0.15;
+        p.vx *= 0.98;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.opacity -= 0.014;
+        p.rotation += p.rotSpeed;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        if (p.shape === 'rect') ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+        else { ctx.beginPath(); ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2); ctx.fill(); }
+        ctx.restore();
+      }
+      if (alive) frame = requestAnimationFrame(animate);
+      else canvas.remove();
+    };
+    animate();
+    setTimeout(() => { cancelAnimationFrame(frame); if (canvas.parentNode) canvas.remove(); }, 2500);
   }
 
   // ──────────────────────────────────────────────
