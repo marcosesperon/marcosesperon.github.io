@@ -529,11 +529,10 @@ class meActivityIndicator {
       .me-ai-countdown {
         position: absolute;
         bottom: 0; left: 0;
-        height: 2px;
+        height: 3px;
         background: var(--me-ai-accent);
-        border-radius: 0 0 18px 18px;
         z-index: 12;
-        opacity: 0.6;
+        opacity: 0.7;
         width: 100%;
       }
       .me-ai-countdown.is-running { animation: me-ai-countdown-shrink linear forwards; }
