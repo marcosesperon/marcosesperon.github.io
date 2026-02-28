@@ -265,16 +265,6 @@ body.light-mode .demo-stage {
   border-color: rgba(0, 0, 0, 0.04);
 }
 
-.demo-stage-hint {
-  color: #27272a;
-  font-size: 14px;
-  font-weight: 500;
-  pointer-events: none;
-  user-select: none;
-}
-
-body.light-mode .demo-stage-hint { color: #d4d4d8; }
-
 /* ── Demo Categories ──────────────────────────── */
 
 .demos-container {
@@ -326,6 +316,7 @@ body.light-mode .demo-category-header h2 { color: #18181b; }
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
 }
 .demo-card:hover {
   background: rgba(255, 255, 255, 0.06);
@@ -440,6 +431,170 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   .header-links .github-link { display: none; }
 }
 
+/* ── Info Drawer ─────────────────────────────── */
+.demo-card-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #71717a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+  padding: 0;
+  z-index: 2;
+}
+.demo-card:hover .demo-card-info { opacity: 1; }
+.demo-card-info:hover { background: rgba(255, 255, 255, 0.15); color: #a1a1aa; }
+body.light-mode .demo-card-info { background: rgba(0, 0, 0, 0.05); color: #a1a1aa; }
+body.light-mode .demo-card-info:hover { background: rgba(0, 0, 0, 0.1); color: #52525b; }
+
+#info-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#info-drawer-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+#info-drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50vw;
+  max-width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #18181b;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#info-drawer-panel.is-open { transform: translateX(0); }
+body.light-mode #info-drawer-panel { background: #ffffff; border-left-color: rgba(0, 0, 0, 0.08); }
+
+.info-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+body.light-mode .info-drawer-header { border-bottom-color: rgba(0, 0, 0, 0.06); }
+
+.info-drawer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e4e4e7;
+}
+body.light-mode .info-drawer-title { color: #18181b; }
+
+.info-drawer-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #a1a1aa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.info-drawer-close:hover { background: rgba(255, 255, 255, 0.12); }
+body.light-mode .info-drawer-close { background: rgba(0, 0, 0, 0.04); color: #71717a; }
+body.light-mode .info-drawer-close:hover { background: rgba(0, 0, 0, 0.08); }
+
+.info-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-drawer-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+  margin-bottom: 8px;
+}
+
+.info-drawer-code {
+  background: #0f0f11;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 16px;
+  overflow-x: auto;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #d4d4d8;
+  white-space: pre;
+  tab-size: 2;
+}
+body.light-mode .info-drawer-code { background: #f4f4f5; border-color: rgba(0, 0, 0, 0.06); color: #27272a; }
+
+.info-drawer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.info-drawer-table th {
+  text-align: left;
+  font-weight: 600;
+  color: #a1a1aa;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+body.light-mode .info-drawer-table th { color: #71717a; border-bottom-color: rgba(0, 0, 0, 0.06); }
+.info-drawer-table td {
+  padding: 8px 10px;
+  color: #d4d4d8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  vertical-align: top;
+}
+body.light-mode .info-drawer-table td { color: #27272a; border-bottom-color: rgba(0, 0, 0, 0.04); }
+.info-drawer-table td:first-child {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: #60a5fa;
+  white-space: nowrap;
+}
+body.light-mode .info-drawer-table td:first-child { color: #2563eb; }
+.info-drawer-table td:nth-child(2) {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: #a78bfa;
+}
+body.light-mode .info-drawer-table td:nth-child(2) { color: #7c3aed; }
+.info-drawer-table td:last-child { color: #71717a; }
+
+@media (max-width: 768px) {
+  #info-drawer-panel { width: 100vw; }
+}
+
 </style>
 </head>
 
@@ -465,7 +620,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   <h1>meActivityIndicator</h1>
   <p>Notificaciones tipo Dynamic Island para la web. Zero dependencias. Spring physics. Accesible.</p>
   <div class="hero-badges">
-    <span class="badge">v2.0</span>
+    <span class="badge">v3.0</span>
     <span class="badge">MIT</span>
     <span class="badge">Zero deps</span>
   </div>
@@ -504,9 +659,44 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   <button class="close-btn" onclick="indicator.remove(indicator.activeId)">Cerrar Actual (ESC)</button>
 </div>
 
-<!-- ── Demo Stage ──────────────────────────────── -->
-<div class="demo-stage">
-  <span class="demo-stage-hint">Pulsa cualquier demo para verlo en acci&oacute;n</span>
+<!-- ── Init Code ──────────────────────────────── -->
+<div class="demos-container">
+  <section class="demo-category" style="margin: 16px auto 8px;">
+    <div class="demo-category-header">
+      <h2>Inicializaci&oacute;n</h2>
+    </div>
+    <pre class="info-drawer-code" style="margin: 0;">const indicator = new meActivityIndicator({
+  position: 'top-center',
+  theme: 'dark',
+  typeColors: {
+    premium: '#8b5cf6',
+    light: '#facc15'
+  },
+  icons: {
+    premium: '&lt;svg ...&gt;...&lt;/svg&gt;',
+    heart: '&lt;svg ...&gt;...&lt;/svg&gt;'
+  }
+});</pre>
+    <div class="demo-category-header" style="margin-top: 20px;">
+      <h2>Config Helpers</h2>
+    </div>
+    <pre class="info-drawer-code" style="margin: 0;">// Cambiar posici&oacute;n
+indicator.setPosition('top-center');
+// Opciones: 'top-left', 'top-center', 'top-right',
+//           'center', 'bottom-left', 'bottom-center', 'bottom-right'
+
+// Cambiar tema
+indicator.setTheme('dark');
+// Opciones: 'dark', 'light', 'system'
+
+// Cambiar estilo de apilamiento
+indicator.setStackStyle('3d');
+// Opciones: '3d', 'fan', 'counter'
+
+// Cambiar ancho de la isla
+indicator.setIslandWidth('normal');
+// Opciones: 'compact', 'normal', 'wide'</pre>
+  </section>
 </div>
 
 <!-- ── Demo Categories ─────────────────────────── -->
@@ -516,9 +706,16 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   <section class="demo-category cat-basic">
     <div class="demo-category-header">
       <h2>B&aacute;sico</h2>
-      <span class="demo-category-badge">4 demos</span>
+      <span class="demo-category-badge">5 demos</span>
     </div>
     <div class="demo-grid">
+      <div class="demo-card" onclick="demoMinimal()">
+        <div class="demo-card-icon" style="background: rgba(161,161,170,0.12); color: #a1a1aa;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="demo-card-title">M&iacute;nima</div>
+        <div class="demo-card-desc">Solo t&iacute;tulo, sin icono ni subt&iacute;tulo</div>
+      </div>
       <div class="demo-card" onclick="demoSuccess()">
         <div class="demo-card-icon" style="background: rgba(34,197,94,0.12); color: #22c55e;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -545,7 +742,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
         <div class="demo-card-title">Aviso</div>
-        <div class="demo-card-desc">Alerta de seguridad con sonido, 5 segundos</div>
+        <div class="demo-card-desc">Alerta de seguridad con sonido, no se cierra en automático</div>
       </div>
     </div>
   </section>
@@ -633,6 +830,13 @@ body.light-mode .page-footer a:hover { color: #18181b; }
         </div>
         <div class="demo-card-title">Progress Orbit</div>
         <div class="demo-card-desc">Puntos orbitando como alternativa al spinner cl&aacute;sico</div>
+      </div>
+      <div class="demo-card" onclick="demoIconColor()">
+        <div class="demo-card-icon" style="background: rgba(168,85,247,0.12); color: #a855f7;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <div class="demo-card-title">Icon Color</div>
+        <div class="demo-card-desc">Icono con color personalizado independiente del tipo</div>
       </div>
       <div class="demo-card" onclick="demoSlideSpring()">
         <div class="demo-card-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
@@ -741,7 +945,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   <section class="demo-category cat-queue">
     <div class="demo-category-header">
       <h2>Cola &amp; Grupos</h2>
-      <span class="demo-category-badge">3 demos</span>
+      <span class="demo-category-badge">4 demos</span>
     </div>
     <div class="demo-grid">
       <div class="demo-card" onclick="demoNormalQueue()">
@@ -765,6 +969,13 @@ body.light-mode .page-footer a:hover { color: #18181b; }
         <div class="demo-card-title">Smart Group</div>
         <div class="demo-card-desc">4 items agrupados inteligentemente con progreso promedio</div>
       </div>
+      <div class="demo-card" onclick="demoWaitToDisplay()">
+        <div class="demo-card-icon" style="background: rgba(236,72,153,0.12); color: #ec4899;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="demo-card-title">Wait to Display</div>
+        <div class="demo-card-desc">La duraci&oacute;n cuenta desde que se muestra, no desde que se a&ntilde;ade a la cola</div>
+      </div>
     </div>
   </section>
 
@@ -772,9 +983,37 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   <section class="demo-category cat-advanced">
     <div class="demo-category-header">
       <h2>Avanzado</h2>
-      <span class="demo-category-badge">8 demos</span>
+      <span class="demo-category-badge">12 demos</span>
     </div>
     <div class="demo-grid">
+      <div class="demo-card" onclick="demoCustomType()">
+        <div class="demo-card-icon" style="background: rgba(139,92,246,0.12); color: #8b5cf6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="demo-card-title">Custom Type</div>
+        <div class="demo-card-desc">Tipo personalizado con color y fondo propios via <code>typeColors</code></div>
+      </div>
+      <div class="demo-card" onclick="demoCustomIcon()">
+        <div class="demo-card-icon" style="background: rgba(244,63,94,0.12); color: #f43f5e;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="demo-card-title">Custom Icon</div>
+        <div class="demo-card-desc">Icono SVG personalizado pasado via <code>icons</code> en el constructor</div>
+      </div>
+      <div class="demo-card" onclick="demoGlowColor()">
+        <div class="demo-card-icon" style="background: rgba(244,63,94,0.12); color: #f43f5e;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="demo-card-title">Glow Color</div>
+        <div class="demo-card-desc">Animaci&oacute;n glow con color de shadow personalizado</div>
+      </div>
+      <div class="demo-card" onclick="demoAutoContrast()">
+        <div class="demo-card-icon" style="background: rgba(250,204,21,0.12); color: #facc15;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </div>
+        <div class="demo-card-title">Auto Contraste</div>
+        <div class="demo-card-desc">Fondo claro con texto oscuro autom&aacute;tico (luminancia WCAG)</div>
+      </div>
       <div class="demo-card" onclick="demoHtmlSubtitle()">
         <div class="demo-card-icon" style="background: rgba(250,204,21,0.12); color: #facc15;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
@@ -846,7 +1085,18 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 <script>
 
   /* ── Instancia ──────────────────────────────── */
-  const indicator = new meActivityIndicator({ position: 'top-center', theme: 'dark' });
+  const indicator = new meActivityIndicator({
+    position: 'top-center',
+    theme: 'dark',
+    typeColors: {
+      premium: '#8b5cf6',
+      light: '#facc15'
+    },
+    icons: {
+      premium: '<svg aria-hidden="true" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>',
+      heart: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>'
+    }
+  });
 
   /* ── Config helpers ─────────────────────────── */
 
@@ -881,42 +1131,46 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 
   /* ── 1. Básico ──────────────────────────────── */
 
+  function demoMinimal() {
+    indicator.add({ type: 'generic', title: 'Notificación recibida' });
+  }
+
   function demoSuccess() {
-    indicator.add({ type: 'success', title: 'Tarea Completada', subtitle: 'Todo se procesó correctamente', duration: 3000 });
+    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Tarea Completada', subtitle: 'Todo se procesó correctamente', duration: 3000 });
   }
 
   function demoError() {
-    indicator.add({ type: 'error', title: 'Error Simple', subtitle: 'Ha ocurrido un problema', duration: 3000 });
+    indicator.add({ type: 'error', icon: indicator.icons.error, title: 'Error Simple', subtitle: 'Ha ocurrido un problema', duration: 3000 });
   }
 
   function demoInfo() {
-    indicator.add({ type: 'info', title: 'Información', subtitle: 'Sistema actualizado a v2.0', duration: 4000 });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Información', subtitle: 'Sistema actualizado a v2.0', duration: 4000 });
   }
 
   function demoWarning() {
-    indicator.add({ type: 'warning', title: 'Aviso de Seguridad', subtitle: 'Inicio de sesión extraño', duration: 5000, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
+    indicator.add({ type: 'warning', icon: indicator.icons.warning, title: 'Aviso de Seguridad', subtitle: 'Inicio de sesión extraño', showCloseButton: true, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
   }
 
   /* ── 2. Animaciones ─────────────────────────── */
 
   function demoSuccessPulse() {
-    indicator.add({ type: 'success', title: 'Operación Exitosa', subtitle: 'Con animación de pulso', duration: 3000 });
+    indicator.add({ icon: indicator.icons.success, iconColor: 'success', title: 'Operación Exitosa', subtitle: 'Con animación de pulso', animation: 'pulse', duration: 3000 });
   }
 
   function demoErrorShake() {
-    indicator.add({ type: 'error', title: 'Error de Red', subtitle: 'Con vibración lateral', duration: 3000 });
+    indicator.add({ icon: indicator.icons.error, iconColor: 'error', title: 'Error de Red', subtitle: 'Con vibración lateral', animation: 'shake', duration: 3000 });
   }
 
   function demoBounce() {
-    indicator.add({ type: 'warning', title: 'Bounce', subtitle: 'Rebote vertical para warnings', duration: 3000 });
+    indicator.add({ icon: indicator.icons.warning, iconColor: 'warning', title: 'Bounce', subtitle: 'Rebote vertical para warnings', animation: 'bounce', duration: 3000 });
   }
 
   function demoGlow() {
-    indicator.add({ type: 'info', title: 'Glow', subtitle: 'Resplandor pulsante del borde', duration: 3000 });
+    indicator.add({ icon: indicator.icons.info, iconColor: 'info', title: 'Glow', subtitle: 'Resplandor pulsante del borde', animation: 'glow', duration: 3000 });
   }
 
   function demoBreathe() {
-    indicator.add({ type: 'thinking', title: 'Breathe', subtitle: 'Respiración lenta infinita...', duration: 5000 });
+    indicator.add({ type: 'thinking', icon: indicator.icons.thinking, title: 'Breathe', subtitle: 'Respiración lenta infinita...', animation: 'breathe', duration: 5000 });
   }
 
   function demoHeartbeat() {
@@ -928,7 +1182,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   }
 
   function demoRipple() {
-    indicator.add({ type: 'success', animation: 'ripple', title: 'Ripple', subtitle: 'Onda expansiva desde el borde', duration: 3000 });
+    indicator.add({ type: 'generic', icon: indicator.icons.success, animation: 'ripple', title: 'Ripple', subtitle: 'Onda expansiva desde el borde', duration: 3000 });
   }
 
   function demoSwing() {
@@ -940,21 +1194,25 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   }
 
   function demoProgressOrbit() {
-    indicator.add({ type: 'loading', icon: indicator.icons.progressOrbit, title: 'Procesando', subtitle: 'Órbita de puntos alternativa', duration: 4000 });
+    indicator.add({ icon: indicator.icons.progressOrbit, title: 'Procesando', subtitle: 'Órbita de puntos alternativa', duration: 4000 });
+  }
+
+  function demoIconColor() {
+    indicator.add({ type: 'generic', icon: indicator.icons.success, iconColor: '#a855f7', title: 'Color Personalizado', subtitle: 'Icono success en púrpura', duration: 3000 });
   }
 
   function demoSlideSpring() {
-    indicator.add({ type: 'info', entryAnimation: 'slide-spring', title: 'Slide Spring', subtitle: 'Entrada deslizante con rebote', duration: 3000 });
+    indicator.add({ icon: indicator.icons.info, entryAnimation: 'slide-spring', title: 'Slide Spring', subtitle: 'Entrada deslizante con rebote', duration: 3000 });
   }
 
   /* ── 3. IA & Estado ─────────────────────────── */
 
   function demoLoading() {
-    indicator.add({ type: 'loading', title: 'Cargando Entorno', subtitle: 'Preparando componentes...', duration: 4000 });
+    indicator.add({ type: 'loading', icon: indicator.icons.loading, title: 'Cargando Entorno', subtitle: 'Preparando componentes...', duration: 4000 });
   }
 
   function demoThinking() {
-    indicator.add({ type: 'thinking', title: 'IA pensando', subtitle: 'Analizando requerimientos...', duration: 5000 });
+    indicator.add({ type: 'thinking', icon: indicator.icons.thinking, title: 'IA pensando', subtitle: 'Analizando requerimientos...', duration: 5000 });
   }
 
   function demoSpeaking() {
@@ -976,7 +1234,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
     let p = 0;
     const itv = setInterval(() => {
       p += 0.2;
-      if (p >= 1) { clearInterval(itv); indicator.update(task.id, { progress: 1, subtitle: 'Completado', type: 'success', icon: null, duration: 2000 }); }
+      if (p >= 1) { clearInterval(itv); indicator.update(task.id, { progress: 1, subtitle: 'Completado', type: 'success', icon: indicator.icons.success, duration: 2000 }); }
       else indicator.update(task.id, { progress: p, subtitle: `${Math.round(p * 100)}%` });
     }, 700);
   }
@@ -996,7 +1254,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 
   function demoActionsSuccess() {
     indicator.add({
-      type: 'success', title: 'Archivo exportado', subtitle: '¿Deseas abrir la carpeta?', duration: 5000,
+      type: 'success', icon: indicator.icons.success, title: 'Archivo exportado', subtitle: '¿Deseas abrir la carpeta?', duration: 5000,
       actions: [
         { label: 'Ver Carpeta', type: 'primary', icon: '<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>', onClick: () => console.log('Abriendo carpeta...') },
         { label: 'Descartar', onClick: (ctx) => indicator.remove(ctx.activityId) }
@@ -1006,7 +1264,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 
   function demoActionsError() {
     indicator.add({
-      type: 'error', title: 'Error de conexión', subtitle: 'No se pudo sincronizar', isBlocking: true,
+      type: 'error', icon: indicator.icons.error, title: 'Error de conexión', subtitle: 'No se pudo sincronizar', isBlocking: true,
       actions: [
         { label: 'Reintentar', type: 'primary', onClick: () => demoSuccess() },
         { label: 'Cancelar', onClick: (ctx) => indicator.remove(ctx.activityId) }
@@ -1017,16 +1275,21 @@ body.light-mode .page-footer a:hover { color: #18181b; }
   /* ── 6. Cola & Grupos ───────────────────────── */
 
   function demoNormalQueue() {
-    indicator.add({ type: 'info', title: 'Cola 1', duration: 1500 });
-    indicator.add({ type: 'info', title: 'Cola 2', duration: 1500, waitToDisplay: true });
-    indicator.add({ type: 'info', title: 'Cola 3', duration: 1500, waitToDisplay: true });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Cola 1', duration: 1500 });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Cola 2', duration: 1500, waitToDisplay: true });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Cola 3', duration: 1500, waitToDisplay: true });
+  }
+
+  function demoWaitToDisplay() {
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Primera', subtitle: 'Estoy ocupando la isla 2s', duration: 2000 });
+    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Esperé mi turno', subtitle: 'Mis 3s empiezan ahora que me ves', duration: 3000, waitToDisplay: true, showCountdown: true });
   }
 
   function demoHighPriority() {
-    indicator.add({ type: 'info', title: 'Tarea en curso...', duration: 5000 });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Tarea en curso...', duration: 5000 });
     setTimeout(() => {
       indicator.add({
-        type: 'error', priority: 'high', title: 'PRIORIDAD ALTA',
+        type: 'error', icon: indicator.icons.error, priority: 'high', title: 'PRIORIDAD ALTA',
         subtitle: 'He saltado la cola automáticamente', duration: 4000,
         soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'
       });
@@ -1038,7 +1301,7 @@ body.light-mode .page-footer a:hover { color: #18181b; }
       setTimeout(() => {
         indicator.add({
           groupId: 'upload-batch', groupTitle: 'Subiendo {n} archivos',
-          type: 'loading', title: 'Subiendo archivo...',
+          type: 'loading', icon: indicator.icons.loading, title: 'Subiendo archivo...',
           subtitle: `Fichero_${i}.pdf`, progress: i * 0.2, duration: 3000
         });
       }, i * 400);
@@ -1049,32 +1312,32 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 
   function demoHtmlSubtitle() {
     indicator.add({
-      type: 'info', title: 'Nueva version',
+      type: 'info', icon: indicator.icons.info, title: 'Nueva version',
       subtitle: 'Incluye <strong>mejoras criticas</strong>. <a href="#" onclick="event.stopPropagation()">Ver cambios</a>',
       duration: 5000
     });
   }
 
   function demoMorphing() {
-    const task = indicator.add({ type: 'loading', title: 'Procesando', subtitle: 'Analizando datos...' });
-    setTimeout(() => indicator.update(task.id, { type: 'success', title: 'Completado', subtitle: 'Analisis finalizado', duration: 2000 }), 3000);
+    const task = indicator.add({ type: 'loading', icon: indicator.icons.loading, title: 'Procesando', subtitle: 'Analizando datos...' });
+    setTimeout(() => indicator.update(task.id, { type: 'success', icon: indicator.icons.success, title: 'Completado', subtitle: 'Analisis finalizado', duration: 2000 }), 3000);
   }
 
   function demoExitFade() {
-    indicator.add({ type: 'success', title: 'Exit Fade', subtitle: 'Se desvanece al cerrar', duration: 2000, exitAnimation: 'fade' });
+    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Exit Fade', subtitle: 'Se desvanece al cerrar', duration: 2000, exitAnimation: 'fade' });
   }
 
   function demoExitShrink() {
-    indicator.add({ type: 'info', title: 'Exit Shrink', subtitle: 'Rebote elastico inverso', duration: 2000, exitAnimation: 'shrink-bounce' });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Exit Shrink', subtitle: 'Rebote elastico inverso', duration: 2000, exitAnimation: 'shrink-bounce' });
   }
 
   function demoCountdown() {
-    indicator.add({ type: 'info', title: 'Countdown', subtitle: 'Observa la barra inferior (hover para pausar)', duration: 5000, showCountdown: true });
+    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Countdown', subtitle: 'Observa la barra inferior (hover para pausar)', duration: 5000, showCountdown: true });
   }
 
   function demoUndo() {
     indicator.addUndo({
-      type: 'warning', title: 'Elemento eliminado',
+      type: 'warning', icon: indicator.icons.warning, title: 'Elemento eliminado',
       subtitle: '1 archivo movido a la papelera',
       undoDuration: 5000,
       onUndo: () => console.log('Accion deshecha!'),
@@ -1084,16 +1347,448 @@ body.light-mode .page-footer a:hover { color: #18181b; }
 
   function demoChain() {
     indicator.chain([
-      { type: 'loading', title: 'Paso 1', subtitle: 'Conectando al servidor...', duration: 2000 },
-      { type: 'loading', title: 'Paso 2', subtitle: 'Descargando datos...', duration: 2000, icon: indicator.icons.download },
-      { type: 'success', title: 'Completado', subtitle: 'Todo listo', duration: 2000, exitAnimation: 'fade' }
+      { type: 'loading', icon: indicator.icons.loading, title: 'Paso 1', subtitle: 'Conectando al servidor...', duration: 2000 },
+      { type: 'loading', icon: indicator.icons.download, title: 'Paso 2', subtitle: 'Descargando datos...', duration: 2000 },
+      { type: 'success', icon: indicator.icons.success, title: 'Completado', subtitle: 'Todo listo', duration: 2000, exitAnimation: 'fade' }
     ]);
   }
 
   function demoConfetti() {
-    indicator.add({ type: 'success', title: 'Increible!', subtitle: 'Celebrando con confetti', duration: 3000, confetti: true });
+    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Increible!', subtitle: 'Celebrando con confetti', duration: 3000, confetti: true });
   }
 
+  function demoCustomType() {
+    indicator.add({ type: 'premium', icon: indicator.icons.premium, title: 'Premium Activado', subtitle: 'Tipo personalizado con fondo purpura', duration: 3000 });
+  }
+
+  function demoCustomIcon() {
+    indicator.add({ type: 'generic', icon: indicator.icons.heart, iconColor: '#f43f5e', title: 'Te gusta esto', subtitle: 'Icono corazon añadido via constructor', duration: 3000 });
+  }
+
+  function demoGlowColor() {
+    indicator.add({ icon: indicator.icons.info, title: 'Glow Rosa', subtitle: 'Shadow personalizado con glowColor', animation: 'glow', glowColor: '#f43f5e', duration: 3000 });
+  }
+
+  function demoAutoContrast() {
+    indicator.add({ type: 'light', icon: indicator.icons.info, title: 'Fondo Claro', subtitle: 'Texto oscuro calculado automaticamente', duration: 3000 });
+  }
+
+  /* ── Info Drawer ───────────────────────────── */
+
+  const demoInfoData = {
+    demoMinimal: {
+      title: 'M\u00ednima',
+      code: `indicator.add({\n  type: 'generic',\n  title: 'Notificaci\u00f3n recibida'\n});`,
+      props: [
+        { name: 'type', value: "'generic'", desc: 'Tipo gen\u00e9rico. No aplica color de fondo sem\u00e1ntico.' },
+        { name: 'title', value: "'Notificaci\u00f3n recibida'", desc: 'Texto principal. \u00danica propiedad obligatoria.' }
+      ]
+    },
+    demoSuccess: {
+      title: '\u00c9xito',
+      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Tarea Completada',\n  subtitle: 'Todo se proces\u00f3 correctamente',\n  duration: 3000\n});`,
+      props: [
+        { name: 'type', value: "'success'", desc: 'Tipo success. Aplica fondo verde (#22c55e).' },
+        { name: 'icon', value: 'indicator.icons.success', desc: 'Icono SVG de check predefinido.' },
+        { name: 'title', value: "'Tarea Completada'", desc: 'Texto principal de la notificaci\u00f3n.' },
+        { name: 'subtitle', value: "'Todo se proces\u00f3...'", desc: 'Texto secundario debajo del t\u00edtulo.' },
+        { name: 'duration', value: '3000', desc: 'Se cierra autom\u00e1ticamente tras 3 segundos.' }
+      ]
+    },
+    demoError: {
+      title: 'Error',
+      code: `indicator.add({\n  type: 'error',\n  icon: indicator.icons.error,\n  title: 'Error Simple',\n  subtitle: 'Ha ocurrido un problema',\n  duration: 3000\n});`,
+      props: [
+        { name: 'type', value: "'error'", desc: 'Tipo error. Aplica fondo rojo (#ef4444).' },
+        { name: 'icon', value: 'indicator.icons.error', desc: 'Icono SVG de X predefinido.' },
+        { name: 'title', value: "'Error Simple'", desc: 'Texto principal.' },
+        { name: 'subtitle', value: "'Ha ocurrido...'", desc: 'Texto secundario.' },
+        { name: 'duration', value: '3000', desc: 'Auto-cierre en 3 segundos.' }
+      ]
+    },
+    demoInfo: {
+      title: 'Informaci\u00f3n',
+      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Informaci\u00f3n',\n  subtitle: 'Sistema actualizado a v2.0',\n  duration: 4000\n});`,
+      props: [
+        { name: 'type', value: "'info'", desc: 'Tipo info. Aplica fondo azul (#3b82f6).' },
+        { name: 'icon', value: 'indicator.icons.info', desc: 'Icono SVG de informaci\u00f3n predefinido.' },
+        { name: 'title', value: "'Informaci\u00f3n'", desc: 'Texto principal.' },
+        { name: 'subtitle', value: "'Sistema actualizado...'", desc: 'Texto secundario.' },
+        { name: 'duration', value: '4000', desc: 'Auto-cierre en 4 segundos.' }
+      ]
+    },
+    demoWarning: {
+      title: 'Aviso',
+      code: `indicator.add({\n  type: 'warning',\n  icon: indicator.icons.warning,\n  title: 'Aviso de Seguridad',\n  subtitle: 'Inicio de sesi\u00f3n extra\u00f1o',\n  showCloseButton: true,\n  soundUrl: 'https://...preview.mp3'\n});`,
+      props: [
+        { name: 'type', value: "'warning'", desc: 'Tipo warning. Aplica fondo \u00e1mbar (#f59e0b).' },
+        { name: 'icon', value: 'indicator.icons.warning', desc: 'Icono SVG de alerta predefinido.' },
+        { name: 'showCloseButton', value: 'true', desc: 'Muestra un bot\u00f3n X para cerrar manualmente.' },
+        { name: 'soundUrl', value: "'https://...'", desc: 'URL de audio que se reproduce al mostrarse.' }
+      ]
+    },
+    demoSuccessPulse: {
+      title: '\u00c9xito con Pulso',
+      code: `indicator.add({\n  icon: indicator.icons.success,\n  iconColor: 'success',\n  title: 'Operaci\u00f3n Exitosa',\n  subtitle: 'Con animaci\u00f3n de pulso',\n  animation: 'pulse',\n  duration: 3000\n});`,
+      props: [
+        { name: 'icon', value: 'indicator.icons.success', desc: 'Icono SVG de check.' },
+        { name: 'iconColor', value: "'success'", desc: 'Colorea el icono con el color del tipo success (#22c55e).' },
+        { name: 'animation', value: "'pulse'", desc: 'Escalado suave de confirmaci\u00f3n.' },
+        { name: 'duration', value: '3000', desc: 'Auto-cierre en 3 segundos.' }
+      ]
+    },
+    demoErrorShake: {
+      title: 'Error con Shake',
+      code: `indicator.add({\n  icon: indicator.icons.error,\n  iconColor: 'error',\n  title: 'Error de Red',\n  subtitle: 'Con vibraci\u00f3n lateral',\n  animation: 'shake',\n  duration: 3000\n});`,
+      props: [
+        { name: 'icon', value: 'indicator.icons.error', desc: 'Icono SVG de X.' },
+        { name: 'iconColor', value: "'error'", desc: 'Colorea el icono con el color del tipo error (#ef4444).' },
+        { name: 'animation', value: "'shake'", desc: 'Vibraci\u00f3n lateral agresiva con intensidad decreciente.' },
+        { name: 'duration', value: '3000', desc: 'Auto-cierre en 3 segundos.' }
+      ]
+    },
+    demoBounce: {
+      title: 'Bounce',
+      code: `indicator.add({\n  icon: indicator.icons.warning,\n  iconColor: 'warning',\n  title: 'Bounce',\n  subtitle: 'Rebote vertical para warnings',\n  animation: 'bounce',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'bounce'", desc: 'Rebote vertical que llama la atenci\u00f3n.' },
+        { name: 'iconColor', value: "'warning'", desc: 'Colorea el icono con el color warning (#f59e0b).' }
+      ]
+    },
+    demoGlow: {
+      title: 'Glow',
+      code: `indicator.add({\n  icon: indicator.icons.info,\n  iconColor: 'info',\n  title: 'Glow',\n  subtitle: 'Resplandor pulsante del borde',\n  animation: 'glow',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'glow'", desc: 'Resplandor pulsante del borde con box-shadow.' },
+        { name: 'iconColor', value: "'info'", desc: 'Colorea el icono con el color info (#3b82f6).' }
+      ]
+    },
+    demoBreathe: {
+      title: 'Breathe',
+      code: `indicator.add({\n  type: 'thinking',\n  icon: indicator.icons.thinking,\n  title: 'Breathe',\n  subtitle: 'Respiraci\u00f3n lenta infinita...',\n  animation: 'breathe',\n  duration: 5000\n});`,
+      props: [
+        { name: 'type', value: "'thinking'", desc: 'Tipo thinking. Sin color de fondo espec\u00edfico.' },
+        { name: 'animation', value: "'breathe'", desc: 'Respiraci\u00f3n lenta infinita con escala y opacidad.' },
+        { name: 'duration', value: '5000', desc: 'Se cierra tras 5 segundos.' }
+      ]
+    },
+    demoHeartbeat: {
+      title: 'Heartbeat',
+      code: `indicator.add({\n  type: 'generic',\n  animation: 'heartbeat',\n  title: 'Heartbeat',\n  subtitle: 'Doble pulso r\u00e1pido',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'heartbeat'", desc: 'Doble pulso r\u00e1pido tipo latido de coraz\u00f3n.' }
+      ]
+    },
+    demoWobble: {
+      title: 'Wobble',
+      code: `indicator.add({\n  type: 'generic',\n  animation: 'wobble',\n  title: 'Wobble',\n  subtitle: 'Deformaci\u00f3n tipo gelatina',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'wobble'", desc: 'Deformaci\u00f3n el\u00e1stica pronunciada tipo gelatina.' }
+      ]
+    },
+    demoRipple: {
+      title: 'Ripple',
+      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.success,\n  animation: 'ripple',\n  title: 'Ripple',\n  subtitle: 'Onda expansiva desde el borde',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'ripple'", desc: 'Onda expansiva desde el borde de la isla.' }
+      ]
+    },
+    demoSwing: {
+      title: 'Swing',
+      code: `indicator.add({\n  type: 'generic',\n  animation: 'swing',\n  title: 'Swing',\n  subtitle: 'Oscilaci\u00f3n tipo p\u00e9ndulo',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'swing'", desc: 'Oscilaci\u00f3n tipo p\u00e9ndulo con transform-origin en top center.' }
+      ]
+    },
+    demoTypingDots: {
+      title: 'Typing Dots',
+      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.typingDots,\n  title: 'Escribiendo',\n  subtitle: 'El asistente est\u00e1 escribiendo...',\n  duration: 4000\n});`,
+      props: [
+        { name: 'icon', value: 'indicator.icons.typingDots', desc: 'Icono animado de tres puntos rebotando.' }
+      ]
+    },
+    demoProgressOrbit: {
+      title: 'Progress Orbit',
+      code: `indicator.add({\n  icon: indicator.icons.progressOrbit,\n  title: 'Procesando',\n  subtitle: '\u00d3rbita de puntos alternativa',\n  duration: 4000\n});`,
+      props: [
+        { name: 'icon', value: 'indicator.icons.progressOrbit', desc: 'Icono animado de \u00f3rbita de puntos giratorios.' }
+      ]
+    },
+    demoIconColor: {
+      title: 'Icon Color',
+      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.success,\n  iconColor: '#a855f7',\n  title: 'Color Personalizado',\n  subtitle: 'Icono success en p\u00farpura',\n  duration: 3000\n});`,
+      props: [
+        { name: 'iconColor', value: "'#a855f7'", desc: 'Color hex aplicado al icono SVG. Acepta nombre de tipo o hex directo.' },
+        { name: 'icon', value: 'indicator.icons.success', desc: 'El icono de check, pero coloreado en p\u00farpura por iconColor.' }
+      ]
+    },
+    demoSlideSpring: {
+      title: 'Slide Spring',
+      code: `indicator.add({\n  icon: indicator.icons.info,\n  entryAnimation: 'slide-spring',\n  title: 'Slide Spring',\n  subtitle: 'Entrada deslizante con rebote',\n  duration: 3000\n});`,
+      props: [
+        { name: 'entryAnimation', value: "'slide-spring'", desc: 'La isla entra desliz\u00e1ndose con rebote el\u00e1stico en vez del scale cl\u00e1sico.' }
+      ]
+    },
+    demoLoading: {
+      title: 'Cargando',
+      code: `indicator.add({\n  type: 'loading',\n  icon: indicator.icons.loading,\n  title: 'Cargando Entorno',\n  subtitle: 'Preparando componentes...',\n  duration: 4000\n});`,
+      props: [
+        { name: 'type', value: "'loading'", desc: 'Tipo loading. Sin color de fondo sem\u00e1ntico.' },
+        { name: 'icon', value: 'indicator.icons.loading', desc: 'Spinner animado predefinido.' }
+      ]
+    },
+    demoThinking: {
+      title: 'Pensando (IA)',
+      code: `indicator.add({\n  type: 'thinking',\n  icon: indicator.icons.thinking,\n  title: 'IA pensando',\n  subtitle: 'Analizando requerimientos...',\n  duration: 5000\n});`,
+      props: [
+        { name: 'type', value: "'thinking'", desc: 'Tipo thinking para estados de IA.' },
+        { name: 'icon', value: 'indicator.icons.thinking', desc: 'Icono animado de cerebro/pensamiento.' }
+      ]
+    },
+    demoSpeaking: {
+      title: 'Hablando',
+      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.speaking,\n  title: 'Asistente',\n  subtitle: 'Hablando ahora...',\n  duration: 3000\n});`,
+      props: [
+        { name: 'icon', value: 'indicator.icons.speaking', desc: 'Icono animado de ondas de sonido.' }
+      ]
+    },
+    demoListening: {
+      title: 'Escuchando',
+      code: `indicator.add({\n  type: 'warning',\n  icon: indicator.icons.listening,\n  title: 'Escuchando',\n  subtitle: 'Dime qu\u00e9 necesitas',\n  duration: 4000\n});`,
+      props: [
+        { name: 'type', value: "'warning'", desc: 'Tipo warning para el fondo \u00e1mbar.' },
+        { name: 'icon', value: 'indicator.icons.listening', desc: 'Icono animado de micr\u00f3fono con pulso.' }
+      ]
+    },
+    demoDownload: {
+      title: 'Descarga',
+      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.download,\n  title: 'Descargando Assets',\n  subtitle: 'package_final.zip',\n  progress: 0.75,\n  duration: 4000\n});`,
+      props: [
+        { name: 'progress', value: '0.75', desc: 'Barra de progreso al 75%. Valor entre 0 y 1.' },
+        { name: 'icon', value: 'indicator.icons.download', desc: 'Icono de flecha de descarga.' }
+      ]
+    },
+    demoUpload: {
+      title: 'Subida en Vivo',
+      code: `const task = indicator.add({\n  type: 'generic',\n  icon: indicator.icons.upload,\n  title: 'Subiendo Video',\n  subtitle: '0%',\n  progress: 0\n});\n\nsetInterval(() => {\n  p += 0.2;\n  if (p >= 1) {\n    indicator.update(task.id, {\n      progress: 1,\n      subtitle: 'Completado',\n      type: 'success',\n      icon: indicator.icons.success,\n      duration: 2000\n    });\n  } else {\n    indicator.update(task.id, {\n      progress: p,\n      subtitle: Math.round(p * 100) + '%'\n    });\n  }\n}, 700);`,
+      props: [
+        { name: 'progress', value: '0 \u2192 1', desc: 'Progreso actualizado en tiempo real via update().' },
+        { name: 'update()', value: 'task.id, patch', desc: 'M\u00e9todo para modificar una actividad activa. Produce morphing visual.' }
+      ]
+    },
+    demoAvatar: {
+      title: 'Con Avatar',
+      code: `indicator.add({\n  type: 'generic',\n  title: 'Nueva menci\u00f3n',\n  subtitle: '@juan_perez te ha etiquetado',\n  avatarUrl: 'https://i.pravatar.cc/100',\n  duration: 5000,\n  actions: [\n    { label: 'Responder', type: 'primary',\n      icon: '<svg...>', onClick: () => {} },\n    { label: 'Visto',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
+      props: [
+        { name: 'avatarUrl', value: "'https://...'", desc: 'URL de imagen circular que reemplaza al icono SVG.' },
+        { name: 'actions', value: '[...]', desc: 'Array de botones de acci\u00f3n. Cada uno tiene label, type y onClick.' },
+        { name: 'actions[].type', value: "'primary'", desc: 'Estilo del bot\u00f3n. "primary" lo resalta visualmente.' },
+        { name: 'actions[].onClick', value: 'fn(ctx)', desc: 'Callback al pulsar. Recibe ctx con activityId.' }
+      ]
+    },
+    demoActionsSuccess: {
+      title: '\u00c9xito + Acciones',
+      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Archivo exportado',\n  subtitle: '\u00bfDeseas abrir la carpeta?',\n  duration: 5000,\n  actions: [\n    { label: 'Ver Carpeta', type: 'primary',\n      icon: '<svg...>', onClick: () => {} },\n    { label: 'Descartar',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
+      props: [
+        { name: 'actions', value: '[2 botones]', desc: 'Botones de acci\u00f3n combinados con tipo success.' },
+        { name: 'duration', value: '5000', desc: 'M\u00e1s tiempo para que el usuario pulse un bot\u00f3n.' }
+      ]
+    },
+    demoActionsError: {
+      title: 'Error + Reintentar',
+      code: `indicator.add({\n  type: 'error',\n  icon: indicator.icons.error,\n  title: 'Error de conexi\u00f3n',\n  subtitle: 'No se pudo sincronizar',\n  isBlocking: true,\n  actions: [\n    { label: 'Reintentar', type: 'primary',\n      onClick: () => demoSuccess() },\n    { label: 'Cancelar',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
+      props: [
+        { name: 'isBlocking', value: 'true', desc: 'Overlay que impide interactuar con el fondo hasta cerrar.' },
+        { name: 'actions', value: '[2 botones]', desc: 'Reintentar lanza una nueva notificaci\u00f3n; Cancelar cierra.' }
+      ]
+    },
+    demoNormalQueue: {
+      title: 'Cola Normal',
+      code: `indicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Cola 1', duration: 1500 });\nindicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Cola 2', duration: 1500,\n  waitToDisplay: true });\nindicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Cola 3', duration: 1500,\n  waitToDisplay: true });`,
+      props: [
+        { name: 'waitToDisplay', value: 'true', desc: 'El timer de duraci\u00f3n no arranca hasta que la actividad se muestra.' },
+        { name: 'Cola FIFO', value: '\u2014', desc: 'Las notificaciones se muestran en orden de llegada, una tras otra.' }
+      ]
+    },
+    demoWaitToDisplay: {
+      title: 'Wait to Display',
+      code: `indicator.add({\n  type: 'info', icon: indicator.icons.info,\n  title: 'Primera',\n  subtitle: 'Estoy ocupando la isla 2s',\n  duration: 2000\n});\nindicator.add({\n  type: 'success', icon: indicator.icons.success,\n  title: 'Esper\u00e9 mi turno',\n  subtitle: 'Mis 3s empiezan ahora que me ves',\n  duration: 3000,\n  waitToDisplay: true,\n  showCountdown: true\n});`,
+      props: [
+        { name: 'waitToDisplay', value: 'true', desc: 'La duraci\u00f3n cuenta desde que se muestra, no desde que se a\u00f1ade a la cola.' },
+        { name: 'showCountdown', value: 'true', desc: 'Barra visual de countdown en la parte inferior de la isla.' }
+      ]
+    },
+    demoHighPriority: {
+      title: 'Alta Prioridad',
+      code: `indicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Tarea en curso...', duration: 5000 });\n\nsetTimeout(() => {\n  indicator.add({\n    type: 'error', icon: indicator.icons.error,\n    priority: 'high',\n    title: 'PRIORIDAD ALTA',\n    subtitle: 'He saltado la cola',\n    duration: 4000,\n    soundUrl: 'https://...mp3'\n  });\n}, 1000);`,
+      props: [
+        { name: 'priority', value: "'high'", desc: 'Salta delante de todas las notificaciones en cola.' },
+        { name: 'soundUrl', value: "'https://...'", desc: 'Reproduce un sonido al mostrarse.' }
+      ]
+    },
+    demoSmartGroup: {
+      title: 'Smart Group',
+      code: `for (let i = 1; i <= 4; i++) {\n  setTimeout(() => {\n    indicator.add({\n      groupId: 'upload-batch',\n      groupTitle: 'Subiendo {n} archivos',\n      type: 'loading',\n      icon: indicator.icons.loading,\n      title: 'Subiendo archivo...',\n      subtitle: 'Fichero_' + i + '.pdf',\n      progress: i * 0.2,\n      duration: 3000\n    });\n  }, i * 400);\n}`,
+      props: [
+        { name: 'groupId', value: "'upload-batch'", desc: 'Agrupa actividades bajo un mismo identificador.' },
+        { name: 'groupTitle', value: "'Subiendo {n} archivos'", desc: '{n} se reemplaza por el n\u00famero de items activos en el grupo.' },
+        { name: 'progress', value: 'i * 0.2', desc: 'La isla muestra el promedio de progreso de todos los items del grupo.' }
+      ]
+    },
+    demoHtmlSubtitle: {
+      title: 'HTML Subtitle',
+      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Nueva version',\n  subtitle: 'Incluye <strong>mejoras criticas</strong>.\\n    <a href="#">Ver cambios</a>',\n  duration: 5000\n});`,
+      props: [
+        { name: 'subtitle', value: "'HTML...'", desc: 'Acepta HTML: <strong>, <a>, <code>, etc. Se renderiza directamente.' }
+      ]
+    },
+    demoMorphing: {
+      title: 'Morphing',
+      code: `const task = indicator.add({\n  type: 'loading',\n  icon: indicator.icons.loading,\n  title: 'Procesando',\n  subtitle: 'Analizando datos...'\n});\n\nsetTimeout(() => {\n  indicator.update(task.id, {\n    type: 'success',\n    icon: indicator.icons.success,\n    title: 'Completado',\n    subtitle: 'Analisis finalizado',\n    duration: 2000\n  });\n}, 3000);`,
+      props: [
+        { name: 'update()', value: 'task.id, patch', desc: 'Modifica la actividad activa. Al cambiar type se produce morphing visual.' },
+        { name: 'type (cambio)', value: 'loading \u2192 success', desc: 'El fondo transiciona suavemente del color loading al success.' }
+      ]
+    },
+    demoExitFade: {
+      title: 'Exit Fade',
+      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Exit Fade',\n  subtitle: 'Se desvanece al cerrar',\n  duration: 2000,\n  exitAnimation: 'fade'\n});`,
+      props: [
+        { name: 'exitAnimation', value: "'fade'", desc: 'Desvanecimiento suave con escala descendente al cerrarse.' }
+      ]
+    },
+    demoExitShrink: {
+      title: 'Exit Shrink',
+      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Exit Shrink',\n  subtitle: 'Rebote el\u00e1stico inverso',\n  duration: 2000,\n  exitAnimation: 'shrink-bounce'\n});`,
+      props: [
+        { name: 'exitAnimation', value: "'shrink-bounce'", desc: 'Rebote el\u00e1stico inverso al cerrarse la isla.' }
+      ]
+    },
+    demoCountdown: {
+      title: 'Countdown',
+      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Countdown',\n  subtitle: 'Observa la barra inferior\\n    (hover para pausar)',\n  duration: 5000,\n  showCountdown: true\n});`,
+      props: [
+        { name: 'showCountdown', value: 'true', desc: 'Barra visual de countdown en la parte inferior. Se pausa con hover.' },
+        { name: 'duration', value: '5000', desc: 'La barra se vac\u00eda progresivamente durante 5 segundos.' }
+      ]
+    },
+    demoUndo: {
+      title: 'Undo',
+      code: `indicator.addUndo({\n  type: 'warning',\n  icon: indicator.icons.warning,\n  title: 'Elemento eliminado',\n  subtitle: '1 archivo movido a la papelera',\n  undoDuration: 5000,\n  onUndo: () => console.log('Deshecho!'),\n  onConfirm: () => console.log('Confirmado')\n});`,
+      props: [
+        { name: 'addUndo()', value: '\u2014', desc: 'M\u00e9todo especial que muestra un bot\u00f3n "Deshacer" con countdown.' },
+        { name: 'undoDuration', value: '5000', desc: 'Tiempo para deshacer antes de confirmar la acci\u00f3n.' },
+        { name: 'onUndo', value: 'fn()', desc: 'Callback si el usuario pulsa Deshacer.' },
+        { name: 'onConfirm', value: 'fn()', desc: 'Callback si el tiempo expira sin deshacer.' }
+      ]
+    },
+    demoChain: {
+      title: 'Chain',
+      code: `indicator.chain([\n  { type: 'loading',\n    icon: indicator.icons.loading,\n    title: 'Paso 1',\n    subtitle: 'Conectando...',\n    duration: 2000 },\n  { type: 'loading',\n    icon: indicator.icons.download,\n    title: 'Paso 2',\n    subtitle: 'Descargando...',\n    duration: 2000 },\n  { type: 'success',\n    icon: indicator.icons.success,\n    title: 'Completado',\n    subtitle: 'Todo listo',\n    duration: 2000,\n    exitAnimation: 'fade' }\n]);`,
+      props: [
+        { name: 'chain()', value: '[configs]', desc: 'Ejecuta un array de notificaciones secuencialmente, una tras otra.' },
+        { name: 'exitAnimation', value: "'fade'", desc: 'Solo la \u00faltima tiene exit animation.' }
+      ]
+    },
+    demoConfetti: {
+      title: 'Confetti',
+      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Increible!',\n  subtitle: 'Celebrando con confetti',\n  duration: 3000,\n  confetti: true\n});`,
+      props: [
+        { name: 'confetti', value: 'true', desc: 'Lanza part\u00edculas de confetti al mostrarse la notificaci\u00f3n.' }
+      ]
+    },
+    demoCustomType: {
+      title: 'Custom Type',
+      code: `// Constructor:\n// typeColors: { premium: '#8b5cf6' }\n// icons: { premium: '<svg>...</svg>' }\n\nindicator.add({\n  type: 'premium',\n  icon: indicator.icons.premium,\n  title: 'Premium Activado',\n  subtitle: 'Tipo personalizado con fondo p\u00farpura',\n  duration: 3000\n});`,
+      props: [
+        { name: 'type', value: "'premium'", desc: 'Tipo custom definido en el constructor via typeColors.' },
+        { name: 'typeColors', value: "{ premium: '#8b5cf6' }", desc: 'Se pasa en el constructor para registrar el color del tipo.' },
+        { name: 'icons', value: '{ premium: SVG }', desc: 'Se pasa en el constructor para registrar el icono del tipo.' }
+      ]
+    },
+    demoCustomIcon: {
+      title: 'Custom Icon',
+      code: `// Constructor:\n// icons: { heart: '<svg>...</svg>' }\n\nindicator.add({\n  type: 'generic',\n  icon: indicator.icons.heart,\n  iconColor: '#f43f5e',\n  title: 'Te gusta esto',\n  subtitle: 'Icono coraz\u00f3n a\u00f1adido via constructor',\n  duration: 3000\n});`,
+      props: [
+        { name: 'icon', value: 'indicator.icons.heart', desc: 'Icono SVG custom registrado en el constructor.' },
+        { name: 'iconColor', value: "'#f43f5e'", desc: 'Color hex aplicado directamente al icono.' }
+      ]
+    },
+    demoGlowColor: {
+      title: 'Glow Color',
+      code: `indicator.add({\n  icon: indicator.icons.info,\n  title: 'Glow Rosa',\n  subtitle: 'Shadow personalizado con glowColor',\n  animation: 'glow',\n  glowColor: '#f43f5e',\n  duration: 3000\n});`,
+      props: [
+        { name: 'animation', value: "'glow'", desc: 'Resplandor pulsante del borde.' },
+        { name: 'glowColor', value: "'#f43f5e'", desc: 'Color del shadow en la animaci\u00f3n glow. Acepta tipo o hex.' }
+      ]
+    },
+    demoAutoContrast: {
+      title: 'Auto Contraste',
+      code: `// Constructor:\n// typeColors: { light: '#facc15' }\n\nindicator.add({\n  type: 'light',\n  icon: indicator.icons.info,\n  title: 'Fondo Claro',\n  subtitle: 'Texto oscuro calculado autom\u00e1ticamente',\n  duration: 3000\n});`,
+      props: [
+        { name: 'type', value: "'light'", desc: 'Tipo custom con color claro (#facc15).' },
+        { name: 'Auto-contraste', value: 'autom\u00e1tico', desc: 'Texto, bordes y botones se adaptan a la luminancia del fondo (WCAG Rec. 601).' }
+      ]
+    }
+  };
+
+  function showInfo(name) {
+    const info = demoInfoData[name];
+    if (!info) return;
+    document.getElementById('info-drawer-title').textContent = info.title;
+    document.getElementById('info-drawer-code').textContent = info.code;
+    let rows = '<tr><th>Propiedad</th><th>Valor</th><th>Descripci\u00f3n</th></tr>';
+    info.props.forEach(p => {
+      rows += `<tr><td>${p.name}</td><td>${p.value}</td><td>${p.desc}</td></tr>`;
+    });
+    document.getElementById('info-drawer-props').innerHTML = rows;
+    document.getElementById('info-drawer-overlay').classList.add('is-open');
+    document.getElementById('info-drawer-panel').classList.add('is-open');
+  }
+
+  function closeInfo() {
+    document.getElementById('info-drawer-overlay').classList.remove('is-open');
+    document.getElementById('info-drawer-panel').classList.remove('is-open');
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeInfo(); });
+
+  // Insertar botones info automaticamente en cada demo-card
+  document.querySelectorAll('.demo-card[onclick]').forEach(card => {
+    const match = card.getAttribute('onclick').match(/^(\w+)\(/);
+    if (match && demoInfoData[match[1]]) {
+      const btn = document.createElement('button');
+      btn.className = 'demo-card-info';
+      btn.setAttribute('onclick', `event.stopPropagation(); showInfo('${match[1]}')`);
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+      card.appendChild(btn);
+    }
+  });
+
 </script>
+
+<!-- Info Drawer -->
+<div id="info-drawer-overlay" onclick="closeInfo()"></div>
+<div id="info-drawer-panel">
+  <div class="info-drawer-header">
+    <span id="info-drawer-title" class="info-drawer-title"></span>
+    <button class="info-drawer-close" onclick="closeInfo()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="info-drawer-body">
+    <div>
+      <div class="info-drawer-section-label">C&oacute;digo</div>
+      <pre class="info-drawer-code"><code id="info-drawer-code"></code></pre>
+    </div>
+    <div>
+      <div class="info-drawer-section-label">Propiedades</div>
+      <table class="info-drawer-table" id="info-drawer-props"></table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
 </body>
 </html>

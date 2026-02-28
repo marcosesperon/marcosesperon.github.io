@@ -10,7 +10,7 @@
  * @url     https://github.com/marcosesperon
  * @donate  https://buymeacoffee.com/marcosesperon
  * @license MIT
- * @version 2.0.0
+ * @version 3.0.0
  */
 
 class meActivityIndicator {
@@ -31,7 +31,7 @@ class meActivityIndicator {
    */
   constructor(options = {}) {
     // Dimensiones minimas y maximas de la isla
-    this.minWidth = 52; this.minHeight = 52; this.maxWidth = 420;
+    this.minWidth = 46; this.minHeight = 46; this.maxWidth = 420;
 
     // Configuracion del muelle (spring) para las animaciones elasticas
     this.springCfg = { stiffness: 0.15, damping: 0.82, mass: 1, dt: 1 };
@@ -47,16 +47,13 @@ class meActivityIndicator {
     // Mapa de prioridades: las actividades de mayor valor se muestran primero
     this.priorityMap = { 'low': 0, 'normal': 1, 'high': 2 };
 
-    // Animacion por defecto segun tipo de actividad
-    this.defaultAnimations = {
-      success: 'pulse', error: 'shake', info: 'glow',
-      warning: 'bounce', thinking: 'breathe',
-      loading: null, generic: null
-    };
+    // Animaciones: sin defaults, se deben indicar explicitamente via 'animation' en add()
+    this.defaultAnimations = {};
 
     // Colores resueltos por tipo (para morphing suave con transiciones CSS)
     this.typeColors = {
-      success: '#22c55e', error: '#ef4444', info: '#3b82f6', warning: '#f59e0b'
+      success: '#43A047', error: '#E53935', info: '#3b82f6', warning: '#f59e0b',
+      ...options.typeColors
     };
 
     // Lista de todas las clases de animacion (para limpieza en batch)
@@ -79,7 +76,8 @@ class meActivityIndicator {
       speaking: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`,
       listening: `<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>`,
       typingDots: `<svg aria-hidden="true" viewBox="0 0 24 24"><circle class="me-ai-dot" cx="6" cy="12" r="2.5" fill="currentColor" stroke="none"></circle><circle class="me-ai-dot" cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"></circle><circle class="me-ai-dot" cx="18" cy="12" r="2.5" fill="currentColor" stroke="none"></circle></svg>`,
-      progressOrbit: `<svg aria-hidden="true" viewBox="0 0 24 24"><g class="me-ai-orbit-group"><circle cx="12" cy="3" r="2" fill="currentColor" stroke="none" opacity="1"></circle><circle cx="12" cy="3" r="1.5" fill="currentColor" stroke="none" opacity="0.6" transform="rotate(120 12 12)"></circle><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none" opacity="0.3" transform="rotate(240 12 12)"></circle></g></svg>`
+      progressOrbit: `<svg aria-hidden="true" viewBox="0 0 24 24"><g class="me-ai-orbit-group"><circle cx="12" cy="3" r="2" fill="currentColor" stroke="none" opacity="1"></circle><circle cx="12" cy="3" r="1.5" fill="currentColor" stroke="none" opacity="0.6" transform="rotate(120 12 12)"></circle><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none" opacity="0.3" transform="rotate(240 12 12)"></circle></g></svg>`,
+      ...options.icons
     };
 
     // Cola de actividades y estado
@@ -266,8 +264,8 @@ class meActivityIndicator {
 
       /* Glow: resplandor pulsante del borde (info) */
       @keyframes me-ai-glow {
-        0%, 100% { box-shadow: 0 0 0 0 var(--me-ai-accent); }
-        50% { box-shadow: 0 0 16px 4px var(--me-ai-accent); }
+        0%, 100% { box-shadow: 0 0 0 0 var(--me-ai-glow-color, var(--me-ai-accent)); }
+        50% { box-shadow: 0 0 16px 4px var(--me-ai-glow-color, var(--me-ai-accent)); }
       }
       .anim-glow { animation: me-ai-glow 0.8s ease-in-out 2; }
 
@@ -407,9 +405,19 @@ class meActivityIndicator {
 
       .me-ai-header {
         display: flex;
-        align-items: center;
         gap: 12px;
       }
+
+      .me-ai-close-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 20px; height: 20px; flex-shrink: 0; margin-left: auto;
+        background: none; border: none; color: var(--me-ai-text-sub);
+        cursor: pointer; border-radius: 50%; transition: background 0.2s ease, color 0.2s ease;
+        padding: 0; opacity: 0.6;
+      }
+      .me-ai-close-btn:hover { background: var(--me-ai-btn-bg); color: var(--me-ai-text-main); opacity: 1; }
+      .me-ai-close-btn:active { transform: scale(0.85); }
+      .me-ai-close-btn svg { width: 12px; height: 12px; }
 
       .me-ai-icon {
         display: flex;
@@ -504,6 +512,14 @@ class meActivityIndicator {
         font-size: 12px;
         color: var(--me-ai-text-sub);
         white-space: nowrap;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s;
+      }
+
+      .me-ai-content.is-active .me-ai-subtitle {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       .me-ai-subtitle a { color: var(--me-ai-accent); text-decoration: underline; text-underline-offset: 2px; }
@@ -1071,6 +1087,8 @@ class meActivityIndicator {
   _handleIslandClick(e) {
     const active = this.activities.find(a => a.id === this.activeId);
     if (!active) return;
+    const closeBtn = e.target.closest('.me-ai-close-btn');
+    if (closeBtn) { this.remove(active.id); return; }
     const actionBtn = e.target.closest('.me-ai-action-btn');
     if (actionBtn) {
       const actionIndex = parseInt(actionBtn.dataset.index);
@@ -1126,15 +1144,38 @@ class meActivityIndicator {
       this.island.setAttribute('aria-label', `Notificación: ${data.title}`);
     }
 
-    // Color de acento segun el tipo de actividad (colores hex resueltos para morphing suave)
-    const accentColor = this.typeColors[data.type] || (this.activeThemeName === 'dark' ? '#ffffff' : '#1d1d1f');
-    const isGeneric = !this.typeColors[data.type];
+    // Estilo visual segun el tipo de actividad
+    const typeColor = this.typeColors[data.type];
 
     if (this.root) {
-        this.root.style.setProperty('--me-ai-accent', accentColor);
-        let contrastColor = "#ffffff";
-        if (isGeneric && this.activeThemeName === 'dark') contrastColor = "#000000";
-        this.root.style.setProperty('--me-ai-accent-contrast', contrastColor);
+        if (typeColor) {
+            // Fondo coloreado: isla con el color del tipo
+            const r = parseInt(typeColor.slice(1,3), 16);
+            const g = parseInt(typeColor.slice(3,5), 16);
+            const b = parseInt(typeColor.slice(5,7), 16);
+            // Luminancia percibida (Rec. 601) para contraste automatico
+            const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            const isLight = lum > 0.5;
+            this.root.style.setProperty('--me-ai-island-bg', `rgba(${r},${g},${b},0.9)`);
+            this.root.style.setProperty('--me-ai-island-border', isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)');
+            this.root.style.setProperty('--me-ai-text-main', isLight ? '#1d1d1f' : '#ffffff');
+            this.root.style.setProperty('--me-ai-text-sub', isLight ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.8)');
+            this.root.style.setProperty('--me-ai-accent', isLight ? '#1d1d1f' : '#ffffff');
+            this.root.style.setProperty('--me-ai-accent-contrast', typeColor);
+            this.root.style.setProperty('--me-ai-btn-bg', isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)');
+            this.root.style.setProperty('--me-ai-btn-hover', isLight ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.3)');
+        } else {
+            // Sin color de tipo: restaurar valores del tema activo
+            const isDark = this.activeThemeName === 'dark';
+            this.root.style.setProperty('--me-ai-island-bg', isDark ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.8)');
+            this.root.style.setProperty('--me-ai-island-border', isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)');
+            this.root.style.setProperty('--me-ai-text-main', isDark ? '#ffffff' : '#1d1d1f');
+            this.root.style.setProperty('--me-ai-text-sub', isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)');
+            this.root.style.setProperty('--me-ai-accent', isDark ? '#ffffff' : '#1d1d1f');
+            this.root.style.setProperty('--me-ai-accent-contrast', isDark ? '#000000' : '#ffffff');
+            this.root.style.setProperty('--me-ai-btn-bg', isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)');
+            this.root.style.setProperty('--me-ai-btn-hover', isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)');
+        }
     }
 
     // Animaciones: sistema de lookup con soporte para override via propiedad 'animation'
@@ -1142,6 +1183,13 @@ class meActivityIndicator {
     if (data.enableAnimations) {
       const anim = data.animation === 'none' ? null : (data.animation || this.defaultAnimations[data.type] || null);
       if (anim) {
+        // glowColor: color custom para la animacion glow (acepta nombre de tipo o hex)
+        if (anim === 'glow' && data.glowColor) {
+          const gc = this.typeColors[data.glowColor] || data.glowColor;
+          this.island.style.setProperty('--me-ai-glow-color', gc);
+        } else {
+          this.island.style.removeProperty('--me-ai-glow-color');
+        }
         void this.island.offsetWidth; // Forzar reflow para reiniciar animacion
         this.island.classList.add(`anim-${anim}`);
       }
@@ -1199,11 +1247,13 @@ class meActivityIndicator {
     const existingTitle = this.content.querySelector('.me-ai-title')?.innerText;
 
     // Determinar si mostrar avatar o icono
+    const iconColor = data.iconColor ? (this.typeColors[data.iconColor] || data.iconColor) : null;
+    const iconStyle = iconColor ? ` style="color:${iconColor}"` : '';
     let mediaHTML = "";
     if (data.avatarUrl) {
       mediaHTML = `<img src="${data.avatarUrl}" class="me-ai-avatar" alt="${data.title}">`;
     } else {
-      mediaHTML = `<div class="me-ai-icon">${data.icon || this.icons[data.type] || "🔔"}</div>`;
+      mediaHTML = data.icon ? `<div class="me-ai-icon"${iconStyle}>${data.icon}</div>` : '';
     }
 
     // Atributos ARIA segun prioridad: 'alert' (assertive) para alta prioridad, 'status' (polite) para el resto
@@ -1261,6 +1311,7 @@ class meActivityIndicator {
             <div class="me-ai-title">${data.title || ''}</div>
             <div class="me-ai-subtitle">${data.subtitle || ''}</div>
           </div>
+          ${data.showCloseButton ? `<button class="me-ai-close-btn" aria-label="Cerrar notificación"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>` : ''}
         </div>
         ${data.progress != null ? `
           <div class="me-ai-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(data.progress * 100)}">
