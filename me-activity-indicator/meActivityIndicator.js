@@ -855,14 +855,23 @@ class meActivityIndicator {
    * Si se cambia la duracion, reinicia el temporizador.
    *
    * @param {string} id - ID de la actividad a actualizar.
-   * @param {Object} patch - Propiedades a modificar (mismas que en add()).
+   * @param {string|Object} idOrPatch - ID de la actividad, o directamente el objeto patch (en cuyo caso se usa la actividad activa).
+   * @param {Object} [patch] - Propiedades a modificar (mismas que en add()).
    */
-  update(id, patch) {
+  update(idOrPatch, patch) {
+    let id, p;
+    if (typeof idOrPatch === 'object' && idOrPatch !== null) {
+      id = this.activeId;
+      p = idOrPatch;
+    } else {
+      id = idOrPatch || this.activeId;
+      p = patch;
+    }
     const a = this.activities.find(x => x.id === id);
     if (a) {
-      Object.assign(a, patch);
-      if (patch.priority) this._sortQueue();
-      if (patch.duration && (!a.waitToDisplay || this.activeId === id)) this._setTimer(id, patch.duration);
+      Object.assign(a, p);
+      if (p.priority) this._sortQueue();
+      if (p.duration && (!a.waitToDisplay || this.activeId === id)) this._setTimer(id, p.duration);
       this._refresh();
     }
   }
@@ -871,9 +880,10 @@ class meActivityIndicator {
    * Elimina una actividad de la cola, limpia su temporizador
    * y resuelve su promesa asociada con estado 'closed'.
    *
-   * @param {string} id - ID de la actividad a eliminar.
+   * @param {string} [id] - ID de la actividad a eliminar. Si se omite, se elimina la actividad activa.
    */
   remove(id) {
+    if (!id) id = this.activeId;
     const activity = this.activities.find(a => a.id === id);
     // Callback onHide: se dispara antes de resolver la promesa
     if (activity && activity.onHide) activity.onHide({ id, type: activity.type });
@@ -1247,13 +1257,14 @@ class meActivityIndicator {
     const existingTitle = this.content.querySelector('.me-ai-title')?.innerText;
 
     // Determinar si mostrar avatar o icono
+    const resolvedIcon = data.icon ? (this.icons[data.icon] || data.icon) : null;
     const iconColor = data.iconColor ? (this.typeColors[data.iconColor] || data.iconColor) : null;
     const iconStyle = iconColor ? ` style="color:${iconColor}"` : '';
     let mediaHTML = "";
     if (data.avatarUrl) {
       mediaHTML = `<img src="${data.avatarUrl}" class="me-ai-avatar" alt="${data.title}">`;
     } else {
-      mediaHTML = data.icon ? `<div class="me-ai-icon"${iconStyle}>${data.icon}</div>` : '';
+      mediaHTML = resolvedIcon ? `<div class="me-ai-icon"${iconStyle}>${resolvedIcon}</div>` : '';
     }
 
     // Atributos ARIA segun prioridad: 'alert' (assertive) para alta prioridad, 'status' (polite) para el resto

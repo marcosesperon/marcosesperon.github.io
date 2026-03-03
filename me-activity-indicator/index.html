@@ -1136,41 +1136,41 @@ indicator.setIslandWidth('normal');
   }
 
   function demoSuccess() {
-    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Tarea Completada', subtitle: 'Todo se procesó correctamente', duration: 3000 });
+    indicator.add({ type: 'success', icon: 'success', title: 'Tarea Completada', subtitle: 'Todo se procesó correctamente', duration: 3000 });
   }
 
   function demoError() {
-    indicator.add({ type: 'error', icon: indicator.icons.error, title: 'Error Simple', subtitle: 'Ha ocurrido un problema', duration: 3000 });
+    indicator.add({ type: 'error', icon: 'error', title: 'Error Simple', subtitle: 'Ha ocurrido un problema', duration: 3000 });
   }
 
   function demoInfo() {
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Información', subtitle: 'Sistema actualizado a v2.0', duration: 4000 });
+    indicator.add({ type: 'info', icon: 'info', title: 'Información', subtitle: 'Sistema actualizado a v2.0', duration: 4000 });
   }
 
   function demoWarning() {
-    indicator.add({ type: 'warning', icon: indicator.icons.warning, title: 'Aviso de Seguridad', subtitle: 'Inicio de sesión extraño', showCloseButton: true, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
+    indicator.add({ type: 'warning', icon: 'warning', title: 'Aviso de Seguridad', subtitle: 'Inicio de sesión extraño', showCloseButton: true, soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3' });
   }
 
   /* ── 2. Animaciones ─────────────────────────── */
 
   function demoSuccessPulse() {
-    indicator.add({ icon: indicator.icons.success, iconColor: 'success', title: 'Operación Exitosa', subtitle: 'Con animación de pulso', animation: 'pulse', duration: 3000 });
+    indicator.add({ icon: 'success', iconColor: 'success', title: 'Operación Exitosa', subtitle: 'Con animación de pulso', animation: 'pulse', duration: 3000 });
   }
 
   function demoErrorShake() {
-    indicator.add({ icon: indicator.icons.error, iconColor: 'error', title: 'Error de Red', subtitle: 'Con vibración lateral', animation: 'shake', duration: 3000 });
+    indicator.add({ icon: 'error', iconColor: 'error', title: 'Error de Red', subtitle: 'Con vibración lateral', animation: 'shake', duration: 3000 });
   }
 
   function demoBounce() {
-    indicator.add({ icon: indicator.icons.warning, iconColor: 'warning', title: 'Bounce', subtitle: 'Rebote vertical para warnings', animation: 'bounce', duration: 3000 });
+    indicator.add({ icon: 'warning', iconColor: 'warning', title: 'Bounce', subtitle: 'Rebote vertical para warnings', animation: 'bounce', duration: 3000 });
   }
 
   function demoGlow() {
-    indicator.add({ icon: indicator.icons.info, iconColor: 'info', title: 'Glow', subtitle: 'Resplandor pulsante del borde', animation: 'glow', duration: 3000 });
+    indicator.add({ icon: 'info', iconColor: 'info', title: 'Glow', subtitle: 'Resplandor pulsante del borde', animation: 'glow', duration: 3000 });
   }
 
   function demoBreathe() {
-    indicator.add({ type: 'thinking', icon: indicator.icons.thinking, title: 'Breathe', subtitle: 'Respiración lenta infinita...', animation: 'breathe', duration: 5000 });
+    indicator.add({ type: 'thinking', icon: 'thinking', title: 'Breathe', subtitle: 'Respiración lenta infinita...', animation: 'breathe', duration: 5000 });
   }
 
   function demoHeartbeat() {
@@ -1182,7 +1182,7 @@ indicator.setIslandWidth('normal');
   }
 
   function demoRipple() {
-    indicator.add({ type: 'generic', icon: indicator.icons.success, animation: 'ripple', title: 'Ripple', subtitle: 'Onda expansiva desde el borde', duration: 3000 });
+    indicator.add({ type: 'generic', icon: 'success', animation: 'ripple', title: 'Ripple', subtitle: 'Onda expansiva desde el borde', duration: 3000 });
   }
 
   function demoSwing() {
@@ -1190,51 +1190,51 @@ indicator.setIslandWidth('normal');
   }
 
   function demoTypingDots() {
-    indicator.add({ type: 'generic', icon: indicator.icons.typingDots, title: 'Escribiendo', subtitle: 'El asistente está escribiendo...', duration: 4000 });
+    indicator.add({ type: 'generic', icon: 'typingDots', title: 'Escribiendo', subtitle: 'El asistente está escribiendo...', duration: 4000 });
   }
 
   function demoProgressOrbit() {
-    indicator.add({ icon: indicator.icons.progressOrbit, title: 'Procesando', subtitle: 'Órbita de puntos alternativa', duration: 4000 });
+    indicator.add({ icon: 'progressOrbit', title: 'Procesando', subtitle: 'Órbita de puntos alternativa', duration: 4000 });
   }
 
   function demoIconColor() {
-    indicator.add({ type: 'generic', icon: indicator.icons.success, iconColor: '#a855f7', title: 'Color Personalizado', subtitle: 'Icono success en púrpura', duration: 3000 });
+    indicator.add({ type: 'generic', icon: 'success', iconColor: '#a855f7', title: 'Color Personalizado', subtitle: 'Icono success en púrpura', duration: 3000 });
   }
 
   function demoSlideSpring() {
-    indicator.add({ icon: indicator.icons.info, entryAnimation: 'slide-spring', title: 'Slide Spring', subtitle: 'Entrada deslizante con rebote', duration: 3000 });
+    indicator.add({ icon: 'info', entryAnimation: 'slide-spring', title: 'Slide Spring', subtitle: 'Entrada deslizante con rebote', duration: 3000 });
   }
 
   /* ── 3. IA & Estado ─────────────────────────── */
 
   function demoLoading() {
-    indicator.add({ type: 'loading', icon: indicator.icons.loading, title: 'Cargando Entorno', subtitle: 'Preparando componentes...', duration: 4000 });
+    indicator.add({ type: 'loading', icon: 'loading', title: 'Cargando Entorno', subtitle: 'Preparando componentes...', duration: 4000 });
   }
 
   function demoThinking() {
-    indicator.add({ type: 'thinking', icon: indicator.icons.thinking, title: 'IA pensando', subtitle: 'Analizando requerimientos...', duration: 5000 });
+    indicator.add({ type: 'thinking', icon: 'thinking', title: 'IA pensando', subtitle: 'Analizando requerimientos...', duration: 5000 });
   }
 
   function demoSpeaking() {
-    indicator.add({ type: 'generic', icon: indicator.icons.speaking, title: 'Asistente', subtitle: 'Hablando ahora...', duration: 3000 });
+    indicator.add({ type: 'generic', icon: 'speaking', title: 'Asistente', subtitle: 'Hablando ahora...', duration: 3000 });
   }
 
   function demoListening() {
-    indicator.add({ type: 'warning', icon: indicator.icons.listening, title: 'Escuchando', subtitle: 'Dime qué necesitas', duration: 4000 });
+    indicator.add({ type: 'warning', icon: 'listening', title: 'Escuchando', subtitle: 'Dime qué necesitas', duration: 4000 });
   }
 
   /* ── 4. Progreso ────────────────────────────── */
 
   function demoDownload() {
-    indicator.add({ type: 'info', icon: indicator.icons.download, title: 'Descargando Assets', subtitle: 'package_final.zip', progress: 0.75, duration: 4000 });
+    indicator.add({ type: 'info', icon: 'download', title: 'Descargando Assets', subtitle: 'package_final.zip', progress: 0.75, duration: 4000 });
   }
 
   function demoUpload() {
-    const task = indicator.add({ type: 'generic', icon: indicator.icons.upload, title: 'Subiendo Video', subtitle: '0%', progress: 0 });
+    const task = indicator.add({ type: 'generic', icon: 'upload', title: 'Subiendo Video', subtitle: '0%', progress: 0 });
     let p = 0;
     const itv = setInterval(() => {
       p += 0.2;
-      if (p >= 1) { clearInterval(itv); indicator.update(task.id, { progress: 1, subtitle: 'Completado', type: 'success', icon: indicator.icons.success, duration: 2000 }); }
+      if (p >= 1) { clearInterval(itv); indicator.update(task.id, { progress: 1, subtitle: 'Completado', type: 'success', icon: 'success', duration: 2000 }); }
       else indicator.update(task.id, { progress: p, subtitle: `${Math.round(p * 100)}%` });
     }, 700);
   }
@@ -1254,7 +1254,7 @@ indicator.setIslandWidth('normal');
 
   function demoActionsSuccess() {
     indicator.add({
-      type: 'success', icon: indicator.icons.success, title: 'Archivo exportado', subtitle: '¿Deseas abrir la carpeta?', duration: 5000,
+      type: 'success', icon: 'success', title: 'Archivo exportado', subtitle: '¿Deseas abrir la carpeta?', duration: 5000,
       actions: [
         { label: 'Ver Carpeta', type: 'primary', icon: '<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>', onClick: () => console.log('Abriendo carpeta...') },
         { label: 'Descartar', onClick: (ctx) => indicator.remove(ctx.activityId) }
@@ -1264,7 +1264,7 @@ indicator.setIslandWidth('normal');
 
   function demoActionsError() {
     indicator.add({
-      type: 'error', icon: indicator.icons.error, title: 'Error de conexión', subtitle: 'No se pudo sincronizar', isBlocking: true,
+      type: 'error', icon: 'error', title: 'Error de conexión', subtitle: 'No se pudo sincronizar', isBlocking: true,
       actions: [
         { label: 'Reintentar', type: 'primary', onClick: () => demoSuccess() },
         { label: 'Cancelar', onClick: (ctx) => indicator.remove(ctx.activityId) }
@@ -1275,21 +1275,21 @@ indicator.setIslandWidth('normal');
   /* ── 6. Cola & Grupos ───────────────────────── */
 
   function demoNormalQueue() {
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Cola 1', duration: 1500 });
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Cola 2', duration: 1500, waitToDisplay: true });
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Cola 3', duration: 1500, waitToDisplay: true });
+    indicator.add({ type: 'info', icon: 'info', title: 'Cola 1', duration: 1500 });
+    indicator.add({ type: 'info', icon: 'info', title: 'Cola 2', duration: 1500, waitToDisplay: true });
+    indicator.add({ type: 'info', icon: 'info', title: 'Cola 3', duration: 1500, waitToDisplay: true });
   }
 
   function demoWaitToDisplay() {
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Primera', subtitle: 'Estoy ocupando la isla 2s', duration: 2000 });
-    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Esperé mi turno', subtitle: 'Mis 3s empiezan ahora que me ves', duration: 3000, waitToDisplay: true, showCountdown: true });
+    indicator.add({ type: 'info', icon: 'info', title: 'Primera', subtitle: 'Estoy ocupando la isla 2s', duration: 2000 });
+    indicator.add({ type: 'success', icon: 'success', title: 'Esperé mi turno', subtitle: 'Mis 3s empiezan ahora que me ves', duration: 3000, waitToDisplay: true, showCountdown: true });
   }
 
   function demoHighPriority() {
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Tarea en curso...', duration: 5000 });
+    indicator.add({ type: 'info', icon: 'info', title: 'Tarea en curso...', duration: 5000 });
     setTimeout(() => {
       indicator.add({
-        type: 'error', icon: indicator.icons.error, priority: 'high', title: 'PRIORIDAD ALTA',
+        type: 'error', icon: 'error', priority: 'high', title: 'PRIORIDAD ALTA',
         subtitle: 'He saltado la cola automáticamente', duration: 4000,
         soundUrl: 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'
       });
@@ -1301,7 +1301,7 @@ indicator.setIslandWidth('normal');
       setTimeout(() => {
         indicator.add({
           groupId: 'upload-batch', groupTitle: 'Subiendo {n} archivos',
-          type: 'loading', icon: indicator.icons.loading, title: 'Subiendo archivo...',
+          type: 'loading', icon: 'loading', title: 'Subiendo archivo...',
           subtitle: `Fichero_${i}.pdf`, progress: i * 0.2, duration: 3000
         });
       }, i * 400);
@@ -1312,32 +1312,32 @@ indicator.setIslandWidth('normal');
 
   function demoHtmlSubtitle() {
     indicator.add({
-      type: 'info', icon: indicator.icons.info, title: 'Nueva version',
+      type: 'info', icon: 'info', title: 'Nueva version',
       subtitle: 'Incluye <strong>mejoras criticas</strong>. <a href="#" onclick="event.stopPropagation()">Ver cambios</a>',
       duration: 5000
     });
   }
 
   function demoMorphing() {
-    const task = indicator.add({ type: 'loading', icon: indicator.icons.loading, title: 'Procesando', subtitle: 'Analizando datos...' });
-    setTimeout(() => indicator.update(task.id, { type: 'success', icon: indicator.icons.success, title: 'Completado', subtitle: 'Analisis finalizado', duration: 2000 }), 3000);
+    const task = indicator.add({ type: 'loading', icon: 'loading', title: 'Procesando', subtitle: 'Analizando datos...' });
+    setTimeout(() => indicator.update(task.id, { type: 'success', icon: 'success', title: 'Completado', subtitle: 'Analisis finalizado', duration: 2000 }), 3000);
   }
 
   function demoExitFade() {
-    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Exit Fade', subtitle: 'Se desvanece al cerrar', duration: 2000, exitAnimation: 'fade' });
+    indicator.add({ type: 'success', icon: 'success', title: 'Exit Fade', subtitle: 'Se desvanece al cerrar', duration: 2000, exitAnimation: 'fade' });
   }
 
   function demoExitShrink() {
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Exit Shrink', subtitle: 'Rebote elastico inverso', duration: 2000, exitAnimation: 'shrink-bounce' });
+    indicator.add({ type: 'info', icon: 'info', title: 'Exit Shrink', subtitle: 'Rebote elastico inverso', duration: 2000, exitAnimation: 'shrink-bounce' });
   }
 
   function demoCountdown() {
-    indicator.add({ type: 'info', icon: indicator.icons.info, title: 'Countdown', subtitle: 'Observa la barra inferior (hover para pausar)', duration: 5000, showCountdown: true });
+    indicator.add({ type: 'info', icon: 'info', title: 'Countdown', subtitle: 'Observa la barra inferior (hover para pausar)', duration: 5000, showCountdown: true });
   }
 
   function demoUndo() {
     indicator.addUndo({
-      type: 'warning', icon: indicator.icons.warning, title: 'Elemento eliminado',
+      type: 'warning', icon: 'warning', title: 'Elemento eliminado',
       subtitle: '1 archivo movido a la papelera',
       undoDuration: 5000,
       onUndo: () => console.log('Accion deshecha!'),
@@ -1347,30 +1347,30 @@ indicator.setIslandWidth('normal');
 
   function demoChain() {
     indicator.chain([
-      { type: 'loading', icon: indicator.icons.loading, title: 'Paso 1', subtitle: 'Conectando al servidor...', duration: 2000 },
-      { type: 'loading', icon: indicator.icons.download, title: 'Paso 2', subtitle: 'Descargando datos...', duration: 2000 },
-      { type: 'success', icon: indicator.icons.success, title: 'Completado', subtitle: 'Todo listo', duration: 2000, exitAnimation: 'fade' }
+      { type: 'loading', icon: 'loading', title: 'Paso 1', subtitle: 'Conectando al servidor...', duration: 2000 },
+      { type: 'loading', icon: 'download', title: 'Paso 2', subtitle: 'Descargando datos...', duration: 2000 },
+      { type: 'success', icon: 'success', title: 'Completado', subtitle: 'Todo listo', duration: 2000, exitAnimation: 'fade' }
     ]);
   }
 
   function demoConfetti() {
-    indicator.add({ type: 'success', icon: indicator.icons.success, title: 'Increible!', subtitle: 'Celebrando con confetti', duration: 3000, confetti: true });
+    indicator.add({ type: 'success', icon: 'success', title: 'Increible!', subtitle: 'Celebrando con confetti', duration: 3000, confetti: true });
   }
 
   function demoCustomType() {
-    indicator.add({ type: 'premium', icon: indicator.icons.premium, title: 'Premium Activado', subtitle: 'Tipo personalizado con fondo purpura', duration: 3000 });
+    indicator.add({ type: 'premium', icon: 'premium', title: 'Premium Activado', subtitle: 'Tipo personalizado con fondo purpura', duration: 3000 });
   }
 
   function demoCustomIcon() {
-    indicator.add({ type: 'generic', icon: indicator.icons.heart, iconColor: '#f43f5e', title: 'Te gusta esto', subtitle: 'Icono corazon añadido via constructor', duration: 3000 });
+    indicator.add({ type: 'generic', icon: 'heart', iconColor: '#f43f5e', title: 'Te gusta esto', subtitle: 'Icono corazon añadido via constructor', duration: 3000 });
   }
 
   function demoGlowColor() {
-    indicator.add({ icon: indicator.icons.info, title: 'Glow Rosa', subtitle: 'Shadow personalizado con glowColor', animation: 'glow', glowColor: '#f43f5e', duration: 3000 });
+    indicator.add({ icon: 'info', title: 'Glow Rosa', subtitle: 'Shadow personalizado con glowColor', animation: 'glow', glowColor: '#f43f5e', duration: 3000 });
   }
 
   function demoAutoContrast() {
-    indicator.add({ type: 'light', icon: indicator.icons.info, title: 'Fondo Claro', subtitle: 'Texto oscuro calculado automaticamente', duration: 3000 });
+    indicator.add({ type: 'light', icon: 'info', title: 'Fondo Claro', subtitle: 'Texto oscuro calculado automaticamente', duration: 3000 });
   }
 
   /* ── Info Drawer ───────────────────────────── */
@@ -1386,10 +1386,10 @@ indicator.setIslandWidth('normal');
     },
     demoSuccess: {
       title: '\u00c9xito',
-      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Tarea Completada',\n  subtitle: 'Todo se proces\u00f3 correctamente',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  type: 'success',\n  icon: 'success',\n  title: 'Tarea Completada',\n  subtitle: 'Todo se proces\u00f3 correctamente',\n  duration: 3000\n});`,
       props: [
         { name: 'type', value: "'success'", desc: 'Tipo success. Aplica fondo verde (#22c55e).' },
-        { name: 'icon', value: 'indicator.icons.success', desc: 'Icono SVG de check predefinido.' },
+        { name: 'icon', value: "'success'", desc: 'Icono SVG de check predefinido.' },
         { name: 'title', value: "'Tarea Completada'", desc: 'Texto principal de la notificaci\u00f3n.' },
         { name: 'subtitle', value: "'Todo se proces\u00f3...'", desc: 'Texto secundario debajo del t\u00edtulo.' },
         { name: 'duration', value: '3000', desc: 'Se cierra autom\u00e1ticamente tras 3 segundos.' }
@@ -1397,10 +1397,10 @@ indicator.setIslandWidth('normal');
     },
     demoError: {
       title: 'Error',
-      code: `indicator.add({\n  type: 'error',\n  icon: indicator.icons.error,\n  title: 'Error Simple',\n  subtitle: 'Ha ocurrido un problema',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  type: 'error',\n  icon: 'error',\n  title: 'Error Simple',\n  subtitle: 'Ha ocurrido un problema',\n  duration: 3000\n});`,
       props: [
         { name: 'type', value: "'error'", desc: 'Tipo error. Aplica fondo rojo (#ef4444).' },
-        { name: 'icon', value: 'indicator.icons.error', desc: 'Icono SVG de X predefinido.' },
+        { name: 'icon', value: "'error'", desc: 'Icono SVG de X predefinido.' },
         { name: 'title', value: "'Error Simple'", desc: 'Texto principal.' },
         { name: 'subtitle', value: "'Ha ocurrido...'", desc: 'Texto secundario.' },
         { name: 'duration', value: '3000', desc: 'Auto-cierre en 3 segundos.' }
@@ -1408,10 +1408,10 @@ indicator.setIslandWidth('normal');
     },
     demoInfo: {
       title: 'Informaci\u00f3n',
-      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Informaci\u00f3n',\n  subtitle: 'Sistema actualizado a v2.0',\n  duration: 4000\n});`,
+      code: `indicator.add({\n  type: 'info',\n  icon: 'info',\n  title: 'Informaci\u00f3n',\n  subtitle: 'Sistema actualizado a v2.0',\n  duration: 4000\n});`,
       props: [
         { name: 'type', value: "'info'", desc: 'Tipo info. Aplica fondo azul (#3b82f6).' },
-        { name: 'icon', value: 'indicator.icons.info', desc: 'Icono SVG de informaci\u00f3n predefinido.' },
+        { name: 'icon', value: "'info'", desc: 'Icono SVG de informaci\u00f3n predefinido.' },
         { name: 'title', value: "'Informaci\u00f3n'", desc: 'Texto principal.' },
         { name: 'subtitle', value: "'Sistema actualizado...'", desc: 'Texto secundario.' },
         { name: 'duration', value: '4000', desc: 'Auto-cierre en 4 segundos.' }
@@ -1419,19 +1419,19 @@ indicator.setIslandWidth('normal');
     },
     demoWarning: {
       title: 'Aviso',
-      code: `indicator.add({\n  type: 'warning',\n  icon: indicator.icons.warning,\n  title: 'Aviso de Seguridad',\n  subtitle: 'Inicio de sesi\u00f3n extra\u00f1o',\n  showCloseButton: true,\n  soundUrl: 'https://...preview.mp3'\n});`,
+      code: `indicator.add({\n  type: 'warning',\n  icon: 'warning',\n  title: 'Aviso de Seguridad',\n  subtitle: 'Inicio de sesi\u00f3n extra\u00f1o',\n  showCloseButton: true,\n  soundUrl: 'https://...preview.mp3'\n});`,
       props: [
         { name: 'type', value: "'warning'", desc: 'Tipo warning. Aplica fondo \u00e1mbar (#f59e0b).' },
-        { name: 'icon', value: 'indicator.icons.warning', desc: 'Icono SVG de alerta predefinido.' },
+        { name: 'icon', value: "'warning'", desc: 'Icono SVG de alerta predefinido.' },
         { name: 'showCloseButton', value: 'true', desc: 'Muestra un bot\u00f3n X para cerrar manualmente.' },
         { name: 'soundUrl', value: "'https://...'", desc: 'URL de audio que se reproduce al mostrarse.' }
       ]
     },
     demoSuccessPulse: {
       title: '\u00c9xito con Pulso',
-      code: `indicator.add({\n  icon: indicator.icons.success,\n  iconColor: 'success',\n  title: 'Operaci\u00f3n Exitosa',\n  subtitle: 'Con animaci\u00f3n de pulso',\n  animation: 'pulse',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  icon: 'success',\n  iconColor: 'success',\n  title: 'Operaci\u00f3n Exitosa',\n  subtitle: 'Con animaci\u00f3n de pulso',\n  animation: 'pulse',\n  duration: 3000\n});`,
       props: [
-        { name: 'icon', value: 'indicator.icons.success', desc: 'Icono SVG de check.' },
+        { name: 'icon', value: "'success'", desc: 'Icono SVG de check.' },
         { name: 'iconColor', value: "'success'", desc: 'Colorea el icono con el color del tipo success (#22c55e).' },
         { name: 'animation', value: "'pulse'", desc: 'Escalado suave de confirmaci\u00f3n.' },
         { name: 'duration', value: '3000', desc: 'Auto-cierre en 3 segundos.' }
@@ -1439,9 +1439,9 @@ indicator.setIslandWidth('normal');
     },
     demoErrorShake: {
       title: 'Error con Shake',
-      code: `indicator.add({\n  icon: indicator.icons.error,\n  iconColor: 'error',\n  title: 'Error de Red',\n  subtitle: 'Con vibraci\u00f3n lateral',\n  animation: 'shake',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  icon: 'error',\n  iconColor: 'error',\n  title: 'Error de Red',\n  subtitle: 'Con vibraci\u00f3n lateral',\n  animation: 'shake',\n  duration: 3000\n});`,
       props: [
-        { name: 'icon', value: 'indicator.icons.error', desc: 'Icono SVG de X.' },
+        { name: 'icon', value: "'error'", desc: 'Icono SVG de X.' },
         { name: 'iconColor', value: "'error'", desc: 'Colorea el icono con el color del tipo error (#ef4444).' },
         { name: 'animation', value: "'shake'", desc: 'Vibraci\u00f3n lateral agresiva con intensidad decreciente.' },
         { name: 'duration', value: '3000', desc: 'Auto-cierre en 3 segundos.' }
@@ -1449,7 +1449,7 @@ indicator.setIslandWidth('normal');
     },
     demoBounce: {
       title: 'Bounce',
-      code: `indicator.add({\n  icon: indicator.icons.warning,\n  iconColor: 'warning',\n  title: 'Bounce',\n  subtitle: 'Rebote vertical para warnings',\n  animation: 'bounce',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  icon: 'warning',\n  iconColor: 'warning',\n  title: 'Bounce',\n  subtitle: 'Rebote vertical para warnings',\n  animation: 'bounce',\n  duration: 3000\n});`,
       props: [
         { name: 'animation', value: "'bounce'", desc: 'Rebote vertical que llama la atenci\u00f3n.' },
         { name: 'iconColor', value: "'warning'", desc: 'Colorea el icono con el color warning (#f59e0b).' }
@@ -1457,7 +1457,7 @@ indicator.setIslandWidth('normal');
     },
     demoGlow: {
       title: 'Glow',
-      code: `indicator.add({\n  icon: indicator.icons.info,\n  iconColor: 'info',\n  title: 'Glow',\n  subtitle: 'Resplandor pulsante del borde',\n  animation: 'glow',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  icon: 'info',\n  iconColor: 'info',\n  title: 'Glow',\n  subtitle: 'Resplandor pulsante del borde',\n  animation: 'glow',\n  duration: 3000\n});`,
       props: [
         { name: 'animation', value: "'glow'", desc: 'Resplandor pulsante del borde con box-shadow.' },
         { name: 'iconColor', value: "'info'", desc: 'Colorea el icono con el color info (#3b82f6).' }
@@ -1465,7 +1465,7 @@ indicator.setIslandWidth('normal');
     },
     demoBreathe: {
       title: 'Breathe',
-      code: `indicator.add({\n  type: 'thinking',\n  icon: indicator.icons.thinking,\n  title: 'Breathe',\n  subtitle: 'Respiraci\u00f3n lenta infinita...',\n  animation: 'breathe',\n  duration: 5000\n});`,
+      code: `indicator.add({\n  type: 'thinking',\n  icon: 'thinking',\n  title: 'Breathe',\n  subtitle: 'Respiraci\u00f3n lenta infinita...',\n  animation: 'breathe',\n  duration: 5000\n});`,
       props: [
         { name: 'type', value: "'thinking'", desc: 'Tipo thinking. Sin color de fondo espec\u00edfico.' },
         { name: 'animation', value: "'breathe'", desc: 'Respiraci\u00f3n lenta infinita con escala y opacidad.' },
@@ -1488,7 +1488,7 @@ indicator.setIslandWidth('normal');
     },
     demoRipple: {
       title: 'Ripple',
-      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.success,\n  animation: 'ripple',\n  title: 'Ripple',\n  subtitle: 'Onda expansiva desde el borde',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  type: 'generic',\n  icon: 'success',\n  animation: 'ripple',\n  title: 'Ripple',\n  subtitle: 'Onda expansiva desde el borde',\n  duration: 3000\n});`,
       props: [
         { name: 'animation', value: "'ripple'", desc: 'Onda expansiva desde el borde de la isla.' }
       ]
@@ -1502,75 +1502,75 @@ indicator.setIslandWidth('normal');
     },
     demoTypingDots: {
       title: 'Typing Dots',
-      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.typingDots,\n  title: 'Escribiendo',\n  subtitle: 'El asistente est\u00e1 escribiendo...',\n  duration: 4000\n});`,
+      code: `indicator.add({\n  type: 'generic',\n  icon: 'typingDots',\n  title: 'Escribiendo',\n  subtitle: 'El asistente est\u00e1 escribiendo...',\n  duration: 4000\n});`,
       props: [
-        { name: 'icon', value: 'indicator.icons.typingDots', desc: 'Icono animado de tres puntos rebotando.' }
+        { name: 'icon', value: "'typingDots'", desc: 'Icono animado de tres puntos rebotando.' }
       ]
     },
     demoProgressOrbit: {
       title: 'Progress Orbit',
-      code: `indicator.add({\n  icon: indicator.icons.progressOrbit,\n  title: 'Procesando',\n  subtitle: '\u00d3rbita de puntos alternativa',\n  duration: 4000\n});`,
+      code: `indicator.add({\n  icon: 'progressOrbit',\n  title: 'Procesando',\n  subtitle: '\u00d3rbita de puntos alternativa',\n  duration: 4000\n});`,
       props: [
-        { name: 'icon', value: 'indicator.icons.progressOrbit', desc: 'Icono animado de \u00f3rbita de puntos giratorios.' }
+        { name: 'icon', value: "'progressOrbit'", desc: 'Icono animado de \u00f3rbita de puntos giratorios.' }
       ]
     },
     demoIconColor: {
       title: 'Icon Color',
-      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.success,\n  iconColor: '#a855f7',\n  title: 'Color Personalizado',\n  subtitle: 'Icono success en p\u00farpura',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  type: 'generic',\n  icon: 'success',\n  iconColor: '#a855f7',\n  title: 'Color Personalizado',\n  subtitle: 'Icono success en p\u00farpura',\n  duration: 3000\n});`,
       props: [
         { name: 'iconColor', value: "'#a855f7'", desc: 'Color hex aplicado al icono SVG. Acepta nombre de tipo o hex directo.' },
-        { name: 'icon', value: 'indicator.icons.success', desc: 'El icono de check, pero coloreado en p\u00farpura por iconColor.' }
+        { name: 'icon', value: "'success'", desc: 'El icono de check, pero coloreado en p\u00farpura por iconColor.' }
       ]
     },
     demoSlideSpring: {
       title: 'Slide Spring',
-      code: `indicator.add({\n  icon: indicator.icons.info,\n  entryAnimation: 'slide-spring',\n  title: 'Slide Spring',\n  subtitle: 'Entrada deslizante con rebote',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  icon: 'info',\n  entryAnimation: 'slide-spring',\n  title: 'Slide Spring',\n  subtitle: 'Entrada deslizante con rebote',\n  duration: 3000\n});`,
       props: [
         { name: 'entryAnimation', value: "'slide-spring'", desc: 'La isla entra desliz\u00e1ndose con rebote el\u00e1stico en vez del scale cl\u00e1sico.' }
       ]
     },
     demoLoading: {
       title: 'Cargando',
-      code: `indicator.add({\n  type: 'loading',\n  icon: indicator.icons.loading,\n  title: 'Cargando Entorno',\n  subtitle: 'Preparando componentes...',\n  duration: 4000\n});`,
+      code: `indicator.add({\n  type: 'loading',\n  icon: 'loading',\n  title: 'Cargando Entorno',\n  subtitle: 'Preparando componentes...',\n  duration: 4000\n});`,
       props: [
         { name: 'type', value: "'loading'", desc: 'Tipo loading. Sin color de fondo sem\u00e1ntico.' },
-        { name: 'icon', value: 'indicator.icons.loading', desc: 'Spinner animado predefinido.' }
+        { name: 'icon', value: "'loading'", desc: 'Spinner animado predefinido.' }
       ]
     },
     demoThinking: {
       title: 'Pensando (IA)',
-      code: `indicator.add({\n  type: 'thinking',\n  icon: indicator.icons.thinking,\n  title: 'IA pensando',\n  subtitle: 'Analizando requerimientos...',\n  duration: 5000\n});`,
+      code: `indicator.add({\n  type: 'thinking',\n  icon: 'thinking',\n  title: 'IA pensando',\n  subtitle: 'Analizando requerimientos...',\n  duration: 5000\n});`,
       props: [
         { name: 'type', value: "'thinking'", desc: 'Tipo thinking para estados de IA.' },
-        { name: 'icon', value: 'indicator.icons.thinking', desc: 'Icono animado de cerebro/pensamiento.' }
+        { name: 'icon', value: "'thinking'", desc: 'Icono animado de cerebro/pensamiento.' }
       ]
     },
     demoSpeaking: {
       title: 'Hablando',
-      code: `indicator.add({\n  type: 'generic',\n  icon: indicator.icons.speaking,\n  title: 'Asistente',\n  subtitle: 'Hablando ahora...',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  type: 'generic',\n  icon: 'speaking',\n  title: 'Asistente',\n  subtitle: 'Hablando ahora...',\n  duration: 3000\n});`,
       props: [
-        { name: 'icon', value: 'indicator.icons.speaking', desc: 'Icono animado de ondas de sonido.' }
+        { name: 'icon', value: "'speaking'", desc: 'Icono animado de ondas de sonido.' }
       ]
     },
     demoListening: {
       title: 'Escuchando',
-      code: `indicator.add({\n  type: 'warning',\n  icon: indicator.icons.listening,\n  title: 'Escuchando',\n  subtitle: 'Dime qu\u00e9 necesitas',\n  duration: 4000\n});`,
+      code: `indicator.add({\n  type: 'warning',\n  icon: 'listening',\n  title: 'Escuchando',\n  subtitle: 'Dime qu\u00e9 necesitas',\n  duration: 4000\n});`,
       props: [
         { name: 'type', value: "'warning'", desc: 'Tipo warning para el fondo \u00e1mbar.' },
-        { name: 'icon', value: 'indicator.icons.listening', desc: 'Icono animado de micr\u00f3fono con pulso.' }
+        { name: 'icon', value: "'listening'", desc: 'Icono animado de micr\u00f3fono con pulso.' }
       ]
     },
     demoDownload: {
       title: 'Descarga',
-      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.download,\n  title: 'Descargando Assets',\n  subtitle: 'package_final.zip',\n  progress: 0.75,\n  duration: 4000\n});`,
+      code: `indicator.add({\n  type: 'info',\n  icon: 'download',\n  title: 'Descargando Assets',\n  subtitle: 'package_final.zip',\n  progress: 0.75,\n  duration: 4000\n});`,
       props: [
         { name: 'progress', value: '0.75', desc: 'Barra de progreso al 75%. Valor entre 0 y 1.' },
-        { name: 'icon', value: 'indicator.icons.download', desc: 'Icono de flecha de descarga.' }
+        { name: 'icon', value: "'download'", desc: 'Icono de flecha de descarga.' }
       ]
     },
     demoUpload: {
       title: 'Subida en Vivo',
-      code: `const task = indicator.add({\n  type: 'generic',\n  icon: indicator.icons.upload,\n  title: 'Subiendo Video',\n  subtitle: '0%',\n  progress: 0\n});\n\nsetInterval(() => {\n  p += 0.2;\n  if (p >= 1) {\n    indicator.update(task.id, {\n      progress: 1,\n      subtitle: 'Completado',\n      type: 'success',\n      icon: indicator.icons.success,\n      duration: 2000\n    });\n  } else {\n    indicator.update(task.id, {\n      progress: p,\n      subtitle: Math.round(p * 100) + '%'\n    });\n  }\n}, 700);`,
+      code: `const task = indicator.add({\n  type: 'generic',\n  icon: 'upload',\n  title: 'Subiendo Video',\n  subtitle: '0%',\n  progress: 0\n});\n\nsetInterval(() => {\n  p += 0.2;\n  if (p >= 1) {\n    indicator.update(task.id, {\n      progress: 1,\n      subtitle: 'Completado',\n      type: 'success',\n      icon: 'success',\n      duration: 2000\n    });\n  } else {\n    indicator.update(task.id, {\n      progress: p,\n      subtitle: Math.round(p * 100) + '%'\n    });\n  }\n}, 700);`,
       props: [
         { name: 'progress', value: '0 \u2192 1', desc: 'Progreso actualizado en tiempo real via update().' },
         { name: 'update()', value: 'task.id, patch', desc: 'M\u00e9todo para modificar una actividad activa. Produce morphing visual.' }
@@ -1588,7 +1588,7 @@ indicator.setIslandWidth('normal');
     },
     demoActionsSuccess: {
       title: '\u00c9xito + Acciones',
-      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Archivo exportado',\n  subtitle: '\u00bfDeseas abrir la carpeta?',\n  duration: 5000,\n  actions: [\n    { label: 'Ver Carpeta', type: 'primary',\n      icon: '<svg...>', onClick: () => {} },\n    { label: 'Descartar',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
+      code: `indicator.add({\n  type: 'success',\n  icon: 'success',\n  title: 'Archivo exportado',\n  subtitle: '\u00bfDeseas abrir la carpeta?',\n  duration: 5000,\n  actions: [\n    { label: 'Ver Carpeta', type: 'primary',\n      icon: '<svg...>', onClick: () => {} },\n    { label: 'Descartar',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
       props: [
         { name: 'actions', value: '[2 botones]', desc: 'Botones de acci\u00f3n combinados con tipo success.' },
         { name: 'duration', value: '5000', desc: 'M\u00e1s tiempo para que el usuario pulse un bot\u00f3n.' }
@@ -1596,7 +1596,7 @@ indicator.setIslandWidth('normal');
     },
     demoActionsError: {
       title: 'Error + Reintentar',
-      code: `indicator.add({\n  type: 'error',\n  icon: indicator.icons.error,\n  title: 'Error de conexi\u00f3n',\n  subtitle: 'No se pudo sincronizar',\n  isBlocking: true,\n  actions: [\n    { label: 'Reintentar', type: 'primary',\n      onClick: () => demoSuccess() },\n    { label: 'Cancelar',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
+      code: `indicator.add({\n  type: 'error',\n  icon: 'error',\n  title: 'Error de conexi\u00f3n',\n  subtitle: 'No se pudo sincronizar',\n  isBlocking: true,\n  actions: [\n    { label: 'Reintentar', type: 'primary',\n      onClick: () => demoSuccess() },\n    { label: 'Cancelar',\n      onClick: ctx => indicator.remove(ctx.activityId) }\n  ]\n});`,
       props: [
         { name: 'isBlocking', value: 'true', desc: 'Overlay que impide interactuar con el fondo hasta cerrar.' },
         { name: 'actions', value: '[2 botones]', desc: 'Reintentar lanza una nueva notificaci\u00f3n; Cancelar cierra.' }
@@ -1604,7 +1604,7 @@ indicator.setIslandWidth('normal');
     },
     demoNormalQueue: {
       title: 'Cola Normal',
-      code: `indicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Cola 1', duration: 1500 });\nindicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Cola 2', duration: 1500,\n  waitToDisplay: true });\nindicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Cola 3', duration: 1500,\n  waitToDisplay: true });`,
+      code: `indicator.add({ type: 'info', icon: 'info',\n  title: 'Cola 1', duration: 1500 });\nindicator.add({ type: 'info', icon: 'info',\n  title: 'Cola 2', duration: 1500,\n  waitToDisplay: true });\nindicator.add({ type: 'info', icon: 'info',\n  title: 'Cola 3', duration: 1500,\n  waitToDisplay: true });`,
       props: [
         { name: 'waitToDisplay', value: 'true', desc: 'El timer de duraci\u00f3n no arranca hasta que la actividad se muestra.' },
         { name: 'Cola FIFO', value: '\u2014', desc: 'Las notificaciones se muestran en orden de llegada, una tras otra.' }
@@ -1612,7 +1612,7 @@ indicator.setIslandWidth('normal');
     },
     demoWaitToDisplay: {
       title: 'Wait to Display',
-      code: `indicator.add({\n  type: 'info', icon: indicator.icons.info,\n  title: 'Primera',\n  subtitle: 'Estoy ocupando la isla 2s',\n  duration: 2000\n});\nindicator.add({\n  type: 'success', icon: indicator.icons.success,\n  title: 'Esper\u00e9 mi turno',\n  subtitle: 'Mis 3s empiezan ahora que me ves',\n  duration: 3000,\n  waitToDisplay: true,\n  showCountdown: true\n});`,
+      code: `indicator.add({\n  type: 'info', icon: 'info',\n  title: 'Primera',\n  subtitle: 'Estoy ocupando la isla 2s',\n  duration: 2000\n});\nindicator.add({\n  type: 'success', icon: 'success',\n  title: 'Esper\u00e9 mi turno',\n  subtitle: 'Mis 3s empiezan ahora que me ves',\n  duration: 3000,\n  waitToDisplay: true,\n  showCountdown: true\n});`,
       props: [
         { name: 'waitToDisplay', value: 'true', desc: 'La duraci\u00f3n cuenta desde que se muestra, no desde que se a\u00f1ade a la cola.' },
         { name: 'showCountdown', value: 'true', desc: 'Barra visual de countdown en la parte inferior de la isla.' }
@@ -1620,7 +1620,7 @@ indicator.setIslandWidth('normal');
     },
     demoHighPriority: {
       title: 'Alta Prioridad',
-      code: `indicator.add({ type: 'info', icon: indicator.icons.info,\n  title: 'Tarea en curso...', duration: 5000 });\n\nsetTimeout(() => {\n  indicator.add({\n    type: 'error', icon: indicator.icons.error,\n    priority: 'high',\n    title: 'PRIORIDAD ALTA',\n    subtitle: 'He saltado la cola',\n    duration: 4000,\n    soundUrl: 'https://...mp3'\n  });\n}, 1000);`,
+      code: `indicator.add({ type: 'info', icon: 'info',\n  title: 'Tarea en curso...', duration: 5000 });\n\nsetTimeout(() => {\n  indicator.add({\n    type: 'error', icon: 'error',\n    priority: 'high',\n    title: 'PRIORIDAD ALTA',\n    subtitle: 'He saltado la cola',\n    duration: 4000,\n    soundUrl: 'https://...mp3'\n  });\n}, 1000);`,
       props: [
         { name: 'priority', value: "'high'", desc: 'Salta delante de todas las notificaciones en cola.' },
         { name: 'soundUrl', value: "'https://...'", desc: 'Reproduce un sonido al mostrarse.' }
@@ -1628,7 +1628,7 @@ indicator.setIslandWidth('normal');
     },
     demoSmartGroup: {
       title: 'Smart Group',
-      code: `for (let i = 1; i <= 4; i++) {\n  setTimeout(() => {\n    indicator.add({\n      groupId: 'upload-batch',\n      groupTitle: 'Subiendo {n} archivos',\n      type: 'loading',\n      icon: indicator.icons.loading,\n      title: 'Subiendo archivo...',\n      subtitle: 'Fichero_' + i + '.pdf',\n      progress: i * 0.2,\n      duration: 3000\n    });\n  }, i * 400);\n}`,
+      code: `for (let i = 1; i <= 4; i++) {\n  setTimeout(() => {\n    indicator.add({\n      groupId: 'upload-batch',\n      groupTitle: 'Subiendo {n} archivos',\n      type: 'loading',\n      icon: 'loading',\n      title: 'Subiendo archivo...',\n      subtitle: 'Fichero_' + i + '.pdf',\n      progress: i * 0.2,\n      duration: 3000\n    });\n  }, i * 400);\n}`,
       props: [
         { name: 'groupId', value: "'upload-batch'", desc: 'Agrupa actividades bajo un mismo identificador.' },
         { name: 'groupTitle', value: "'Subiendo {n} archivos'", desc: '{n} se reemplaza por el n\u00famero de items activos en el grupo.' },
@@ -1637,14 +1637,14 @@ indicator.setIslandWidth('normal');
     },
     demoHtmlSubtitle: {
       title: 'HTML Subtitle',
-      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Nueva version',\n  subtitle: 'Incluye <strong>mejoras criticas</strong>.\\n    <a href="#">Ver cambios</a>',\n  duration: 5000\n});`,
+      code: `indicator.add({\n  type: 'info',\n  icon: 'info',\n  title: 'Nueva version',\n  subtitle: 'Incluye <strong>mejoras criticas</strong>.\\n    <a href="#">Ver cambios</a>',\n  duration: 5000\n});`,
       props: [
         { name: 'subtitle', value: "'HTML...'", desc: 'Acepta HTML: <strong>, <a>, <code>, etc. Se renderiza directamente.' }
       ]
     },
     demoMorphing: {
       title: 'Morphing',
-      code: `const task = indicator.add({\n  type: 'loading',\n  icon: indicator.icons.loading,\n  title: 'Procesando',\n  subtitle: 'Analizando datos...'\n});\n\nsetTimeout(() => {\n  indicator.update(task.id, {\n    type: 'success',\n    icon: indicator.icons.success,\n    title: 'Completado',\n    subtitle: 'Analisis finalizado',\n    duration: 2000\n  });\n}, 3000);`,
+      code: `const task = indicator.add({\n  type: 'loading',\n  icon: 'loading',\n  title: 'Procesando',\n  subtitle: 'Analizando datos...'\n});\n\nsetTimeout(() => {\n  indicator.update(task.id, {\n    type: 'success',\n    icon: 'success',\n    title: 'Completado',\n    subtitle: 'Analisis finalizado',\n    duration: 2000\n  });\n}, 3000);`,
       props: [
         { name: 'update()', value: 'task.id, patch', desc: 'Modifica la actividad activa. Al cambiar type se produce morphing visual.' },
         { name: 'type (cambio)', value: 'loading \u2192 success', desc: 'El fondo transiciona suavemente del color loading al success.' }
@@ -1652,21 +1652,21 @@ indicator.setIslandWidth('normal');
     },
     demoExitFade: {
       title: 'Exit Fade',
-      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Exit Fade',\n  subtitle: 'Se desvanece al cerrar',\n  duration: 2000,\n  exitAnimation: 'fade'\n});`,
+      code: `indicator.add({\n  type: 'success',\n  icon: 'success',\n  title: 'Exit Fade',\n  subtitle: 'Se desvanece al cerrar',\n  duration: 2000,\n  exitAnimation: 'fade'\n});`,
       props: [
         { name: 'exitAnimation', value: "'fade'", desc: 'Desvanecimiento suave con escala descendente al cerrarse.' }
       ]
     },
     demoExitShrink: {
       title: 'Exit Shrink',
-      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Exit Shrink',\n  subtitle: 'Rebote el\u00e1stico inverso',\n  duration: 2000,\n  exitAnimation: 'shrink-bounce'\n});`,
+      code: `indicator.add({\n  type: 'info',\n  icon: 'info',\n  title: 'Exit Shrink',\n  subtitle: 'Rebote el\u00e1stico inverso',\n  duration: 2000,\n  exitAnimation: 'shrink-bounce'\n});`,
       props: [
         { name: 'exitAnimation', value: "'shrink-bounce'", desc: 'Rebote el\u00e1stico inverso al cerrarse la isla.' }
       ]
     },
     demoCountdown: {
       title: 'Countdown',
-      code: `indicator.add({\n  type: 'info',\n  icon: indicator.icons.info,\n  title: 'Countdown',\n  subtitle: 'Observa la barra inferior\\n    (hover para pausar)',\n  duration: 5000,\n  showCountdown: true\n});`,
+      code: `indicator.add({\n  type: 'info',\n  icon: 'info',\n  title: 'Countdown',\n  subtitle: 'Observa la barra inferior\\n    (hover para pausar)',\n  duration: 5000,\n  showCountdown: true\n});`,
       props: [
         { name: 'showCountdown', value: 'true', desc: 'Barra visual de countdown en la parte inferior. Se pausa con hover.' },
         { name: 'duration', value: '5000', desc: 'La barra se vac\u00eda progresivamente durante 5 segundos.' }
@@ -1674,7 +1674,7 @@ indicator.setIslandWidth('normal');
     },
     demoUndo: {
       title: 'Undo',
-      code: `indicator.addUndo({\n  type: 'warning',\n  icon: indicator.icons.warning,\n  title: 'Elemento eliminado',\n  subtitle: '1 archivo movido a la papelera',\n  undoDuration: 5000,\n  onUndo: () => console.log('Deshecho!'),\n  onConfirm: () => console.log('Confirmado')\n});`,
+      code: `indicator.addUndo({\n  type: 'warning',\n  icon: 'warning',\n  title: 'Elemento eliminado',\n  subtitle: '1 archivo movido a la papelera',\n  undoDuration: 5000,\n  onUndo: () => console.log('Deshecho!'),\n  onConfirm: () => console.log('Confirmado')\n});`,
       props: [
         { name: 'addUndo()', value: '\u2014', desc: 'M\u00e9todo especial que muestra un bot\u00f3n "Deshacer" con countdown.' },
         { name: 'undoDuration', value: '5000', desc: 'Tiempo para deshacer antes de confirmar la acci\u00f3n.' },
@@ -1684,7 +1684,7 @@ indicator.setIslandWidth('normal');
     },
     demoChain: {
       title: 'Chain',
-      code: `indicator.chain([\n  { type: 'loading',\n    icon: indicator.icons.loading,\n    title: 'Paso 1',\n    subtitle: 'Conectando...',\n    duration: 2000 },\n  { type: 'loading',\n    icon: indicator.icons.download,\n    title: 'Paso 2',\n    subtitle: 'Descargando...',\n    duration: 2000 },\n  { type: 'success',\n    icon: indicator.icons.success,\n    title: 'Completado',\n    subtitle: 'Todo listo',\n    duration: 2000,\n    exitAnimation: 'fade' }\n]);`,
+      code: `indicator.chain([\n  { type: 'loading',\n    icon: 'loading',\n    title: 'Paso 1',\n    subtitle: 'Conectando...',\n    duration: 2000 },\n  { type: 'loading',\n    icon: 'download',\n    title: 'Paso 2',\n    subtitle: 'Descargando...',\n    duration: 2000 },\n  { type: 'success',\n    icon: 'success',\n    title: 'Completado',\n    subtitle: 'Todo listo',\n    duration: 2000,\n    exitAnimation: 'fade' }\n]);`,
       props: [
         { name: 'chain()', value: '[configs]', desc: 'Ejecuta un array de notificaciones secuencialmente, una tras otra.' },
         { name: 'exitAnimation', value: "'fade'", desc: 'Solo la \u00faltima tiene exit animation.' }
@@ -1692,14 +1692,14 @@ indicator.setIslandWidth('normal');
     },
     demoConfetti: {
       title: 'Confetti',
-      code: `indicator.add({\n  type: 'success',\n  icon: indicator.icons.success,\n  title: 'Increible!',\n  subtitle: 'Celebrando con confetti',\n  duration: 3000,\n  confetti: true\n});`,
+      code: `indicator.add({\n  type: 'success',\n  icon: 'success',\n  title: 'Increible!',\n  subtitle: 'Celebrando con confetti',\n  duration: 3000,\n  confetti: true\n});`,
       props: [
         { name: 'confetti', value: 'true', desc: 'Lanza part\u00edculas de confetti al mostrarse la notificaci\u00f3n.' }
       ]
     },
     demoCustomType: {
       title: 'Custom Type',
-      code: `// Constructor:\n// typeColors: { premium: '#8b5cf6' }\n// icons: { premium: '<svg>...</svg>' }\n\nindicator.add({\n  type: 'premium',\n  icon: indicator.icons.premium,\n  title: 'Premium Activado',\n  subtitle: 'Tipo personalizado con fondo p\u00farpura',\n  duration: 3000\n});`,
+      code: `// Constructor:\n// typeColors: { premium: '#8b5cf6' }\n// icons: { premium: '<svg>...</svg>' }\n\nindicator.add({\n  type: 'premium',\n  icon: 'premium',\n  title: 'Premium Activado',\n  subtitle: 'Tipo personalizado con fondo p\u00farpura',\n  duration: 3000\n});`,
       props: [
         { name: 'type', value: "'premium'", desc: 'Tipo custom definido en el constructor via typeColors.' },
         { name: 'typeColors', value: "{ premium: '#8b5cf6' }", desc: 'Se pasa en el constructor para registrar el color del tipo.' },
@@ -1708,15 +1708,15 @@ indicator.setIslandWidth('normal');
     },
     demoCustomIcon: {
       title: 'Custom Icon',
-      code: `// Constructor:\n// icons: { heart: '<svg>...</svg>' }\n\nindicator.add({\n  type: 'generic',\n  icon: indicator.icons.heart,\n  iconColor: '#f43f5e',\n  title: 'Te gusta esto',\n  subtitle: 'Icono coraz\u00f3n a\u00f1adido via constructor',\n  duration: 3000\n});`,
+      code: `// Constructor:\n// icons: { heart: '<svg>...</svg>' }\n\nindicator.add({\n  type: 'generic',\n  icon: 'heart',\n  iconColor: '#f43f5e',\n  title: 'Te gusta esto',\n  subtitle: 'Icono coraz\u00f3n a\u00f1adido via constructor',\n  duration: 3000\n});`,
       props: [
-        { name: 'icon', value: 'indicator.icons.heart', desc: 'Icono SVG custom registrado en el constructor.' },
+        { name: 'icon', value: "'heart'", desc: 'Icono SVG custom registrado en el constructor.' },
         { name: 'iconColor', value: "'#f43f5e'", desc: 'Color hex aplicado directamente al icono.' }
       ]
     },
     demoGlowColor: {
       title: 'Glow Color',
-      code: `indicator.add({\n  icon: indicator.icons.info,\n  title: 'Glow Rosa',\n  subtitle: 'Shadow personalizado con glowColor',\n  animation: 'glow',\n  glowColor: '#f43f5e',\n  duration: 3000\n});`,
+      code: `indicator.add({\n  icon: 'info',\n  title: 'Glow Rosa',\n  subtitle: 'Shadow personalizado con glowColor',\n  animation: 'glow',\n  glowColor: '#f43f5e',\n  duration: 3000\n});`,
       props: [
         { name: 'animation', value: "'glow'", desc: 'Resplandor pulsante del borde.' },
         { name: 'glowColor', value: "'#f43f5e'", desc: 'Color del shadow en la animaci\u00f3n glow. Acepta tipo o hex.' }
@@ -1724,7 +1724,7 @@ indicator.setIslandWidth('normal');
     },
     demoAutoContrast: {
       title: 'Auto Contraste',
-      code: `// Constructor:\n// typeColors: { light: '#facc15' }\n\nindicator.add({\n  type: 'light',\n  icon: indicator.icons.info,\n  title: 'Fondo Claro',\n  subtitle: 'Texto oscuro calculado autom\u00e1ticamente',\n  duration: 3000\n});`,
+      code: `// Constructor:\n// typeColors: { light: '#facc15' }\n\nindicator.add({\n  type: 'light',\n  icon: 'info',\n  title: 'Fondo Claro',\n  subtitle: 'Texto oscuro calculado autom\u00e1ticamente',\n  duration: 3000\n});`,
       props: [
         { name: 'type', value: "'light'", desc: 'Tipo custom con color claro (#facc15).' },
         { name: 'Auto-contraste', value: 'autom\u00e1tico', desc: 'Texto, bordes y botones se adaptan a la luminancia del fondo (WCAG Rec. 601).' }
