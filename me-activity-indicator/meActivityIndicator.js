@@ -10,7 +10,7 @@
  * @url     https://github.com/marcosesperon
  * @donate  https://buymeacoffee.com/marcosesperon
  * @license MIT
- * @version 3.0.0
+ * @version 6.0.0
  */
 
 class meActivityIndicator {
@@ -38,6 +38,7 @@ class meActivityIndicator {
 
     // Posicion y tema
     this.position = options.position || 'top-center';
+    this._currentPosition = this.position;
     this.theme = options.theme || 'dark';
     this.activeThemeName = 'dark';
     this.stackStyle = options.stackStyle || '3d'; // '3d', 'fan', 'counter'
@@ -496,6 +497,308 @@ class meActivityIndicator {
         color: var(--me-ai-accent-contrast);
       }
 
+      /* VERIFY CODE */
+      .me-ai-verify {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .me-ai-verify.is-ready {
+        opacity: 1;
+      }
+
+      .me-ai-verify-code {
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 6px;
+        color: var(--me-ai-accent);
+        user-select: all;
+      }
+
+      .me-ai-verify-inputs {
+        display: flex;
+        gap: 6px;
+      }
+
+      .me-ai-verify-input {
+        width: 28px;
+        height: 34px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 700;
+        border: 1.5px solid var(--me-ai-island-border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--me-ai-text-main);
+        outline: none;
+        transition: border-color 0.2s ease;
+        caret-color: var(--me-ai-accent);
+      }
+
+      .me-ai-verify-input:focus {
+        border-color: var(--me-ai-accent);
+      }
+
+      .me-ai-verify-input.is-error {
+        border-color: var(--me-ai-color-error);
+        animation: me-ai-shake 0.2s ease-in-out 2;
+      }
+
+      .me-ai-verify-input.is-success {
+        border-color: var(--me-ai-color-success);
+      }
+
+      .me-ai-verify-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 2px;
+      }
+
+      /* FORM */
+      .me-ai-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        padding-bottom: 6px;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .me-ai-form.is-ready {
+        opacity: 1;
+      }
+
+      .me-ai-form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .me-ai-form-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--me-ai-text-sub);
+      }
+
+      .me-ai-form-label .me-ai-form-required {
+        color: var(--me-ai-color-error);
+        margin-left: 2px;
+      }
+
+      .me-ai-form-input,
+      .me-ai-form-select,
+      .me-ai-form-textarea {
+        background: transparent;
+        border: 1.5px solid var(--me-ai-island-border);
+        border-radius: 8px;
+        color: var(--me-ai-text-main);
+        font-size: 12px;
+        font-family: inherit;
+        padding: 6px 8px;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      .me-ai-form-input:focus,
+      .me-ai-form-select:focus,
+      .me-ai-form-textarea:focus {
+        border-color: var(--me-ai-accent);
+      }
+
+      .me-ai-form-input::placeholder,
+      .me-ai-form-textarea::placeholder {
+        color: var(--me-ai-accent);
+        opacity: 0.4;
+      }
+
+      .me-ai-form-select.is-placeholder {
+        color: var(--me-ai-accent);
+        opacity: 0.4;
+      }
+
+      .me-ai-form-input.is-error,
+      .me-ai-form-select.is-error,
+      .me-ai-form-textarea.is-error {
+        border-color: var(--me-ai-color-error);
+        animation: me-ai-shake 0.2s ease-in-out 2;
+      }
+
+      .me-ai-form-textarea {
+        resize: none;
+        min-height: 40px;
+      }
+
+      .me-ai-form-select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        padding-right: 24px;
+      }
+
+      .me-ai-form-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+      }
+
+      /* UPLOAD */
+      .me-ai-upload {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        padding-bottom: 6px;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .me-ai-upload.is-ready {
+        opacity: 1;
+      }
+
+      .me-ai-upload-dropzone {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 64px;
+        border: 2px dashed var(--me-ai-island-border);
+        border-radius: 10px;
+        padding: 12px;
+        cursor: pointer;
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .me-ai-upload-dropzone.is-dragover {
+        border-color: var(--me-ai-accent);
+        background: rgba(59, 130, 246, 0.08);
+      }
+
+      .me-ai-upload-dropzone.is-error {
+        border-color: var(--me-ai-color-error);
+        animation: me-ai-shake 0.2s ease-in-out 2;
+      }
+
+      .me-ai-upload-dropzone-icon {
+        color: var(--me-ai-accent);
+        opacity: 0.6;
+      }
+
+      .me-ai-upload-dropzone-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .me-ai-upload-dropzone-text {
+        font-size: 11px;
+        color: var(--me-ai-text-sub);
+        text-align: center;
+      }
+
+      .me-ai-upload-dropzone-hint {
+        font-size: 10px;
+        color: var(--me-ai-text-sub);
+        opacity: 0.6;
+      }
+
+      .me-ai-upload-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        max-height: 100px;
+        overflow-y: auto;
+      }
+
+      .me-ai-upload-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 6px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.05);
+        font-size: 11px;
+      }
+
+      .me-ai-upload-item-icon {
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        color: var(--me-ai-accent);
+      }
+
+      .me-ai-upload-item-icon svg {
+        width: 100%;
+        height: 100%;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .me-ai-upload-item-name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--me-ai-text-main);
+      }
+
+      .me-ai-upload-item-size {
+        flex-shrink: 0;
+        color: var(--me-ai-text-sub);
+        font-size: 10px;
+      }
+
+      .me-ai-upload-item-remove {
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        color: var(--me-ai-text-sub);
+        opacity: 0.6;
+        transition: opacity 0.2s;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      .me-ai-upload-item-remove:hover {
+        opacity: 1;
+        color: var(--me-ai-color-error);
+      }
+
+      .me-ai-upload-item-remove svg {
+        width: 100%;
+        height: 100%;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+      }
+
+      .me-ai-upload-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+      }
+
       @keyframes me-ai-spin {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
@@ -622,6 +925,8 @@ class meActivityIndicator {
     this.island.addEventListener('click', (e) => this._handleIslandClick(e));
     this.island.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON') return;
         e.preventDefault();
         this._handleIslandClick(e);
       }
@@ -739,6 +1044,7 @@ class meActivityIndicator {
    */
   setPosition(pos) {
     this.position = pos;
+    this._currentPosition = pos;
     if (this.root) {
         this.root.className = `${pos} me-ai-theme-${this.activeThemeName}`;
     }
@@ -956,6 +1262,263 @@ class meActivityIndicator {
   }
 
   /**
+   * Patron Verify: muestra una notificacion con codigo de verificacion.
+   *
+   * Dos modos de uso:
+   * - mode 'verify' (defecto): muestra un codigo que el usuario debe copiar en los inputs.
+   *   Se valida automaticamente. Promesa resuelve con status 'verified' o 'cancelled'.
+   * - mode 'input': no muestra codigo. El usuario introduce un codigo externo (SMS, email...)
+   *   y pulsa Confirmar. Promesa resuelve con status 'submitted' y el codigo introducido.
+   *
+   * @param {Object} config - Mismas propiedades que add(), mas:
+   * @param {string} [config.mode='verify'] - Modo: 'verify' (con codigo visible) o 'input' (codigo ciego).
+   * @param {string} [config.code] - Codigo a verificar (solo modo verify). Si se omite, se genera automaticamente.
+   * @param {number} [config.codeLength=4] - Longitud del codigo.
+   * @param {string} [config.codeType='alphanumeric'] - Tipo: 'numeric' o 'alphanumeric'.
+   * @param {boolean} [config.caseSensitive=false] - Si true, distingue mayusculas/minusculas.
+   * @param {string} [config.confirmLabel='Confirmar'] - Texto del boton confirmar (solo modo input).
+   * @param {string} [config.cancelLabel='Cancelar'] - Texto del boton cancelar.
+   * @param {Function} [config.onVerify] - Callback si el codigo es correcto (solo modo verify).
+   * @param {Function} [config.onSubmit] - Callback con el codigo introducido (solo modo input).
+   * @param {Function} [config.onFail] - Callback si el codigo es incorrecto (solo modo verify).
+   * @param {Function} [config.onCancel] - Callback si el usuario cancela.
+   * @returns {Promise<{id, status, code}>} status: 'verified'|'submitted'|'cancelled'
+   */
+  addVerify(config) {
+    const mode = config.mode || 'verify';
+    const codeLength = config.codeLength || 4;
+    const codeType = config.codeType || 'alphanumeric';
+    const caseSensitive = config.caseSensitive || false;
+    const confirmLabel = config.confirmLabel || 'Confirmar';
+    const cancelLabel = config.cancelLabel || 'Cancelar';
+
+    // En modo verify: generar o usar codigo proporcionado. En modo input: no hay codigo interno
+    const code = mode === 'input' ? null : (config.code || this._generateCode(codeLength, codeType));
+
+    let verified = false;
+    let submittedCode = null;
+
+    return new Promise((resolve) => {
+      const actConfig = {
+        ...config,
+        _verify: { mode, code, codeLength: code ? code.length : codeLength, codeType, caseSensitive, confirmLabel, cancelLabel },
+        actions: []
+      };
+
+      delete actConfig.mode;
+      delete actConfig.code;
+      delete actConfig.codeLength;
+      delete actConfig.codeType;
+      delete actConfig.caseSensitive;
+      delete actConfig.confirmLabel;
+      delete actConfig.cancelLabel;
+      delete actConfig.verifyLabel;
+      delete actConfig.onVerify;
+      delete actConfig.onSubmit;
+      delete actConfig.onFail;
+      delete actConfig.onCancel;
+      delete actConfig.duration;
+
+      const task = this.add(actConfig);
+
+      this.resolvers.set(task.id, () => {
+        if (verified) {
+          resolve({ id: task.id, status: mode === 'input' ? 'submitted' : 'verified', code: submittedCode || code });
+        } else {
+          if (config.onCancel) config.onCancel();
+          resolve({ id: task.id, status: 'cancelled', code: null });
+        }
+      });
+
+      const activity = this.activities.find(a => a.id === task.id);
+      if (activity) {
+        activity._verifyResolve = (enteredCode) => {
+          verified = true;
+          submittedCode = enteredCode || null;
+          if (mode === 'input' && config.onSubmit) config.onSubmit(enteredCode);
+          if (mode !== 'input' && config.onVerify) config.onVerify();
+          this.remove(task.id);
+        };
+        activity._verifyFail = () => {
+          if (config.onFail) config.onFail();
+        };
+      }
+    });
+  }
+
+  /**
+   * Genera un codigo aleatorio de la longitud y tipo indicados.
+   * @param {number} length - Longitud del codigo.
+   * @param {string} type - 'numeric' o 'alphanumeric'.
+   * @returns {string}
+   * @private
+   */
+  _generateCode(length, type) {
+    const chars = type === 'numeric' ? '0123456789' : '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let code = '';
+    for (let i = 0; i < length; i++) {
+      code += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return code;
+  }
+
+  /**
+   * Muestra una notificacion con un formulario interactivo.
+   * El usuario rellena los campos y pulsa Confirmar o Cancelar.
+   *
+   * @param {Object} config - Mismas propiedades que add(), mas:
+   * @param {Array<Object>} config.fields - Campos del formulario.
+   * @param {string} config.fields[].type - Tipo HTML: 'text','email','tel','number','password','url','date','select','textarea'.
+   * @param {string} config.fields[].label - Etiqueta del campo.
+   * @param {boolean} [config.fields[].required=false] - Si es obligatorio.
+   * @param {string} [config.fields[].placeholder] - Placeholder del campo.
+   * @param {string} [config.fields[].value] - Valor inicial.
+   * @param {Array<string|Array>} [config.fields[].options] - Opciones (solo para type 'select'). Cada elemento puede ser un string o un array [valor, etiqueta].
+   * @param {number} [config.fields[].rows=2] - Numero de filas visibles (solo para type 'textarea').
+   * @param {string} [config.confirmLabel='Confirmar'] - Texto del boton confirmar.
+   * @param {string} [config.cancelLabel='Cancelar'] - Texto del boton cancelar.
+   * @param {Function} [config.onSubmit] - Callback con los datos del formulario.
+   * @param {Function} [config.onCancel] - Callback al cancelar.
+   * @returns {Promise<{id, status, data}>} status: 'submitted'|'cancelled'
+   */
+  addForm(config) {
+    const fields = config.fields || [];
+    const confirmLabel = config.confirmLabel || 'Confirmar';
+    const cancelLabel = config.cancelLabel || 'Cancelar';
+
+    let submitted = false;
+    let formData = null;
+
+    return new Promise((resolve) => {
+      const actConfig = {
+        ...config,
+        _form: { fields, confirmLabel, cancelLabel },
+        actions: []
+      };
+
+      delete actConfig.fields;
+      delete actConfig.confirmLabel;
+      delete actConfig.cancelLabel;
+      delete actConfig.onSubmit;
+      delete actConfig.onCancel;
+      delete actConfig.duration;
+
+      const task = this.add(actConfig);
+
+      this.resolvers.set(task.id, () => {
+        if (submitted) {
+          resolve({ id: task.id, status: 'submitted', data: formData });
+        } else {
+          if (config.onCancel) config.onCancel();
+          resolve({ id: task.id, status: 'cancelled', data: null });
+        }
+      });
+
+      const activity = this.activities.find(a => a.id === task.id);
+      if (activity) {
+        activity._formResolve = (data) => {
+          submitted = true;
+          formData = data;
+          if (config.onSubmit) config.onSubmit(data);
+          this.remove(task.id);
+        };
+      }
+    });
+  }
+
+  /**
+   * Muestra una notificacion con zona de drop para subir ficheros.
+   *
+   * @param {Object} config - Mismas propiedades que add(), mas:
+   * @param {boolean} [config.multiple=false] - Si true, permite seleccionar multiples ficheros.
+   * @param {string} [config.accept] - Extensiones o MIME types permitidos (ej: '.pdf,.docx', 'image/*').
+   * @param {number} [config.maxSize] - Tamano maximo por fichero en bytes. 0 o sin definir = sin limite.
+   * @param {string} [config.confirmLabel='Subir'] - Texto del boton confirmar.
+   * @param {string} [config.cancelLabel='Cancelar'] - Texto del boton cancelar.
+   * @param {Function} [config.onSubmit] - Callback con el array de ficheros.
+   * @param {Function} [config.onCancel] - Callback al cancelar.
+   * @returns {Promise<{id, status, files}>} status: 'submitted'|'cancelled'
+   */
+  addUpload(config) {
+    const multiple = config.multiple || false;
+    const accept = config.accept || '';
+    const maxSize = config.maxSize || 0;
+    const confirmLabel = config.confirmLabel || 'Subir';
+    const cancelLabel = config.cancelLabel || 'Cancelar';
+
+    let submitted = false;
+    let uploadedFiles = null;
+
+    return new Promise((resolve) => {
+      const actConfig = {
+        ...config,
+        _upload: { multiple, accept, maxSize, confirmLabel, cancelLabel },
+        actions: []
+      };
+
+      delete actConfig.multiple;
+      delete actConfig.accept;
+      delete actConfig.maxSize;
+      delete actConfig.confirmLabel;
+      delete actConfig.cancelLabel;
+      delete actConfig.onSubmit;
+      delete actConfig.onCancel;
+      delete actConfig.duration;
+
+      const task = this.add(actConfig);
+
+      this.resolvers.set(task.id, () => {
+        if (submitted) {
+          resolve({ id: task.id, status: 'submitted', files: uploadedFiles });
+        } else {
+          if (config.onCancel) config.onCancel();
+          resolve({ id: task.id, status: 'cancelled', files: null });
+        }
+      });
+
+      const activity = this.activities.find(a => a.id === task.id);
+      if (activity) {
+        activity._uploadResolve = (files) => {
+          submitted = true;
+          uploadedFiles = files;
+          if (config.onSubmit) config.onSubmit(files);
+          this.remove(task.id);
+        };
+      }
+    });
+  }
+
+  /**
+   * Formatea un tamano en bytes a formato legible (B, KB, MB).
+   * @param {number} bytes
+   * @returns {string}
+   * @private
+   */
+  _formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  /**
+   * Comprueba si un fichero cumple las restricciones del atributo accept.
+   * @param {File} file
+   * @param {string} accept - Extensiones o MIME types separados por coma.
+   * @returns {boolean}
+   * @private
+   */
+  _matchAccept(file, accept) {
+    const rules = accept.split(',').map(s => s.trim().toLowerCase());
+    const name = file.name.toLowerCase();
+    const type = file.type.toLowerCase();
+    return rules.some(rule => {
+      if (rule.startsWith('.')) return name.endsWith(rule);
+      if (rule.endsWith('/*')) return type.startsWith(rule.slice(0, -1));
+      return type === rule;
+    });
+  }
+
+  /**
    * Ejecuta una secuencia de pasos de notificacion en orden.
    * Cada paso se muestra tras completar el anterior (morphing suave via update).
    *
@@ -1040,6 +1603,12 @@ class meActivityIndicator {
   _refresh() {
     const active = this.activities.find(a => a.id === this.activeId);
     if (!active) { this._closeIsland(this._lastExitAnimation); this._lastExitAnimation = null; return; }
+    // Posición por notificación: mover isla si la actividad lo requiere
+    const targetPos = active.position || this.position;
+    if (this._currentPosition !== targetPos) {
+      this._currentPosition = targetPos;
+      if (this.root) this.root.className = `${targetPos} me-ai-theme-${this.activeThemeName}`;
+    }
     if (active.duration && active.waitToDisplay && !this.timers.has(active.id)) {
       this._setTimer(active.id, active.duration);
       if (this.isPaused) this._pauseTimer(active.id);
@@ -1106,6 +1675,9 @@ class meActivityIndicator {
       if (action && action.onClick) action.onClick({ activityId: active.id });
       return;
     }
+    if (active._verify) return;
+    if (active._form) return;
+    if (active._upload) return;
     if (active.closeOnClick) this.remove(active.id);
   }
 
@@ -1218,8 +1790,8 @@ class meActivityIndicator {
       if (data.entryAnimation === 'slide-spring') {
         // Determinar direccion segun posicion de la isla
         let dir = 'down';
-        if (this.position.includes('left')) dir = 'left';
-        else if (this.position.includes('right')) dir = 'right';
+        if (this._currentPosition.includes('left')) dir = 'left';
+        else if (this._currentPosition.includes('right')) dir = 'right';
         this.island.style.transform = 'none';
         this.island.style.opacity = '0';
         this.island.classList.add('is-visible');
@@ -1281,6 +1853,88 @@ class meActivityIndicator {
       </div>`;
     }
 
+    // Generar HTML de verificacion si existe _verify
+    let verifyHTML = '';
+    if (data._verify) {
+      const v = data._verify;
+      const isInput = v.mode === 'input';
+      const inputType = v.codeType === 'numeric' ? 'tel' : 'text';
+      const inputs = Array.from({ length: v.codeLength }, (_, i) =>
+        `<input class="me-ai-verify-input" type="${inputType}" maxlength="1" data-index="${i}" autocomplete="off" />`
+      ).join('');
+      verifyHTML = `
+        <div class="me-ai-verify">
+          ${isInput ? '' : `<div class="me-ai-verify-code">${v.code}</div>`}
+          <div class="me-ai-verify-inputs">${inputs}</div>
+          <div class="me-ai-verify-actions">
+            <button class="me-ai-action-btn me-ai-verify-cancel">${v.cancelLabel}</button>
+            ${isInput ? `<button class="me-ai-action-btn primary me-ai-verify-confirm">${v.confirmLabel}</button>` : ''}
+          </div>
+        </div>`;
+    }
+
+    // Generar HTML de formulario si existe _form
+    let formHTML = '';
+    if (data._form) {
+      const f = data._form;
+      const fieldsHTML = f.fields.map((field, i) => {
+        const req = field.required ? '<span class="me-ai-form-required">*</span>' : '';
+        const ph = field.placeholder ? ` placeholder="${field.placeholder}"` : '';
+        const val = field.value || '';
+        let inputHTML = '';
+        if (field.type === 'select') {
+          const opts = (field.options || []).map(o => {
+            const optVal = Array.isArray(o) ? o[0] : o;
+            const optLabel = Array.isArray(o) ? o[1] : o;
+            return `<option value="${optVal}"${val === optVal ? ' selected' : ''}>${optLabel}</option>`;
+          }).join('');
+          const phClass = field.placeholder && !val ? ' is-placeholder' : '';
+          inputHTML = `<select class="me-ai-form-select${phClass}" data-field="${i}">${field.placeholder ? `<option value="" disabled${!val ? ' selected' : ''}>${field.placeholder}</option>` : ''}${opts}</select>`;
+        } else if (field.type === 'textarea') {
+          inputHTML = `<textarea class="me-ai-form-textarea" data-field="${i}"${ph} rows="${field.rows || 2}">${val}</textarea>`;
+        } else {
+          inputHTML = `<input class="me-ai-form-input" type="${field.type || 'text'}" data-field="${i}"${ph} value="${val}" autocomplete="off" />`;
+        }
+        return `<div class="me-ai-form-field"><label class="me-ai-form-label">${field.label}${req}</label>${inputHTML}</div>`;
+      }).join('');
+
+      formHTML = `
+        <div class="me-ai-form">
+          ${fieldsHTML}
+          <div class="me-ai-form-actions">
+            <button class="me-ai-action-btn me-ai-form-cancel">${f.cancelLabel}</button>
+            <button class="me-ai-action-btn primary me-ai-form-confirm">${f.confirmLabel}</button>
+          </div>
+        </div>`;
+    }
+
+    // Generar HTML de upload si existe _upload
+    let uploadHTML = '';
+    if (data._upload) {
+      const u = data._upload;
+      const hintParts = [];
+      if (u.accept) hintParts.push(u.accept);
+      if (u.maxSize) hintParts.push('Max ' + this._formatFileSize(u.maxSize));
+      const hint = hintParts.length ? `<div class="me-ai-upload-dropzone-hint">${hintParts.join(' &middot; ')}</div>` : '';
+
+      uploadHTML = `
+        <div class="me-ai-upload">
+          <div class="me-ai-upload-dropzone">
+            <div class="me-ai-upload-dropzone-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="me-ai-upload-dropzone-text">${u.multiple ? 'Arrastra archivos o pulsa para seleccionar' : 'Arrastra un archivo o pulsa para seleccionar'}</div>
+            ${hint}
+            <input type="file" class="me-ai-upload-file-input" style="display:none"${u.multiple ? ' multiple' : ''}${u.accept ? ` accept="${u.accept}"` : ''} />
+          </div>
+          <div class="me-ai-upload-list"></div>
+          <div class="me-ai-upload-actions">
+            <button class="me-ai-action-btn me-ai-upload-cancel">${u.cancelLabel}</button>
+            <button class="me-ai-action-btn primary me-ai-upload-confirm" disabled>${u.confirmLabel}</button>
+          </div>
+        </div>`;
+    }
+
     // Actualizacion parcial: si el titulo no cambio, solo actualizar campos dinamicos
     if (this.content.classList.contains('is-active') && existingTitle === data.title) {
       const bar = this.content.querySelector('.me-ai-progress-bar');
@@ -1328,7 +1982,7 @@ class meActivityIndicator {
           <div class="me-ai-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(data.progress * 100)}">
             <div class="me-ai-progress-bar" style="width:0%"></div>
           </div>` : ""}
-        ${actionsHTML}
+        ${data._verify ? verifyHTML : (data._form ? formHTML : (data._upload ? uploadHTML : actionsHTML))}
       `;
       this._measure();
       setTimeout(() => {
@@ -1343,6 +1997,10 @@ class meActivityIndicator {
         }
         // Countdown visual: barra que se consume durante el duration
         this._updateCountdown(data);
+        // Bind de eventos para verificacion, formulario o upload
+        if (data._verify) this._bindVerifyInputs(data);
+        if (data._form) this._bindFormInputs(data);
+        if (data._upload) this._bindUploadInputs(data);
       }, 50);
     }, 150);
   }
@@ -1368,6 +2026,266 @@ class meActivityIndicator {
   }
 
   /**
+   * Vincula los eventos de los inputs de verificacion: auto-avance, backspace,
+   * pegado, validacion y boton cancelar.
+   * @param {Object} data - Datos de la actividad con _verify.
+   * @private
+   */
+  _bindVerifyInputs(data) {
+    if (!this.content) return;
+    const inputs = this.content.querySelectorAll('.me-ai-verify-input');
+    const cancelBtn = this.content.querySelector('.me-ai-verify-cancel');
+    const v = data._verify;
+
+    inputs.forEach((input, i) => {
+      input.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.length === 1 && i < inputs.length - 1) {
+          inputs[i + 1].focus();
+        }
+        // Si es el ultimo input, validar (solo en modo verify)
+        if (i === inputs.length - 1 && val.length === 1 && v.mode !== 'input') {
+          const entered = Array.from(inputs).map(inp => inp.value).join('');
+          const code = v.caseSensitive ? v.code : v.code.toUpperCase();
+          const check = v.caseSensitive ? entered : entered.toUpperCase();
+          if (check === code) {
+            inputs.forEach(inp => inp.classList.add('is-success'));
+            setTimeout(() => data._verifyResolve(), 400);
+          } else {
+            inputs.forEach(inp => { inp.classList.add('is-error'); inp.value = ''; });
+            setTimeout(() => {
+              inputs.forEach(inp => inp.classList.remove('is-error'));
+              inputs[0].focus();
+            }, 500);
+            if (data._verifyFail) data._verifyFail();
+          }
+        }
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && i > 0) {
+          inputs[i - 1].focus();
+        }
+      });
+
+      // Pegar codigo completo
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const paste = e.clipboardData.getData('text').trim();
+        for (let j = 0; j < Math.min(paste.length, inputs.length); j++) {
+          inputs[j].value = paste[j];
+        }
+        const last = Math.min(paste.length, inputs.length) - 1;
+        inputs[last].focus();
+        inputs[last].dispatchEvent(new Event('input'));
+      });
+    });
+
+    // Confirmar codigo (solo modo input): boton + Enter
+    const confirmBtn = this.content.querySelector('.me-ai-verify-confirm');
+    if (confirmBtn) {
+      const submitCode = () => {
+        const entered = Array.from(inputs).map(inp => inp.value).join('');
+        if (entered.length < inputs.length) {
+          inputs.forEach(inp => { if (!inp.value) inp.classList.add('is-error'); });
+          setTimeout(() => inputs.forEach(inp => inp.classList.remove('is-error')), 500);
+          return;
+        }
+        inputs.forEach(inp => inp.classList.add('is-success'));
+        setTimeout(() => data._verifyResolve(entered), 400);
+      };
+      confirmBtn.addEventListener('click', submitCode);
+      inputs.forEach(inp => {
+        inp.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') submitCode();
+        });
+      });
+    }
+
+    // Esperar a que la isla termine de expandirse antes de mostrar inputs y dar foco
+    const verifyEl = this.content.querySelector('.me-ai-verify');
+    const waitForSpring = () => {
+      if (Math.abs(this.width - this.targetWidth) < 1 && Math.abs(this.height - this.targetHeight) < 1) {
+        if (verifyEl) verifyEl.classList.add('is-ready');
+        inputs[0]?.focus();
+      } else {
+        requestAnimationFrame(waitForSpring);
+      }
+    };
+    requestAnimationFrame(waitForSpring);
+
+    // Boton cancelar
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        this.remove(data.id);
+      });
+    }
+  }
+
+  /**
+   * Vincula eventos del formulario: validacion, submit con Enter, boton confirmar/cancelar.
+   * @param {Object} data - Datos de la actividad con _form.
+   * @private
+   */
+  _bindFormInputs(data) {
+    if (!this.content) return;
+    const f = data._form;
+    const formEl = this.content.querySelector('.me-ai-form');
+    const confirmBtn = this.content.querySelector('.me-ai-form-confirm');
+    const cancelBtn = this.content.querySelector('.me-ai-form-cancel');
+    const allInputs = this.content.querySelectorAll('.me-ai-form-input, .me-ai-form-select, .me-ai-form-textarea');
+
+    const submitForm = () => {
+      const formData = {};
+      let valid = true;
+      f.fields.forEach((field, i) => {
+        const el = this.content.querySelector(`[data-field="${i}"]`);
+        if (!el) return;
+        const val = el.value.trim();
+        const key = field.label.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || `field_${i}`;
+        formData[key] = val;
+        if (field.required && !val) {
+          valid = false;
+          el.classList.add('is-error');
+          setTimeout(() => el.classList.remove('is-error'), 500);
+        }
+      });
+      if (!valid) return;
+      allInputs.forEach(inp => inp.style.borderColor = 'var(--me-ai-color-success)');
+      setTimeout(() => data._formResolve(formData), 400);
+    };
+
+    if (confirmBtn) confirmBtn.addEventListener('click', submitForm);
+
+    allInputs.forEach(el => {
+      if (el.tagName !== 'TEXTAREA') {
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); submitForm(); }
+        });
+      }
+      if (el.tagName === 'SELECT') {
+        el.addEventListener('change', () => {
+          el.classList.toggle('is-placeholder', !el.value);
+        });
+      }
+    });
+
+    // Esperar a que la isla termine de expandirse antes de mostrar campos y dar foco
+    const waitForSpring = () => {
+      if (Math.abs(this.width - this.targetWidth) < 1 && Math.abs(this.height - this.targetHeight) < 1) {
+        if (formEl) formEl.classList.add('is-ready');
+        allInputs[0]?.focus();
+      } else {
+        requestAnimationFrame(waitForSpring);
+      }
+    };
+    requestAnimationFrame(waitForSpring);
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => this.remove(data.id));
+    }
+  }
+
+  /**
+   * Vincula eventos de la zona de upload: drag & drop, selector de ficheros,
+   * lista de previsualizacion, validacion, boton confirmar/cancelar.
+   * @param {Object} data - Datos de la actividad con _upload.
+   * @private
+   */
+  _bindUploadInputs(data) {
+    if (!this.content) return;
+    const u = data._upload;
+    const uploadEl = this.content.querySelector('.me-ai-upload');
+    const dropzone = this.content.querySelector('.me-ai-upload-dropzone');
+    const fileInput = this.content.querySelector('.me-ai-upload-file-input');
+    const listEl = this.content.querySelector('.me-ai-upload-list');
+    const confirmBtn = this.content.querySelector('.me-ai-upload-confirm');
+    const cancelBtn = this.content.querySelector('.me-ai-upload-cancel');
+
+    let files = [];
+
+    const renderList = () => {
+      listEl.innerHTML = files.map((f, i) => `
+        <div class="me-ai-upload-item">
+          <div class="me-ai-upload-item-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <span class="me-ai-upload-item-name">${f.name}</span>
+          <span class="me-ai-upload-item-size">${this._formatFileSize(f.size)}</span>
+          <button class="me-ai-upload-item-remove" data-index="${i}"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+      `).join('');
+
+      listEl.querySelectorAll('.me-ai-upload-item-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          files.splice(parseInt(btn.dataset.index), 1);
+          renderList();
+        });
+      });
+
+      confirmBtn.disabled = files.length === 0;
+      this._measure();
+    };
+
+    const validateAndAdd = (newFiles) => {
+      const arr = Array.from(newFiles);
+      let hasError = false;
+
+      for (const f of arr) {
+        if (u.maxSize && f.size > u.maxSize) { hasError = true; continue; }
+        if (u.accept && !this._matchAccept(f, u.accept)) { hasError = true; continue; }
+        files.push(f);
+      }
+
+      if (!u.multiple && files.length > 1) {
+        files = [files[files.length - 1]];
+      }
+
+      if (hasError) {
+        dropzone.classList.add('is-error');
+        setTimeout(() => dropzone.classList.remove('is-error'), 500);
+      }
+
+      renderList();
+    };
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) validateAndAdd(fileInput.files);
+      fileInput.value = '';
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('is-dragover');
+    });
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('is-dragover');
+    });
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('is-dragover');
+      if (e.dataTransfer.files.length) validateAndAdd(e.dataTransfer.files);
+    });
+
+    confirmBtn.addEventListener('click', () => {
+      if (files.length === 0) return;
+      data._uploadResolve(files);
+    });
+
+    const waitForSpring = () => {
+      if (Math.abs(this.width - this.targetWidth) < 1 && Math.abs(this.height - this.targetHeight) < 1) {
+        if (uploadEl) uploadEl.classList.add('is-ready');
+      } else {
+        requestAnimationFrame(waitForSpring);
+      }
+    };
+    requestAnimationFrame(waitForSpring);
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => this.remove(data.id));
+    }
+  }
+
+  /**
    * Mide las dimensiones naturales del contenido usando un nodo clon invisible.
    * Calcula el tamano objetivo (targetWidth/targetHeight) al que la isla
    * debe animar, respetando los limites minimo y maximo.
@@ -1381,6 +2299,12 @@ class meActivityIndicator {
     const resolved = this._resolveWidth(widthMode);
     const ghost = this.content.cloneNode(true);
     ghost.classList.add('is-active');
+    const verifyGhost = ghost.querySelector('.me-ai-verify');
+    if (verifyGhost) verifyGhost.classList.add('is-ready');
+    const formGhost = ghost.querySelector('.me-ai-form');
+    if (formGhost) formGhost.classList.add('is-ready');
+    const uploadGhost = ghost.querySelector('.me-ai-upload');
+    if (uploadGhost) uploadGhost.classList.add('is-ready');
     if (resolved !== null) {
       ghost.style.cssText = `position:absolute;visibility:hidden;display:block;width:${resolved}px;`;
       document.body.appendChild(ghost);
